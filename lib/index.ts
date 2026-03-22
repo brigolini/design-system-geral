@@ -1,95 +1,110 @@
 // Types
 export type {
-  AlIntent,
-  AlLabelPosition,
-  AlErrorPosition,
-  AlBaseProps,
-  AlInteractiveProps,
-  AlIntentProps,
-  AlFormFieldWrapperProps,
-  AlFormFieldProps,
-  UseAlTableOptions,
+  AlmgIntent,
+  AlmgLabelPosition,
+  AlmgErrorPosition,
+  AlmgBaseProps,
+  AlmgInteractiveProps,
+  AlmgIntentProps,
+  AlmgFormFieldWrapperProps,
+  AlmgFormFieldProps,
+  UseAlmgTableOptions,
 } from './types';
 
 // Hooks
-export { useAlFormField } from './hooks/useAlFormField';
-export { useAlId } from './hooks/useAlId';
-export { useAlLoading } from './hooks/useAlLoading';
-export { useAlIntent } from './hooks/useAlIntent';
+export { useAlmgFormField } from './hooks/useAlmgFormField';
+export { useAlmgId } from './hooks/useAlmgId';
+export { useAlmgLoading } from './hooks/useAlmgLoading';
+export { useAlmgIntent } from './hooks/useAlmgIntent';
 
 // Utils
 export { cn } from './utils/cn';
 
-// Atoms
+// Primitives
 export {
-  AlLabel,
-  AlErrorMessage,
-  AlSpinner,
-  AlButton,
-  AlInput,
-  AlCheckbox,
-  AlRadioButton,
-} from './atoms';
+  AlmgLabel,
+  AlmgButton,
+} from './primitives';
 
 export type {
-  AlLabelProps,
-  AlErrorMessageProps,
-  AlSpinnerProps,
-  AlSpinnerSize,
-  AlButtonProps,
-  AlInputProps,
-  AlCheckboxProps,
-  AlRadioButtonProps,
-  AlRadioOption,
-} from './atoms';
+  AlmgLabelProps,
+  AlmgButtonProps,
+} from './primitives';
 
-// Molecules
+// Feedback
 export {
-  AlSelect,
-  AlCombobox,
-  AlMultiSelect,
-  AlAsyncAutocomplete,
-  AlMaskInput,
-  AlCurrencyInput,
-  AlDatePicker,
-  AlDateRangePicker,
-  AlBreadcrumbs,
-} from './molecules';
+  AlmgErrorMessage,
+  AlmgSpinner,
+  AlmgToastContainer,
+  AlmgToastProvider,
+  useAlmgToast,
+} from './feedback';
 
 export type {
-  AlSelectProps,
-  AlSelectOption,
-  AlComboboxProps,
-  AlComboboxOption,
-  AlMultiSelectProps,
-  AlMultiSelectOption,
-  AlAsyncAutocompleteProps,
-  AlMaskInputProps,
-  AlCurrencyInputProps,
-  AlDatePickerProps,
-  AlDateRangePickerProps,
-  AlBreadcrumbsProps,
-  AlBreadcrumbItem,
-} from './molecules';
+  AlmgErrorMessageProps,
+  AlmgSpinnerProps,
+  AlmgSpinnerSize,
+  AlmgToastData,
+  AlmgToastProviderProps,
+} from './feedback';
 
-// Toast (molecules)
-export { AlToastContainer, AlToastProvider, useAlToast } from './molecules/AlToast';
-export type { AlToastData, AlToastProviderProps } from './molecules/AlToast';
-
-// Organisms
+// Forms
 export {
-  AlTable,
-  useAlTable,
-  AlStepper,
-  AlAccordion,
-  AlCarousel,
-} from './organisms';
+  AlmgInput,
+  AlmgCheckbox,
+  AlmgRadioButton,
+  AlmgSelect,
+  AlmgCombobox,
+  AlmgMultiSelect,
+  AlmgAsyncAutocomplete,
+  AlmgMaskInput,
+  AlmgCurrencyInput,
+  AlmgDatePicker,
+  AlmgDateRangePicker,
+  AlmgStepper,
+} from './forms';
 
 export type {
-  AlTableProps,
-  AlStepperProps,
-  AlStepperStep,
-  AlAccordionProps,
-  AlAccordionItem,
-  AlCarouselProps,
-} from './organisms';
+  AlmgInputProps,
+  AlmgCheckboxProps,
+  AlmgRadioButtonProps,
+  AlmgRadioOption,
+  AlmgSelectProps,
+  AlmgSelectOption,
+  AlmgComboboxProps,
+  AlmgComboboxOption,
+  AlmgMultiSelectProps,
+  AlmgMultiSelectOption,
+  AlmgAsyncAutocompleteProps,
+  AlmgMaskInputProps,
+  AlmgCurrencyInputProps,
+  AlmgDatePickerProps,
+  AlmgDateRangePickerProps,
+  AlmgStepperProps,
+  AlmgStepperStep,
+} from './forms';
+
+// Data Display
+export {
+  AlmgTable,
+  useAlmgTable,
+  AlmgAccordion,
+  AlmgCarousel,
+} from './data-display';
+
+export type {
+  AlmgTableProps,
+  AlmgAccordionProps,
+  AlmgAccordionItem,
+  AlmgCarouselProps,
+} from './data-display';
+
+// Navigation
+export {
+  AlmgBreadcrumbs,
+} from './navigation';
+
+export type {
+  AlmgBreadcrumbsProps,
+  AlmgBreadcrumbItem,
+} from './navigation';

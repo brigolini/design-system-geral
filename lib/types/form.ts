@@ -9,7 +9,7 @@ import type {
  * Props para componentes de formulário conectados ao RHF.
  * O genérico TFieldValues flui do schema Zod do formulário para nomes de campos type-safe.
  */
-export interface AlFormFieldProps<TFieldValues extends FieldValues = FieldValues> {
+export interface AlmgFormFieldProps<TFieldValues extends FieldValues = FieldValues> {
   /** Nome do campo, type-safe em relação ao schema do formulário */
   name: Path<TFieldValues>;
   /** Instância do formulário RHF vinda do useForm() */

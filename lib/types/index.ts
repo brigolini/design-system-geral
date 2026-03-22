@@ -1,13 +1,13 @@
 export type {
-  AlIntent,
-  AlLabelPosition,
-  AlErrorPosition,
-  AlBaseProps,
-  AlInteractiveProps,
-  AlIntentProps,
-  AlFormFieldWrapperProps,
+  AlmgIntent,
+  AlmgLabelPosition,
+  AlmgErrorPosition,
+  AlmgBaseProps,
+  AlmgInteractiveProps,
+  AlmgIntentProps,
+  AlmgFormFieldWrapperProps,
 } from './common';
 
-export type { AlFormFieldProps } from './form';
+export type { AlmgFormFieldProps } from './form';
 
-export type { UseAlTableOptions } from './table';
+export type { UseAlmgTableOptions } from './table';

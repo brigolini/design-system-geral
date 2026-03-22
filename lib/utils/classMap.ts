@@ -2,23 +2,23 @@
  *  Estas constantes são a ponte entre componentes JS e arquivos CSS.
  *  Cada componente referencia estas em vez de strings de classe hardcoded. */
 
-export const alLabelClasses = {
+export const almgLabelClasses = {
   label: 'almg-label',
   required: 'almg-label--required',
 } as const;
 
-export const alErrorMessageClasses = {
+export const almgErrorMessageClasses = {
   message: 'almg-error-message',
 } as const;
 
-export const alSpinnerClasses = {
+export const almgSpinnerClasses = {
   spinner: 'almg-spinner',
   small: 'almg-spinner--sm',
   medium: 'almg-spinner--md',
   large: 'almg-spinner--lg',
 } as const;
 
-export const alButtonClasses = {
+export const almgButtonClasses = {
   button: 'almg-button',
   disabled: 'almg-button--disabled',
   loading: 'almg-button--loading',
@@ -28,7 +28,7 @@ export const alButtonClasses = {
   warning: 'almg-button--warning',
 } as const;
 
-export const alInputClasses = {
+export const almgInputClasses = {
   wrapper: 'almg-input-wrapper',
   wrapperLabelLeft: 'almg-input-wrapper--label-left',
   wrapperLabelTop: 'almg-input-wrapper--label-top',
@@ -39,7 +39,7 @@ export const alInputClasses = {
   loading: 'almg-input--loading',
 } as const;
 
-export const alCheckboxClasses = {
+export const almgCheckboxClasses = {
   wrapper: 'almg-checkbox-wrapper',
   wrapperLabelLeft: 'almg-checkbox-wrapper--label-left',
   wrapperLabelTop: 'almg-checkbox-wrapper--label-top',
@@ -51,7 +51,7 @@ export const alCheckboxClasses = {
   loading: 'almg-checkbox--loading',
 } as const;
 
-export const alRadioButtonClasses = {
+export const almgRadioButtonClasses = {
   wrapper: 'almg-radio-wrapper',
   wrapperLabelLeft: 'almg-radio-wrapper--label-left',
   wrapperLabelTop: 'almg-radio-wrapper--label-top',
@@ -62,7 +62,7 @@ export const alRadioButtonClasses = {
   loading: 'almg-radio--loading',
 } as const;
 
-export const alSelectClasses = {
+export const almgSelectClasses = {
   wrapper: 'almg-select-wrapper',
   wrapperLabelLeft: 'almg-select-wrapper--label-left',
   wrapperLabelTop: 'almg-select-wrapper--label-top',
@@ -81,7 +81,7 @@ export const alSelectClasses = {
   arrow: 'almg-select-arrow',
 } as const;
 
-export const alComboboxClasses = {
+export const almgComboboxClasses = {
   wrapper: 'almg-combobox-wrapper',
   wrapperLabelLeft: 'almg-combobox-wrapper--label-left',
   wrapperLabelTop: 'almg-combobox-wrapper--label-top',
@@ -98,7 +98,7 @@ export const alComboboxClasses = {
   noResults: 'almg-combobox-no-results',
 } as const;
 
-export const alMultiSelectClasses = {
+export const almgMultiSelectClasses = {
   wrapper: 'almg-multi-select-wrapper',
   wrapperLabelLeft: 'almg-multi-select-wrapper--label-left',
   wrapperLabelTop: 'almg-multi-select-wrapper--label-top',
@@ -116,7 +116,7 @@ export const alMultiSelectClasses = {
   itemSelected: 'almg-multi-select-item--selected',
 } as const;
 
-export const alTableClasses = {
+export const almgTableClasses = {
   container: 'almg-table-container',
   toolbar: 'almg-table-toolbar',
   table: 'almg-table',
@@ -139,7 +139,7 @@ export const alTableClasses = {
   emptyState: 'almg-table-empty-state',
 } as const;
 
-export const alStepperClasses = {
+export const almgStepperClasses = {
   stepper: 'almg-stepper',
   step: 'almg-stepper-step',
   stepActive: 'almg-stepper-step--active',
@@ -152,7 +152,7 @@ export const alStepperClasses = {
   content: 'almg-stepper-content',
 } as const;
 
-export const alAccordionClasses = {
+export const almgAccordionClasses = {
   accordion: 'almg-accordion',
   accordionHorizontal: 'almg-accordion--horizontal',
   item: 'almg-accordion-item',
@@ -162,7 +162,7 @@ export const alAccordionClasses = {
   icon: 'almg-accordion-icon',
 } as const;
 
-export const alBreadcrumbsClasses = {
+export const almgBreadcrumbsClasses = {
   nav: 'almg-breadcrumbs',
   list: 'almg-breadcrumbs-list',
   item: 'almg-breadcrumbs-item',
@@ -171,7 +171,7 @@ export const alBreadcrumbsClasses = {
   current: 'almg-breadcrumbs-current',
 } as const;
 
-export const alToastClasses = {
+export const almgToastClasses = {
   container: 'almg-toast-container',
   toast: 'almg-toast',
   primary: 'almg-toast--primary',
@@ -183,7 +183,7 @@ export const alToastClasses = {
   close: 'almg-toast-close',
 } as const;
 
-export const alDatePickerClasses = {
+export const almgDatePickerClasses = {
   wrapper: 'almg-date-picker-wrapper',
   wrapperLabelLeft: 'almg-date-picker-wrapper--label-left',
   wrapperLabelTop: 'almg-date-picker-wrapper--label-top',
@@ -193,13 +193,13 @@ export const alDatePickerClasses = {
   inputDisabled: 'almg-date-picker-input--disabled',
 } as const;
 
-export const alDateRangePickerClasses = {
+export const almgDateRangePickerClasses = {
   wrapper: 'almg-date-range-picker-wrapper',
   group: 'almg-date-range-picker-group',
   separator: 'almg-date-range-picker-separator',
 } as const;
 
-export const alCurrencyInputClasses = {
+export const almgCurrencyInputClasses = {
   wrapper: 'almg-currency-input-wrapper',
   wrapperLabelLeft: 'almg-currency-input-wrapper--label-left',
   wrapperLabelTop: 'almg-currency-input-wrapper--label-top',
@@ -210,7 +210,7 @@ export const alCurrencyInputClasses = {
   prefix: 'almg-currency-input-prefix',
 } as const;
 
-export const alMaskInputClasses = {
+export const almgMaskInputClasses = {
   wrapper: 'almg-mask-input-wrapper',
   wrapperLabelLeft: 'almg-mask-input-wrapper--label-left',
   wrapperLabelTop: 'almg-mask-input-wrapper--label-top',
@@ -220,7 +220,7 @@ export const alMaskInputClasses = {
   inputDisabled: 'almg-mask-input--disabled',
 } as const;
 
-export const alCarouselClasses = {
+export const almgCarouselClasses = {
   carousel: 'almg-carousel',
   primary: 'almg-carousel--primary',
   secondary: 'almg-carousel--secondary',

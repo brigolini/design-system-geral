@@ -1,4 +1,4 @@
-export { useAlFormField } from './useAlFormField';
-export { useAlId } from './useAlId';
-export { useAlLoading } from './useAlLoading';
-export { useAlIntent } from './useAlIntent';
+export { useAlmgFormField } from './useAlmgFormField';
+export { useAlmgId } from './useAlmgId';
+export { useAlmgLoading } from './useAlmgLoading';
+export { useAlmgIntent } from './useAlmgIntent';

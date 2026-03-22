@@ -7,8 +7,8 @@ import type {
 } from '@tanstack/react-table';
 import type { UseFormReturn } from 'react-hook-form';
 
-/** Opções para o hook useAlTable */
-export interface UseAlTableOptions<TData> {
+/** Opções para o hook useAlmgTable */
+export interface UseAlmgTableOptions<TData> {
   /** Array de dados da tabela */
   data: TData[];
   /** Definições de colunas do TanStack Table */
