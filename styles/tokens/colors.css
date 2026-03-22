@@ -8,6 +8,9 @@
   --color-al-brand-font-primary: #181F26;
   --color-al-brand-font-secondary: #4A4A4A;
 
+  /* Cor de foco — usada em todos os estados de foco dos componentes */
+  --color-al-focus: var(--color-al-brand-primary);
+
   /* ── Cores de Intenção (inalteradas) ── */
 
   /* Cinza (usado apenas pela intenção Secondary) */

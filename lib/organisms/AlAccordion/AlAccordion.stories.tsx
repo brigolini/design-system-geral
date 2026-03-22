@@ -15,7 +15,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const items = [
-  { id: '1', title: 'O que é Al UI?', content: <p>Al UI é um design system para desenvolvedores web.</p> },
+  { id: '1', title: 'O que é Al UI?', content: <><p>Al UI é um design system para desenvolvedores web da ALMG.</p><p>Ele é criado para você pelo comitê de tecnologia da GTI</p></> },
   { id: '2', title: 'Como instalar?', content: <p>Instale via npm: npm install @almg/al-ui</p> },
   { id: '3', title: 'É acessível?', content: <p>Sim, todos os componentes atendem aos padrões WCAG AA.</p> },
 ];

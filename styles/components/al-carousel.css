@@ -51,7 +51,7 @@
 
 .al-carousel-prev:focus-visible,
 .al-carousel-next:focus-visible {
-  outline: 2px solid var(--color-al-brand-primary);
+  outline: 2px solid var(--color-al-focus);
   outline-offset: 2px;
 }
 

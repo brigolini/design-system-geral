@@ -5,12 +5,6 @@ import { z } from 'zod';
 import { AlMaskInput } from './AlMaskInput';
 import { AlButton } from '../../atoms/AlButton';
 
-const schema = z.object({
-  phone: z.string().min(14, 'Complete the phone number'),
-});
-
-type FormData = z.infer<typeof schema>;
-
 const meta: Meta<typeof AlMaskInput> = {
   title: 'Molecules/AlMaskInput',
   component: AlMaskInput,
@@ -20,19 +14,79 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
+/* ── Telefone Brasil ──
+   Fixo:    (XX) XXXX-XXXX   (10 dígitos)
+   Celular: (XX) XXXXX-XXXX  (11 dígitos, começa com 9) */
+
+const brPhoneSchema = z.object({
+  phone: z
+    .string()
+    .min(14, 'Número de telefone incompleto')
+    .refine(
+      (val) => {
+        const digits = val.replace(/\D/g, '');
+        return digits.length === 10 || digits.length === 11;
+      },
+      'Número de telefone inválido',
+    ),
+});
+
+type BrPhoneFormData = z.infer<typeof brPhoneSchema>;
+
+function BrazilPhoneStory() {
+  const form = useForm<BrPhoneFormData>({
+    resolver: zodResolver(brPhoneSchema),
+    mode: 'onBlur',
+  });
+
+  const phoneValue = form.watch('phone') ?? '';
+  const digits = phoneValue.replace(/\D/g, '');
+
+  // Se o 3º dígito (primeiro do número local) for 9, é celular (11 dígitos)
+  const isMobile = digits.length > 2 && digits[2] === '9';
+  const mask = isMobile ? '(99) 99999-9999' : '(99) 9999-9999';
+
+  return (
+    <form onSubmit={form.handleSubmit(() => {})} style={{ maxWidth: '320px' }}>
+      <AlMaskInput<BrPhoneFormData>
+        name="phone"
+        form={form}
+        mask={mask}
+        label="Telefone"
+        placeholder="(00) 00000-0000"
+      />
+      <div style={{ marginTop: '12px' }}>
+        <AlButton type="submit">Enviar</AlButton>
+      </div>
+    </form>
+  );
+}
+
+export const TelefoneBrasil: Story = {
+  render: () => <BrazilPhoneStory />,
+};
+
+/* ── Outros exemplos ── */
+
+const genericSchema = z.object({
+  value: z.string().min(1, 'Campo obrigatório'),
+});
+
+type GenericFormData = z.infer<typeof genericSchema>;
+
 function MaskStory(args: Record<string, unknown>) {
-  const form = useForm<FormData>({
-    resolver: zodResolver(schema),
+  const form = useForm<GenericFormData>({
+    resolver: zodResolver(genericSchema),
     mode: 'onBlur',
   });
 
   return (
     <form onSubmit={form.handleSubmit(() => {})} style={{ maxWidth: '320px' }}>
-      <AlMaskInput<FormData>
-        name="phone"
+      <AlMaskInput<GenericFormData>
+        name="value"
         form={form}
-        mask={args.mask as string ?? '(999) 999-9999'}
-        label={args.label as string ?? 'Telefone'}
+        mask={args.mask as string ?? '999-999'}
+        label={args.label as string ?? 'Campo'}
         loading={args.loading as boolean}
         disabled={args.disabled as boolean}
       />
@@ -43,22 +97,22 @@ function MaskStory(args: Record<string, unknown>) {
   );
 }
 
-export const PhoneNumber: Story = {
+export const CPF: Story = {
   render: (args) => <MaskStory {...args} />,
-  args: { label: 'Telefone', mask: '(999) 999-9999' },
+  args: { label: 'CPF', mask: '999.999.999-99' },
 };
 
-export const SSN: Story = {
+export const CEP: Story = {
   render: (args) => <MaskStory {...args} />,
-  args: { label: 'SSN', mask: '999-99-9999' },
+  args: { label: 'CEP', mask: '99999-999' },
 };
 
-export const ZipCode: Story = {
-  render: (args) => <MaskStory {...args} />,
-  args: { label: 'CEP', mask: '99999-9999' },
-};
-
-export const CreditCard: Story = {
+export const CartaoCredito: Story = {
   render: (args) => <MaskStory {...args} />,
   args: { label: 'Número do Cartão', mask: '9999 9999 9999 9999' },
+};
+
+export const CNPJ: Story = {
+  render: (args) => <MaskStory {...args} />,
+  args: { label: 'CNPJ', mask: '99.999.999/9999-99' },
 };

@@ -42,12 +42,12 @@
 }
 
 .al-select-trigger:focus-visible {
-  border-color: var(--color-al-brand-primary);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-al-brand-primary) 20%, transparent);
+  border-color: var(--color-al-focus);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-al-focus) 20%, transparent);
 }
 
 .al-select-trigger--open {
-  border-color: var(--color-al-brand-primary);
+  border-color: var(--color-al-focus);
 }
 
 .al-select-trigger--error {

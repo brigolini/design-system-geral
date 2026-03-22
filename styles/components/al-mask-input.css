@@ -24,8 +24,8 @@
 }
 
 .al-mask-input:focus {
-  border-color: var(--color-al-brand-primary);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-al-brand-primary) 20%, transparent);
+  border-color: var(--color-al-focus);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-al-focus) 20%, transparent);
 }
 
 .al-mask-input--error { border-color: var(--color-al-danger); }
