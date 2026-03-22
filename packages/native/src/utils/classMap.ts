@@ -236,6 +236,26 @@ export const almgCarouselClasses = {
   dotActive: 'almg-carousel-dot--active',
 } as const;
 
+export const almgCardClasses = {
+  card: 'almg-card',
+  header: 'almg-card-header',
+  title: 'almg-card-title',
+  body: 'almg-card-body',
+} as const;
+
+export const almgGridClasses = {
+  grid: 'almg-grid',
+  cols1: 'almg-grid--cols-1',
+  cols2: 'almg-grid--cols-2',
+  cols3: 'almg-grid--cols-3',
+  cols8: 'almg-grid--cols-8',
+  cols12: 'almg-grid--cols-12',
+  gapSm: 'almg-grid--gap-sm',
+  gapMd: 'almg-grid--gap-md',
+  gapLg: 'almg-grid--gap-lg',
+  spanPrefix: 'almg-grid-item--span-',
+} as const;
+
 /** Utilitário de mapeamento de intenção para classe CSS */
 export const intentClassMap = {
   primary: 'almg-intent-primary',

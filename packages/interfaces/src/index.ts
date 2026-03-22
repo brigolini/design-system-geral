@@ -37,3 +37,5 @@ export type { AlmgAccordionProps, AlmgAccordionItem } from './components/accordi
 export type { AlmgCarouselProps } from './components/carousel';
 export type { AlmgBreadcrumbsProps, AlmgBreadcrumbItem } from './components/breadcrumbs';
 export type { AlmgToastData, AlmgToastProviderProps } from './components/toast';
+export type { AlmgCardProps } from './components/card';
+export type { AlmgGridProps, AlmgGridItemProps, AlmgGridColumns } from './components/grid';

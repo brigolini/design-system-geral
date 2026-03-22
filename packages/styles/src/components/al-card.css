@@ -1,0 +1,27 @@
+/* Al Card */
+
+.almg-card {
+  border: var(--border-width-almg-default) solid var(--color-almg-brand-secondary);
+  border-radius: var(--border-radius-almg-lg);
+  box-shadow: var(--shadow-almg-sm);
+  background-color: white;
+  overflow: hidden;
+}
+
+.almg-card-header {
+  padding: var(--spacing-almg-4) var(--spacing-almg-4) 0;
+}
+
+.almg-card-title {
+  font-family: var(--font-almg-sans);
+  font-size: var(--font-size-almg-lg);
+  font-weight: var(--font-weight-almg-semibold);
+  color: var(--color-almg-brand-font-primary);
+  margin: 0;
+}
+
+.almg-card-body {
+  padding: var(--spacing-almg-3) var(--spacing-almg-4) var(--spacing-almg-4);
+  font-size: var(--font-size-almg-sm);
+  color: var(--color-almg-brand-font-primary);
+}
