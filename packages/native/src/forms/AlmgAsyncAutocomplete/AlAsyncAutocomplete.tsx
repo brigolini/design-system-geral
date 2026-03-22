@@ -28,6 +28,7 @@ export function AlmgAsyncAutocomplete<TFieldValues extends FieldValues = FieldVa
   labelPosition = 'top',
   placeholder = 'Search...',
   noResultsText = 'No results found',
+  initialDisplayValue,
   errorPosition = 'bottom',
   loading: externalLoading,
   disabled,
@@ -42,7 +43,7 @@ export function AlmgAsyncAutocomplete<TFieldValues extends FieldValues = FieldVa
   const hasError = !!errorMessage;
   const isErrorRight = errorPosition === 'right';
 
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState(initialDisplayValue ?? '');
   const [options, setOptions] = useState<AlmgComboboxOption[]>([]);
   const [isFetching, setIsFetching] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout>>(undefined);
@@ -87,14 +88,34 @@ export function AlmgAsyncAutocomplete<TFieldValues extends FieldValues = FieldVa
     items: options,
     selectedItem,
     inputValue,
-    onInputValueChange: ({ inputValue: val }) => {
+    onInputValueChange: ({ inputValue: val, type }) => {
+      if (
+        type === useCombobox.stateChangeTypes.InputKeyDownEnter ||
+        type === useCombobox.stateChangeTypes.ItemClick
+      ) {
+        return;
+      }
       setInputValue(val ?? '');
       debouncedFetch(val ?? '');
     },
     onSelectedItemChange: ({ selectedItem: item }) => {
       field.onChange(item?.value ?? '');
+      setInputValue(item?.label ?? '');
     },
     itemToString: (item) => item?.label ?? '',
+    stateReducer: (_state, actionAndChanges) => {
+      const { changes, type } = actionAndChanges;
+      switch (type) {
+        case useCombobox.stateChangeTypes.InputKeyDownEnter:
+        case useCombobox.stateChangeTypes.ItemClick:
+          return {
+            ...changes,
+            inputValue: changes.selectedItem?.label ?? '',
+          };
+        default:
+          return changes;
+      }
+    },
   });
 
   return (

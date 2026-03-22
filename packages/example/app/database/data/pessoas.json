@@ -1,0 +1,84 @@
+[
+  {
+    "id": "1",
+    "nome": "Pelé",
+    "cpf": "123.456.789-00",
+    "email": "pele@selecao.com.br",
+    "telefone": "(11) 99999-0001",
+    "dataNascimento": "1940-10-23",
+    "enderecos": [
+      {
+        "id": "1",
+        "rua": "Rua do Gol",
+        "numero": "10",
+        "bairro": "Centro",
+        "cidadeId": "3",
+        "cep": "01000-000"
+      }
+    ]
+  },
+  {
+    "id": "2",
+    "nome": "Garrincha",
+    "cpf": "987.654.321-00",
+    "email": "garrincha@selecao.com.br",
+    "telefone": "(21) 99999-0002",
+    "dataNascimento": "1933-10-28",
+    "enderecos": [
+      {
+        "id": "2",
+        "rua": "Rua Alegria do Povo",
+        "numero": "7",
+        "bairro": "Botafogo",
+        "cidadeId": "5",
+        "cep": "22000-000"
+      }
+    ]
+  },
+  {
+    "id": "3",
+    "nome": "Zico",
+    "cpf": "111.222.333-44",
+    "email": "zico@selecao.com.br",
+    "telefone": "(21) 99999-0003",
+    "dataNascimento": "1953-03-03",
+    "enderecos": [
+      {
+        "id": "3",
+        "rua": "Rua da Gávea",
+        "numero": "10",
+        "bairro": "Gávea",
+        "cidadeId": "5",
+        "cep": "22451-000"
+      }
+    ]
+  },
+  {
+    "id": "4",
+    "nome": "marcelo",
+    "cpf": "001.234.454-40",
+    "email": "sampaiomarcelo@gmail.com",
+    "telefone": "(31) 99201-2295",
+    "dataNascimento": "1973-12-10",
+    "enderecos": [
+      {
+        "id": "1",
+        "rua": "teste",
+        "numero": "432",
+        "complemento": "33",
+        "bairro": "santo agostinho",
+        "cidadeId": "1",
+        "cep": "30190-090"
+      },
+      {
+        "id": "2",
+        "rua": "outro endereco",
+        "numero": "33",
+        "complemento": "",
+        "bairro": "Santo agostinho 2",
+        "cidadeId": "9",
+        "cep": "33333-334"
+      }
+    ]
+  }
+]

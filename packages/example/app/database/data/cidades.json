@@ -1,0 +1,47 @@
+[
+  {
+    "id": "1",
+    "nome": "Belo Horizonte",
+    "estadoId": "1"
+  },
+  {
+    "id": "2",
+    "nome": "Uberlândia",
+    "estadoId": "1"
+  },
+  {
+    "id": "3",
+    "nome": "São Paulo",
+    "estadoId": "2"
+  },
+  {
+    "id": "4",
+    "nome": "Campinas",
+    "estadoId": "2"
+  },
+  {
+    "id": "5",
+    "nome": "Rio de Janeiro",
+    "estadoId": "3"
+  },
+  {
+    "id": "6",
+    "nome": "Niterói",
+    "estadoId": "3"
+  },
+  {
+    "id": "7",
+    "nome": "Salvador",
+    "estadoId": "4"
+  },
+  {
+    "id": "8",
+    "nome": "Porto Alegre",
+    "estadoId": "5"
+  },
+  {
+    "id": "9",
+    "nome": "diogo de vasconcelos",
+    "estadoId": "1"
+  }
+]

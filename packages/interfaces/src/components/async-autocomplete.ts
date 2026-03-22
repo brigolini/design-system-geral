@@ -22,4 +22,6 @@ export interface AlmgAsyncAutocompleteProps<TFieldValues extends FieldValues = F
   minChars?: number;
   /** Texto exibido quando nenhuma opção corresponde à busca */
   noResultsText?: string;
+  /** Texto de exibição inicial quando o campo já tem um valor (usado em formulários de edição) */
+  initialDisplayValue?: string;
 }

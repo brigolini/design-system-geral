@@ -1,0 +1,7 @@
+[
+  { "id": "1", "nome": "Minas Gerais", "sigla": "MG" },
+  { "id": "2", "nome": "São Paulo", "sigla": "SP" },
+  { "id": "3", "nome": "Rio de Janeiro", "sigla": "RJ" },
+  { "id": "4", "nome": "Bahia", "sigla": "BA" },
+  { "id": "5", "nome": "Rio Grande do Sul", "sigla": "RS" }
+]
