@@ -68,7 +68,7 @@ export default function CidadesList() {
     columns,
     enableSorting: true,
     enablePagination: true,
-    pageSize: 10,
+    pageSize: 5,
   });
 
   return (

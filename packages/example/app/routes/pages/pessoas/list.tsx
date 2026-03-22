@@ -70,7 +70,7 @@ export default function PessoasList() {
     columns,
     enableSorting: true,
     enablePagination: true,
-    pageSize: 10,
+    pageSize: 5,
   });
 
   return (

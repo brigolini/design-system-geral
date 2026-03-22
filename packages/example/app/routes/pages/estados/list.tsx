@@ -54,7 +54,7 @@ export default function EstadosList() {
     columns,
     enableSorting: true,
     enablePagination: true,
-    pageSize: 10,
+    pageSize: 5,
   });
 
   return (
