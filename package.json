@@ -24,6 +24,7 @@
     "build:css:components": "node ./scripts/build-component-css.mjs",
     "build": "npm run build:js && npm run build:css && npm run build:css:components",
     "build-storybook": "storybook build",
+    "deploy-storybook": "npm run build-storybook && npx gh-pages -d storybook-static",
     "test": "vitest",
     "test:run": "vitest run",
     "lint": "eslint .",
