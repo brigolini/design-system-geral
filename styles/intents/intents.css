@@ -1,26 +1,26 @@
 /* Al Design System — Classes de Intenção
    Primary = Verde, Secondary = Cinza, Danger = Vermelho, Warning = Laranja */
 
-.al-intent-primary {
-  --al-intent-color: var(--color-al-green-400);
-  --al-intent-color-light: var(--color-al-green-100);
-  --al-intent-color-dark: var(--color-al-green-800);
+.almg-intent-primary {
+  --almg-intent-color: var(--color-almg-green-400);
+  --almg-intent-color-light: var(--color-almg-green-100);
+  --almg-intent-color-dark: var(--color-almg-green-800);
 }
 
-.al-intent-secondary {
-  --al-intent-color: var(--color-al-gray-500);
-  --al-intent-color-light: var(--color-al-gray-100);
-  --al-intent-color-dark: var(--color-al-gray-800);
+.almg-intent-secondary {
+  --almg-intent-color: var(--color-almg-gray-500);
+  --almg-intent-color-light: var(--color-almg-gray-100);
+  --almg-intent-color-dark: var(--color-almg-gray-800);
 }
 
-.al-intent-danger {
-  --al-intent-color: var(--color-al-red-500);
-  --al-intent-color-light: var(--color-al-red-100);
-  --al-intent-color-dark: var(--color-al-red-800);
+.almg-intent-danger {
+  --almg-intent-color: var(--color-almg-red-500);
+  --almg-intent-color-light: var(--color-almg-red-100);
+  --almg-intent-color-dark: var(--color-almg-red-800);
 }
 
-.al-intent-warning {
-  --al-intent-color: var(--color-al-orange-500);
-  --al-intent-color-light: var(--color-al-orange-100);
-  --al-intent-color-dark: var(--color-al-orange-800);
+.almg-intent-warning {
+  --almg-intent-color: var(--color-almg-orange-500);
+  --almg-intent-color-light: var(--color-almg-orange-100);
+  --almg-intent-color-dark: var(--color-almg-orange-800);
 }

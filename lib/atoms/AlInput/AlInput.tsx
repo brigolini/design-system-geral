@@ -77,7 +77,7 @@ export function AlInput<TFieldValues extends FieldValues = FieldValues>({
         </AlLabel>
       )}
       {isErrorRight ? (
-        <div className="al-error-right" style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+        <div className="almg-error-right" style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
           {inputElement}
           {errorElement}
         </div>
@@ -85,7 +85,7 @@ export function AlInput<TFieldValues extends FieldValues = FieldValues>({
         <>
           {inputElement}
           {helpText && !hasError && (
-            <span style={{ fontSize: 'var(--font-size-al-xs)', color: 'var(--color-al-brand-font-secondary)' }}>
+            <span style={{ fontSize: 'var(--font-size-almg-xs)', color: 'var(--color-almg-brand-font-secondary)' }}>
               {helpText}
             </span>
           )}

@@ -1,32 +1,32 @@
 /* Al Mask Input — usa os mesmos estilos base do al-input */
 
-.al-mask-input-wrapper {
+.almg-mask-input-wrapper {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.al-mask-input-wrapper--label-left { flex-direction: row; align-items: center; gap: 8px; }
-.al-mask-input-wrapper--label-top { flex-direction: column; gap: 4px; }
-.al-mask-input-wrapper--label-right { flex-direction: row-reverse; align-items: center; gap: 8px; }
+.almg-mask-input-wrapper--label-left { flex-direction: row; align-items: center; gap: 8px; }
+.almg-mask-input-wrapper--label-top { flex-direction: column; gap: 4px; }
+.almg-mask-input-wrapper--label-right { flex-direction: row-reverse; align-items: center; gap: 8px; }
 
-.al-mask-input {
+.almg-mask-input {
   width: 100%;
   padding: 8px 12px;
-  font-family: var(--font-al-sans);
-  font-size: var(--font-size-al-sm);
-  color: var(--color-al-brand-font-primary);
+  font-family: var(--font-almg-sans);
+  font-size: var(--font-size-almg-sm);
+  color: var(--color-almg-brand-font-primary);
   background-color: white;
-  border: var(--border-width-al-default) solid var(--color-al-brand-secondary);
-  border-radius: var(--border-radius-al-md);
+  border: var(--border-width-almg-default) solid var(--color-almg-brand-secondary);
+  border-radius: var(--border-radius-almg-md);
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.al-mask-input:focus {
-  border-color: var(--color-al-focus);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-al-focus) 20%, transparent);
+.almg-mask-input:focus {
+  border-color: var(--color-almg-focus);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-almg-focus) 20%, transparent);
 }
 
-.al-mask-input--error { border-color: var(--color-al-danger); }
-.al-mask-input--disabled { cursor: not-allowed; background-color: var(--color-al-brand-secondary); opacity: 0.6; }
+.almg-mask-input--error { border-color: var(--color-almg-danger); }
+.almg-mask-input--disabled { cursor: not-allowed; background-color: var(--color-almg-brand-secondary); opacity: 0.6; }

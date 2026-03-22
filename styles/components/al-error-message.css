@@ -1,15 +1,15 @@
 /* Al Mensagem de Erro */
 
-.al-error-message {
+.almg-error-message {
   display: block;
-  font-size: var(--font-size-al-xs);
-  color: var(--color-al-danger);
+  font-size: var(--font-size-almg-xs);
+  color: var(--color-almg-danger);
   margin-top: 4px;
-  line-height: var(--line-height-al-normal);
+  line-height: var(--line-height-almg-normal);
 }
 
 /* Quando o erro está posicionado à direita, remove a margem superior e adiciona margem esquerda */
-.al-error-right .al-error-message {
+.almg-error-right .almg-error-message {
   margin-top: 0;
   margin-left: 8px;
   white-space: nowrap;

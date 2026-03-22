@@ -6,7 +6,7 @@ import { AlAsyncAutocomplete } from './AlAsyncAutocomplete';
 import { AlButton } from '../../atoms/AlButton';
 
 const schema = z.object({
-  city: z.string().min(1, 'Please select a city'),
+  city: z.string({ error: 'Selecione uma cidade' }).min(1, 'Selecione uma cidade'),
 });
 
 type FormData = z.infer<typeof schema>;

@@ -1,84 +1,84 @@
 /* Al Button — Estilos de intenção mantidos como estão */
 
-.al-button {
+.almg-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
   padding: 8px 16px;
-  font-family: var(--font-al-sans);
-  font-size: var(--font-size-al-sm);
-  font-weight: var(--font-weight-al-medium);
-  line-height: var(--line-height-al-normal);
-  border-radius: var(--border-radius-al-md);
-  border: var(--border-width-al-default) solid transparent;
+  font-family: var(--font-almg-sans);
+  font-size: var(--font-size-almg-sm);
+  font-weight: var(--font-weight-almg-medium);
+  line-height: var(--line-height-almg-normal);
+  border-radius: var(--border-radius-almg-md);
+  border: var(--border-width-almg-default) solid transparent;
   cursor: pointer;
   transition: background-color 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s;
   outline: none;
 }
 
-.al-button:focus-visible {
-  outline: 2px solid var(--color-al-focus);
+.almg-button:focus-visible {
+  outline: 2px solid var(--color-almg-focus);
   outline-offset: 2px;
 }
 
 /* ── Estilos de intenção (MANTIDOS COMO ESTÃO) ── */
 
 /* Intenção primária */
-.al-button--primary {
-  background-color: var(--color-al-green-500);
+.almg-button--primary {
+  background-color: var(--color-almg-green-500);
   color: white;
-  border-color: var(--color-al-green-500);
+  border-color: var(--color-almg-green-500);
 }
 
-.al-button--primary:hover:not(:disabled) {
-  background-color: var(--color-al-green-800);
-  border-color: var(--color-al-green-800);
+.almg-button--primary:hover:not(:disabled) {
+  background-color: var(--color-almg-green-800);
+  border-color: var(--color-almg-green-800);
 }
 
 /* Intenção secundária */
-.al-button--secondary {
+.almg-button--secondary {
   background-color: white;
-  color: var(--color-al-brand-font-primary);
-  border-color: var(--color-al-brand-secondary);
+  color: var(--color-almg-brand-font-primary);
+  border-color: var(--color-almg-brand-secondary);
 }
 
-.al-button--secondary:hover:not(:disabled) {
-  background-color: var(--color-al-brand-secondary);
+.almg-button--secondary:hover:not(:disabled) {
+  background-color: var(--color-almg-brand-secondary);
 }
 
 /* Intenção de perigo */
-.al-button--danger {
-  background-color: var(--color-al-red-500);
+.almg-button--danger {
+  background-color: var(--color-almg-red-500);
   color: white;
-  border-color: var(--color-al-red-500);
+  border-color: var(--color-almg-red-500);
 }
 
-.al-button--danger:hover:not(:disabled) {
-  background-color: var(--color-al-red-800);
-  border-color: var(--color-al-red-800);
+.almg-button--danger:hover:not(:disabled) {
+  background-color: var(--color-almg-red-800);
+  border-color: var(--color-almg-red-800);
 }
 
 /* Intenção de alerta */
-.al-button--warning {
-  background-color: var(--color-al-orange-500);
+.almg-button--warning {
+  background-color: var(--color-almg-orange-500);
   color: white;
-  border-color: var(--color-al-orange-500);
+  border-color: var(--color-almg-orange-500);
 }
 
-.al-button--warning:hover:not(:disabled) {
-  background-color: var(--color-al-orange-800);
-  border-color: var(--color-al-orange-800);
+.almg-button--warning:hover:not(:disabled) {
+  background-color: var(--color-almg-orange-800);
+  border-color: var(--color-almg-orange-800);
 }
 
 /* Estados */
-.al-button--disabled,
-.al-button:disabled {
+.almg-button--disabled,
+.almg-button:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
 
-.al-button--loading {
+.almg-button--loading {
   pointer-events: none;
   opacity: 0.6;
 }

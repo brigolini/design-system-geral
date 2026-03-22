@@ -6,8 +6,8 @@ import { AlDateRangePicker } from './AlDateRangePicker';
 import { AlButton } from '../../atoms/AlButton';
 
 const schema = z.object({
-  startDate: z.string().min(1, 'Start date is required'),
-  endDate: z.string().min(1, 'End date is required'),
+  startDate: z.string({ error: 'Data inicial é obrigatória' }).min(1, 'Data inicial é obrigatória'),
+  endDate: z.string({ error: 'Data final é obrigatória' }).min(1, 'Data final é obrigatória'),
 });
 
 type FormData = z.infer<typeof schema>;

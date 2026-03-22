@@ -133,7 +133,7 @@ export function AlSelect<TFieldValues extends FieldValues = FieldValues>({
           </div>
         );
         return isErrorRight ? (
-          <div className="al-error-right" style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
+          <div className="almg-error-right" style={{ display: 'flex', alignItems: 'center', flex: 1 }}>
             {inputBlock}
             {errorElement}
           </div>

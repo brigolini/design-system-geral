@@ -1,49 +1,49 @@
 /* Al Checkbox */
 
-.al-checkbox-wrapper {
+.almg-checkbox-wrapper {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.al-checkbox-wrapper--label-left {
+.almg-checkbox-wrapper--label-left {
   flex-direction: row-reverse;
 }
 
-.al-checkbox-wrapper--label-top {
+.almg-checkbox-wrapper--label-top {
   flex-direction: column;
   align-items: flex-start;
 }
 
-.al-checkbox-wrapper--label-right {
+.almg-checkbox-wrapper--label-right {
   flex-direction: row;
 }
 
-.al-checkbox {
+.almg-checkbox {
   width: 18px;
   height: 18px;
   cursor: pointer;
-  accent-color: var(--color-al-brand-primary);
-  border-radius: var(--border-radius-al-sm);
+  accent-color: var(--color-almg-brand-primary);
+  border-radius: var(--border-radius-almg-sm);
 }
 
-.al-checkbox:focus-visible {
-  outline: 2px solid var(--color-al-focus);
+.almg-checkbox:focus-visible {
+  outline: 2px solid var(--color-almg-focus);
   outline-offset: 2px;
 }
 
-.al-checkbox--error {
-  outline: 2px solid var(--color-al-danger);
+.almg-checkbox--error {
+  outline: 2px solid var(--color-almg-danger);
   outline-offset: 1px;
 }
 
-.al-checkbox--disabled,
-.al-checkbox:disabled {
+.almg-checkbox--disabled,
+.almg-checkbox:disabled {
   cursor: not-allowed;
   opacity: 0.6;
 }
 
-.al-checkbox--loading {
+.almg-checkbox--loading {
   pointer-events: none;
   opacity: 0.6;
 }

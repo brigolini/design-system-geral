@@ -6,7 +6,7 @@ import { AlInput } from './AlInput';
 import { AlButton } from '../AlButton';
 
 const schema = z.object({
-  email: z.string().min(1, 'Email is required').email('Invalid email address'),
+  email: z.string({ error: 'E-mail é obrigatório' }).min(1, 'E-mail é obrigatório').email('Endereço de e-mail inválido'),
 });
 
 type FormData = z.infer<typeof schema>;

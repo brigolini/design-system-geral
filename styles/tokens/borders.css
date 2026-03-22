@@ -1,11 +1,11 @@
 /* Al Design System — Tokens de Borda */
 
 @theme {
-  --border-radius-al-sm: 0.25rem;
-  --border-radius-al-md: 0.375rem;
-  --border-radius-al-lg: 0.5rem;
-  --border-radius-al-full: 9999px;
+  --border-radius-almg-sm: 0.25rem;
+  --border-radius-almg-md: 0.375rem;
+  --border-radius-almg-lg: 0.5rem;
+  --border-radius-almg-full: 9999px;
 
-  --border-width-al-default: 1px;
-  --border-width-al-2: 2px;
+  --border-width-almg-default: 1px;
+  --border-width-almg-2: 2px;
 }

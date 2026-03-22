@@ -1,28 +1,28 @@
 /* Al Spinner */
 
-.al-spinner {
+.almg-spinner {
   display: inline-block;
-  border: 2px solid var(--color-al-brand-secondary);
-  border-top-color: var(--color-al-brand-primary);
+  border: 2px solid var(--color-almg-brand-secondary);
+  border-top-color: var(--color-almg-brand-primary);
   border-radius: 50%;
-  animation: al-spin 0.6s linear infinite;
+  animation: almg-spin 0.6s linear infinite;
 }
 
-.al-spinner--sm {
+.almg-spinner--sm {
   width: 16px;
   height: 16px;
 }
 
-.al-spinner--md {
+.almg-spinner--md {
   width: 24px;
   height: 24px;
 }
 
-.al-spinner--lg {
+.almg-spinner--lg {
   width: 32px;
   height: 32px;
 }
 
-@keyframes al-spin {
+@keyframes almg-spin {
   to { transform: rotate(360deg); }
 }

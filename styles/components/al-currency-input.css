@@ -1,44 +1,44 @@
 /* Al Currency Input */
 
-.al-currency-input-wrapper {
+.almg-currency-input-wrapper {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.al-currency-input-wrapper--label-left { flex-direction: row; align-items: center; gap: 8px; }
-.al-currency-input-wrapper--label-top { flex-direction: column; gap: 4px; }
-.al-currency-input-wrapper--label-right { flex-direction: row-reverse; align-items: center; gap: 8px; }
+.almg-currency-input-wrapper--label-left { flex-direction: row; align-items: center; gap: 8px; }
+.almg-currency-input-wrapper--label-top { flex-direction: column; gap: 4px; }
+.almg-currency-input-wrapper--label-right { flex-direction: row-reverse; align-items: center; gap: 8px; }
 
-.al-currency-input-prefix {
+.almg-currency-input-prefix {
   display: flex;
   align-items: center;
   padding: 0 8px;
-  font-size: var(--font-size-al-sm);
-  color: var(--color-al-brand-font-secondary);
-  background-color: var(--color-al-brand-secondary);
-  border: var(--border-width-al-default) solid var(--color-al-brand-secondary);
+  font-size: var(--font-size-almg-sm);
+  color: var(--color-almg-brand-font-secondary);
+  background-color: var(--color-almg-brand-secondary);
+  border: var(--border-width-almg-default) solid var(--color-almg-brand-secondary);
   border-right: none;
-  border-radius: var(--border-radius-al-md) 0 0 var(--border-radius-al-md);
+  border-radius: var(--border-radius-almg-md) 0 0 var(--border-radius-almg-md);
 }
 
-.al-currency-input {
+.almg-currency-input {
   width: 100%;
   padding: 8px 12px;
-  font-family: var(--font-al-sans);
-  font-size: var(--font-size-al-sm);
-  color: var(--color-al-brand-font-primary);
+  font-family: var(--font-almg-sans);
+  font-size: var(--font-size-almg-sm);
+  color: var(--color-almg-brand-font-primary);
   background-color: white;
-  border: var(--border-width-al-default) solid var(--color-al-brand-secondary);
-  border-radius: 0 var(--border-radius-al-md) var(--border-radius-al-md) 0;
+  border: var(--border-width-almg-default) solid var(--color-almg-brand-secondary);
+  border-radius: 0 var(--border-radius-almg-md) var(--border-radius-almg-md) 0;
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.al-currency-input:focus {
-  border-color: var(--color-al-focus);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-al-focus) 20%, transparent);
+.almg-currency-input:focus {
+  border-color: var(--color-almg-focus);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-almg-focus) 20%, transparent);
 }
 
-.al-currency-input--error { border-color: var(--color-al-danger); }
-.al-currency-input--disabled { cursor: not-allowed; background-color: var(--color-al-brand-secondary); opacity: 0.6; }
+.almg-currency-input--error { border-color: var(--color-almg-danger); }
+.almg-currency-input--disabled { cursor: not-allowed; background-color: var(--color-almg-brand-secondary); opacity: 0.6; }

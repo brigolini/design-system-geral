@@ -1,14 +1,14 @@
 /* Al Label */
 
-.al-label {
+.almg-label {
   display: block;
-  font-size: var(--font-size-al-sm);
-  font-weight: var(--font-weight-al-medium);
-  color: var(--color-al-brand-font-primary);
-  line-height: var(--line-height-al-normal);
+  font-size: var(--font-size-almg-sm);
+  font-weight: var(--font-weight-almg-medium);
+  color: var(--color-almg-brand-font-primary);
+  line-height: var(--line-height-almg-normal);
 }
 
-.al-label--required::after {
+.almg-label--required::after {
   content: " *";
-  color: var(--color-al-brand-primary);
+  color: var(--color-almg-brand-primary);
 }

@@ -37,7 +37,7 @@ describe('AlButton', () => {
 
   it('applies intent class', () => {
     render(<AlButton intent="danger">Delete</AlButton>);
-    expect(screen.getByRole('button')).toHaveClass('al-button--danger');
+    expect(screen.getByRole('button')).toHaveClass('almg-button--danger');
   });
 
   it('defaults to type="button"', () => {

@@ -6,7 +6,7 @@ import { AlDatePicker } from './AlDatePicker';
 import { AlButton } from '../../atoms/AlButton';
 
 const schema = z.object({
-  birthdate: z.string().min(1, 'Date is required'),
+  birthdate: z.string({ error: 'Data é obrigatória' }).min(1, 'Data é obrigatória'),
 });
 
 type FormData = z.infer<typeof schema>;

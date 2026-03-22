@@ -8,6 +8,6 @@
 
 /* Fonte raiz: Inter com fallback para Roboto */
 :root {
-  font-family: var(--font-al-sans);
-  color: var(--color-al-brand-font-primary);
+  font-family: var(--font-almg-sans);
+  color: var(--color-almg-brand-font-primary);
 }

@@ -3,28 +3,28 @@
 
 @theme {
   /* Famílias de fontes */
-  --font-al-sans: "Inter", "Roboto", ui-sans-serif, system-ui, sans-serif;
-  --font-al-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --font-almg-sans: "Inter", "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-almg-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
   /* Tamanhos de fonte: xs, sm, base, lg, xl, 2xl */
-  --font-size-al-xs: 0.75rem;
-  --font-size-al-sm: 0.875rem;
-  --font-size-al-base: 1rem;
-  --font-size-al-lg: 1.125rem;
-  --font-size-al-xl: 1.25rem;
-  --font-size-al-2xl: 1.5rem;
+  --font-size-almg-xs: 0.75rem;
+  --font-size-almg-sm: 0.875rem;
+  --font-size-almg-base: 1rem;
+  --font-size-almg-lg: 1.125rem;
+  --font-size-almg-xl: 1.25rem;
+  --font-size-almg-2xl: 1.5rem;
 
   /* Alturas de linha */
-  --line-height-al-tight: 1.25;
-  --line-height-al-normal: 1.5;
-  --line-height-al-relaxed: 1.75;
+  --line-height-almg-tight: 1.25;
+  --line-height-almg-normal: 1.5;
+  --line-height-almg-relaxed: 1.75;
 
   /* Pesos de fonte: light, normal, medium, semibold, bold, extrabold, black */
-  --font-weight-al-light: 300;
-  --font-weight-al-normal: 400;
-  --font-weight-al-medium: 500;
-  --font-weight-al-semibold: 600;
-  --font-weight-al-bold: 700;
-  --font-weight-al-extrabold: 800;
-  --font-weight-al-black: 900;
+  --font-weight-almg-light: 300;
+  --font-weight-almg-normal: 400;
+  --font-weight-almg-medium: 500;
+  --font-weight-almg-semibold: 600;
+  --font-weight-almg-bold: 700;
+  --font-weight-almg-extrabold: 800;
+  --font-weight-almg-black: 900;
 }

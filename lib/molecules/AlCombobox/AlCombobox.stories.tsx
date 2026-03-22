@@ -6,7 +6,7 @@ import { AlCombobox } from './AlCombobox';
 import { AlButton } from '../../atoms/AlButton';
 
 const schema = z.object({
-  fruit: z.string().min(1, 'Please select a fruit'),
+  fruit: z.string({ error: 'Selecione uma fruta' }).min(1, 'Selecione uma fruta'),
 });
 
 type FormData = z.infer<typeof schema>;

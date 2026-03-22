@@ -1,18 +1,18 @@
 /* Al Date Range Picker */
 
-.al-date-range-picker-wrapper {
+.almg-date-range-picker-wrapper {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.al-date-range-picker-group {
+.almg-date-range-picker-group {
   display: flex;
   align-items: center;
   gap: 8px;
 }
 
-.al-date-range-picker-separator {
-  font-size: var(--font-size-al-sm);
-  color: var(--color-al-brand-font-secondary);
+.almg-date-range-picker-separator {
+  font-size: var(--font-size-almg-sm);
+  color: var(--color-almg-brand-font-secondary);
 }

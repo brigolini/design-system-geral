@@ -69,7 +69,7 @@ export const TelefoneBrasil: Story = {
 /* ── Outros exemplos ── */
 
 const genericSchema = z.object({
-  value: z.string().min(1, 'Campo obrigatório'),
+  value: z.string({ error: 'Campo obrigatório' }).min(1, 'Campo obrigatório'),
 });
 
 type GenericFormData = z.infer<typeof genericSchema>;

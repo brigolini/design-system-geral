@@ -6,7 +6,7 @@ import { AlMultiSelect } from './AlMultiSelect';
 import { AlButton } from '../../atoms/AlButton';
 
 const schema = z.object({
-  tags: z.array(z.string()).min(1, 'Selectione pelo menos um item'),
+  tags: z.array(z.string({ error: 'Campo obrigatório' }), { error: 'Selecione pelo menos uma tag' }).min(1, 'Selecione pelo menos uma tag'),
 });
 
 type FormData = z.infer<typeof schema>;

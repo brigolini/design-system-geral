@@ -26,7 +26,7 @@ export function AlToastProvider({ children }: { children: React.ReactNode }) {
 
   const addToast = useCallback(
     (toast: Omit<AlToastData, 'id'>) => {
-      const id = `al-toast-${++toastCounter}`;
+      const id = `almg-toast-${++toastCounter}`;
       const duration = toast.duration ?? 5000;
       const newToast: AlToastData = { ...toast, id, duration };
       setToasts((prev) => [...prev, newToast]);

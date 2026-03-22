@@ -1,10 +1,10 @@
 /* Al Breadcrumbs */
 
-.al-breadcrumbs {
-  font-size: var(--font-size-al-sm);
+.almg-breadcrumbs {
+  font-size: var(--font-size-almg-sm);
 }
 
-.al-breadcrumbs-list {
+.almg-breadcrumbs-list {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -13,34 +13,34 @@
   padding: 0;
 }
 
-.al-breadcrumbs-item {
+.almg-breadcrumbs-item {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.al-breadcrumbs-link {
-  color: var(--color-al-brand-primary);
+.almg-breadcrumbs-link {
+  color: var(--color-almg-brand-primary);
   text-decoration: none;
   transition: color 0.1s;
 }
 
-.al-breadcrumbs-link:hover {
-  color: var(--color-al-brand-font-primary);
+.almg-breadcrumbs-link:hover {
+  color: var(--color-almg-brand-font-primary);
   text-decoration: underline;
 }
 
-.al-breadcrumbs-link:focus-visible {
-  outline: 2px solid var(--color-al-focus);
+.almg-breadcrumbs-link:focus-visible {
+  outline: 2px solid var(--color-almg-focus);
   outline-offset: 2px;
-  border-radius: var(--border-radius-al-sm);
+  border-radius: var(--border-radius-almg-sm);
 }
 
-.al-breadcrumbs-separator {
-  color: var(--color-al-brand-font-secondary);
+.almg-breadcrumbs-separator {
+  color: var(--color-almg-brand-font-secondary);
 }
 
-.al-breadcrumbs-current {
-  color: var(--color-al-brand-font-primary);
-  font-weight: var(--font-weight-al-medium);
+.almg-breadcrumbs-current {
+  color: var(--color-almg-brand-font-primary);
+  font-weight: var(--font-weight-almg-medium);
 }

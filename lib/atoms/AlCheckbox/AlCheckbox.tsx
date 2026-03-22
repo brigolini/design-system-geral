@@ -67,7 +67,7 @@ export function AlCheckbox<TFieldValues extends FieldValues = FieldValues>({
   return (
     <div data-testid={testId}>
       {isErrorRight ? (
-        <div className="al-error-right" style={{ display: 'flex', alignItems: 'center' }}>
+        <div className="almg-error-right" style={{ display: 'flex', alignItems: 'center' }}>
           <div className={cn(alCheckboxClasses.wrapper, labelPositionMap[labelPosition])}>
             {checkboxElement}
           </div>

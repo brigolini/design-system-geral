@@ -1,6 +1,6 @@
 /* Al Design System — Utilitários de Layout */
 
-.al-container {
+.almg-container {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
@@ -8,7 +8,7 @@
   padding-right: 16px;
 }
 
-.al-sr-only {
+.almg-sr-only {
   position: absolute;
   width: 1px;
   height: 1px;

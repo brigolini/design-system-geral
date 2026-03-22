@@ -1,6 +1,6 @@
 /* Al Toast — Estilos de intenção MANTIDOS COMO ESTÃO */
 
-.al-toast-container {
+.almg-toast-container {
   position: fixed;
   top: 16px;
   right: 16px;
@@ -11,53 +11,53 @@
   max-width: 400px;
 }
 
-.al-toast {
+.almg-toast {
   display: flex;
   align-items: flex-start;
   gap: 12px;
   padding: 12px 16px;
-  font-family: var(--font-al-sans);
-  border-radius: var(--border-radius-al-md);
-  box-shadow: var(--shadow-al-lg);
-  animation: al-toast-in 0.3s ease-out;
+  font-family: var(--font-almg-sans);
+  border-radius: var(--border-radius-almg-md);
+  box-shadow: var(--shadow-almg-lg);
+  animation: almg-toast-in 0.3s ease-out;
 }
 
 /* Estilos de intenção (MANTIDOS COMO ESTÃO) */
-.al-toast--primary {
-  background-color: var(--color-al-green-100);
-  border-left: 4px solid var(--color-al-green-500);
-  color: var(--color-al-green-800);
+.almg-toast--primary {
+  background-color: var(--color-almg-green-100);
+  border-left: 4px solid var(--color-almg-green-500);
+  color: var(--color-almg-green-800);
 }
 
-.al-toast--secondary {
-  background-color: var(--color-al-brand-secondary);
-  border-left: 4px solid var(--color-al-brand-font-secondary);
-  color: var(--color-al-brand-font-primary);
+.almg-toast--secondary {
+  background-color: var(--color-almg-brand-secondary);
+  border-left: 4px solid var(--color-almg-brand-font-secondary);
+  color: var(--color-almg-brand-font-primary);
 }
 
-.al-toast--danger {
-  background-color: var(--color-al-red-100);
-  border-left: 4px solid var(--color-al-red-500);
-  color: var(--color-al-red-800);
+.almg-toast--danger {
+  background-color: var(--color-almg-red-100);
+  border-left: 4px solid var(--color-almg-red-500);
+  color: var(--color-almg-red-800);
 }
 
-.al-toast--warning {
-  background-color: var(--color-al-orange-100);
-  border-left: 4px solid var(--color-al-orange-500);
-  color: var(--color-al-orange-800);
+.almg-toast--warning {
+  background-color: var(--color-almg-orange-100);
+  border-left: 4px solid var(--color-almg-orange-500);
+  color: var(--color-almg-orange-800);
 }
 
-.al-toast-title {
-  font-size: var(--font-size-al-sm);
-  font-weight: var(--font-weight-al-semibold);
+.almg-toast-title {
+  font-size: var(--font-size-almg-sm);
+  font-weight: var(--font-weight-almg-semibold);
 }
 
-.al-toast-message {
-  font-size: var(--font-size-al-xs);
+.almg-toast-message {
+  font-size: var(--font-size-almg-xs);
   margin-top: 2px;
 }
 
-.al-toast-close {
+.almg-toast-close {
   margin-left: auto;
   background: none;
   border: none;
@@ -69,11 +69,11 @@
   flex-shrink: 0;
 }
 
-.al-toast-close:hover {
+.almg-toast-close:hover {
   opacity: 1;
 }
 
-@keyframes al-toast-in {
+@keyframes almg-toast-in {
   from {
     opacity: 0;
     transform: translateX(100%);

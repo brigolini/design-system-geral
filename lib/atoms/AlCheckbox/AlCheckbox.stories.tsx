@@ -6,7 +6,7 @@ import { AlCheckbox } from './AlCheckbox';
 import { AlButton } from '../AlButton';
 
 const schema = z.object({
-  terms: z.boolean().refine((v) => v === true, 'Você deve aceitar os termos'),
+  terms: z.boolean({ error: 'Campo obrigatório' }).refine((v) => v === true, 'Você deve aceitar os termos'),
 });
 
 type FormData = z.infer<typeof schema>;

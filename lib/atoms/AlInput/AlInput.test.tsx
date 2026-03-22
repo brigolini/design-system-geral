@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { AlInput } from './AlInput';
 
 const schema = z.object({
-  email: z.string().min(1, 'Required').email('Invalid email'),
+  email: z.string({ error: 'Obrigatório' }).min(1, 'Obrigatório').email('E-mail inválido'),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -63,7 +63,7 @@ describe('AlInput', () => {
     const input = screen.getByLabelText('Email');
     await userEvent.click(input);
     await userEvent.tab(); // blur to trigger validation
-    expect(await screen.findByRole('alert')).toHaveTextContent('Required');
+    expect(await screen.findByRole('alert')).toHaveTextContent('Obrigatório');
   });
 
   it('shows invalid email error', async () => {
@@ -71,7 +71,7 @@ describe('AlInput', () => {
     const input = screen.getByLabelText('Email');
     await userEvent.type(input, 'notanemail');
     await userEvent.tab();
-    expect(await screen.findByRole('alert')).toHaveTextContent('Invalid email');
+    expect(await screen.findByRole('alert')).toHaveTextContent('E-mail inválido');
   });
 
   it('is disabled when disabled prop is true', () => {

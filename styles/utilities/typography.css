@@ -2,18 +2,18 @@
    Classes de font-size e font-weight expostas para uso CSS independente */
 
 /* === Tamanhos de Fonte === */
-.al-text-xs { font-size: var(--font-size-al-xs); line-height: var(--line-height-al-normal); }
-.al-text-sm { font-size: var(--font-size-al-sm); line-height: var(--line-height-al-normal); }
-.al-text-base { font-size: var(--font-size-al-base); line-height: var(--line-height-al-normal); }
-.al-text-lg { font-size: var(--font-size-al-lg); line-height: var(--line-height-al-normal); }
-.al-text-xl { font-size: var(--font-size-al-xl); line-height: var(--line-height-al-tight); }
-.al-text-2xl { font-size: var(--font-size-al-2xl); line-height: var(--line-height-al-tight); }
+.almg-text-xs { font-size: var(--font-size-almg-xs); line-height: var(--line-height-almg-normal); }
+.almg-text-sm { font-size: var(--font-size-almg-sm); line-height: var(--line-height-almg-normal); }
+.almg-text-base { font-size: var(--font-size-almg-base); line-height: var(--line-height-almg-normal); }
+.almg-text-lg { font-size: var(--font-size-almg-lg); line-height: var(--line-height-almg-normal); }
+.almg-text-xl { font-size: var(--font-size-almg-xl); line-height: var(--line-height-almg-tight); }
+.almg-text-2xl { font-size: var(--font-size-almg-2xl); line-height: var(--line-height-almg-tight); }
 
 /* === Pesos de Fonte === */
-.al-font-light { font-weight: var(--font-weight-al-light); }
-.al-font-normal { font-weight: var(--font-weight-al-normal); }
-.al-font-medium { font-weight: var(--font-weight-al-medium); }
-.al-font-semibold { font-weight: var(--font-weight-al-semibold); }
-.al-font-bold { font-weight: var(--font-weight-al-bold); }
-.al-font-extrabold { font-weight: var(--font-weight-al-extrabold); }
-.al-font-black { font-weight: var(--font-weight-al-black); }
+.almg-font-light { font-weight: var(--font-weight-almg-light); }
+.almg-font-normal { font-weight: var(--font-weight-almg-normal); }
+.almg-font-medium { font-weight: var(--font-weight-almg-medium); }
+.almg-font-semibold { font-weight: var(--font-weight-almg-semibold); }
+.almg-font-bold { font-weight: var(--font-weight-almg-bold); }
+.almg-font-extrabold { font-weight: var(--font-weight-almg-extrabold); }
+.almg-font-black { font-weight: var(--font-weight-almg-black); }

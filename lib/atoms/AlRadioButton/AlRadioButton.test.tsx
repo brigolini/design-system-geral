@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { AlRadioButton } from './AlRadioButton';
 
 const schema = z.object({
-  color: z.string().min(1, 'Required'),
+  color: z.string({ error: 'Obrigatório' }).min(1, 'Obrigatório'),
 });
 
 type FormData = z.infer<typeof schema>;

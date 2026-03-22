@@ -52,8 +52,8 @@ export function AlAccordion({
               type="button"
               className={alAccordionClasses.trigger}
               aria-expanded={isOpen}
-              aria-controls={`al-accordion-content-${item.id}`}
-              id={`al-accordion-trigger-${item.id}`}
+              aria-controls={`almg-accordion-content-${item.id}`}
+              id={`almg-accordion-trigger-${item.id}`}
               onClick={() => toggle(item.id)}
             >
               {item.title}
@@ -73,9 +73,9 @@ export function AlAccordion({
             {isOpen && (
               <div
                 className={alAccordionClasses.content}
-                id={`al-accordion-content-${item.id}`}
+                id={`almg-accordion-content-${item.id}`}
                 role="region"
-                aria-labelledby={`al-accordion-trigger-${item.id}`}
+                aria-labelledby={`almg-accordion-trigger-${item.id}`}
               >
                 {item.content}
               </div>

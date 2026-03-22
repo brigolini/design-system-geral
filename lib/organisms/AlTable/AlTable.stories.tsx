@@ -112,7 +112,7 @@ export const InlineEditing: Story = {
           const initialValue = getValue();
           return (
             <input
-              className="al-input"
+              className="almg-input"
               defaultValue={initialValue}
               onBlur={() => {}}
               style={{ width: '100%', padding: '4px 8px', fontSize: 'inherit' }}

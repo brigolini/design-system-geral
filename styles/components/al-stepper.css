@@ -1,12 +1,12 @@
 /* Al Stepper */
 
-.al-stepper {
+.almg-stepper {
   display: flex;
   align-items: flex-start;
   gap: 0;
 }
 
-.al-stepper-step {
+.almg-stepper-step {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -14,67 +14,67 @@
   position: relative;
 }
 
-.al-stepper-step-number {
+.almg-stepper-step-number {
   display: flex;
   align-items: center;
   justify-content: center;
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  font-size: var(--font-size-al-sm);
-  font-weight: var(--font-weight-al-semibold);
-  background-color: var(--color-al-brand-secondary);
-  color: var(--color-al-brand-font-secondary);
-  border: 2px solid var(--color-al-brand-font-secondary);
+  font-size: var(--font-size-almg-sm);
+  font-weight: var(--font-weight-almg-semibold);
+  background-color: var(--color-almg-brand-secondary);
+  color: var(--color-almg-brand-font-secondary);
+  border: 2px solid var(--color-almg-brand-font-secondary);
   transition: background-color 0.2s, border-color 0.2s, color 0.2s;
 }
 
-.al-stepper-step--active .al-stepper-step-number {
-  background-color: var(--color-al-brand-primary);
-  border-color: var(--color-al-brand-primary);
+.almg-stepper-step--active .almg-stepper-step-number {
+  background-color: var(--color-almg-brand-primary);
+  border-color: var(--color-almg-brand-primary);
   color: white;
 }
 
-.al-stepper-step--completed .al-stepper-step-number {
-  background-color: var(--color-al-brand-font-primary);
-  border-color: var(--color-al-brand-font-primary);
+.almg-stepper-step--completed .almg-stepper-step-number {
+  background-color: var(--color-almg-brand-font-primary);
+  border-color: var(--color-almg-brand-font-primary);
   color: white;
 }
 
-.al-stepper-step--clickable {
+.almg-stepper-step--clickable {
   cursor: pointer;
 }
 
-.al-stepper-step--disabled {
+.almg-stepper-step--disabled {
   opacity: 0.5;
   pointer-events: none;
 }
 
-.al-stepper-step-label {
+.almg-stepper-step-label {
   margin-top: 8px;
-  font-size: var(--font-size-al-xs);
-  color: var(--color-al-brand-font-secondary);
+  font-size: var(--font-size-almg-xs);
+  color: var(--color-almg-brand-font-secondary);
   text-align: center;
 }
 
-.al-stepper-step--active .al-stepper-step-label {
-  color: var(--color-al-brand-font-primary);
-  font-weight: var(--font-weight-al-medium);
+.almg-stepper-step--active .almg-stepper-step-label {
+  color: var(--color-almg-brand-font-primary);
+  font-weight: var(--font-weight-almg-medium);
 }
 
-.al-stepper-step-connector {
+.almg-stepper-step-connector {
   position: absolute;
   top: 16px;
   left: 50%;
   width: 100%;
   height: 2px;
-  background-color: var(--color-al-brand-secondary);
+  background-color: var(--color-almg-brand-secondary);
 }
 
-.al-stepper-step--completed .al-stepper-step-connector {
-  background-color: var(--color-al-brand-primary);
+.almg-stepper-step--completed .almg-stepper-step-connector {
+  background-color: var(--color-almg-brand-primary);
 }
 
-.al-stepper-content {
+.almg-stepper-content {
   margin-top: 24px;
 }

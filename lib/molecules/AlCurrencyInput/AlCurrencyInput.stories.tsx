@@ -6,7 +6,7 @@ import { AlCurrencyInput } from './AlCurrencyInput';
 import { AlButton } from '../../atoms/AlButton';
 
 const schema = z.object({
-  amount: z.string().min(1, 'Amount is required'),
+  amount: z.string({ error: 'Valor é obrigatório' }).min(1, 'Valor é obrigatório'),
 });
 
 type FormData = z.infer<typeof schema>;

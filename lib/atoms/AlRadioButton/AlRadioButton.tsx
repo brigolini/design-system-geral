@@ -80,7 +80,7 @@ export function AlRadioButton<TFieldValues extends FieldValues = FieldValues>({
   return (
     <div data-testid={testId}>
       {isErrorRight ? (
-        <div className="al-error-right" style={{ display: 'flex', alignItems: 'flex-start' }}>
+        <div className="almg-error-right" style={{ display: 'flex', alignItems: 'flex-start' }}>
           {radioGroup}
           {errorElement}
         </div>

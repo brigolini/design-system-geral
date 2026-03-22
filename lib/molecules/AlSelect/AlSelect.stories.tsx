@@ -6,7 +6,7 @@ import { AlSelect } from './AlSelect';
 import { AlButton } from '../../atoms/AlButton';
 
 const schema = z.object({
-  country: z.string().min(1, 'Please select a country'),
+  country: z.string({ error: 'Selecione um país' }).min(1, 'Selecione um país'),
 });
 
 type FormData = z.infer<typeof schema>;

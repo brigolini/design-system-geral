@@ -1,68 +1,68 @@
 /* Al Input */
 
-.al-input-wrapper {
+.almg-input-wrapper {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-.al-input-wrapper--label-left {
+.almg-input-wrapper--label-left {
   flex-direction: row;
   align-items: center;
   gap: 8px;
 }
 
-.al-input-wrapper--label-top {
+.almg-input-wrapper--label-top {
   flex-direction: column;
   gap: 4px;
 }
 
-.al-input-wrapper--label-right {
+.almg-input-wrapper--label-right {
   flex-direction: row-reverse;
   align-items: center;
   gap: 8px;
 }
 
-.al-input {
+.almg-input {
   width: 100%;
   padding: 8px 12px;
-  font-family: var(--font-al-sans);
-  font-size: var(--font-size-al-sm);
-  line-height: var(--line-height-al-normal);
-  color: var(--color-al-brand-font-primary);
+  font-family: var(--font-almg-sans);
+  font-size: var(--font-size-almg-sm);
+  line-height: var(--line-height-almg-normal);
+  color: var(--color-almg-brand-font-primary);
   background-color: white;
-  border: var(--border-width-al-default) solid var(--color-al-brand-secondary);
-  border-radius: var(--border-radius-al-md);
+  border: var(--border-width-almg-default) solid var(--color-almg-brand-secondary);
+  border-radius: var(--border-radius-almg-md);
   outline: none;
   transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.al-input::placeholder {
-  color: var(--color-al-brand-font-secondary);
+.almg-input::placeholder {
+  color: var(--color-almg-brand-font-secondary);
 }
 
-.al-input:focus {
-  border-color: var(--color-al-focus);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-al-focus) 20%, transparent);
+.almg-input:focus {
+  border-color: var(--color-almg-focus);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-almg-focus) 20%, transparent);
 }
 
-.al-input--error {
-  border-color: var(--color-al-danger);
+.almg-input--error {
+  border-color: var(--color-almg-danger);
 }
 
-.al-input--error:focus {
-  border-color: var(--color-al-danger);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-al-danger) 20%, transparent);
+.almg-input--error:focus {
+  border-color: var(--color-almg-danger);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-almg-danger) 20%, transparent);
 }
 
-.al-input--disabled,
-.al-input:disabled {
+.almg-input--disabled,
+.almg-input:disabled {
   cursor: not-allowed;
-  background-color: var(--color-al-brand-secondary);
+  background-color: var(--color-almg-brand-secondary);
   opacity: 0.6;
 }
 
-.al-input--loading {
+.almg-input--loading {
   pointer-events: none;
   opacity: 0.6;
 }

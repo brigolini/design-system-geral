@@ -7,7 +7,7 @@ import { z } from 'zod';
 import { AlCheckbox } from './AlCheckbox';
 
 const schema = z.object({
-  terms: z.boolean().refine((v) => v === true, 'You must accept'),
+  terms: z.boolean({ error: 'Obrigatório' }).refine((v) => v === true, 'Você deve aceitar'),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -53,6 +53,6 @@ describe('AlCheckbox', () => {
   it('shows error after validation', async () => {
     render(<TestCheckbox />);
     await userEvent.click(screen.getByText('Validate'));
-    expect(await screen.findByRole('alert')).toHaveTextContent('You must accept');
+    expect(await screen.findByRole('alert')).toHaveTextContent('Você deve aceitar');
   });
 });

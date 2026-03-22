@@ -1,73 +1,73 @@
 /* Al Table */
 
-.al-table-container {
+.almg-table-container {
   width: 100%;
   overflow-x: auto;
 }
 
-.al-table-toolbar {
+.almg-table-toolbar {
   display: flex;
   justify-content: flex-end;
   padding: 8px 0;
 }
 
-.al-table {
+.almg-table {
   width: 100%;
   border-collapse: collapse;
-  font-family: var(--font-al-sans);
-  font-size: var(--font-size-al-sm);
+  font-family: var(--font-almg-sans);
+  font-size: var(--font-size-almg-sm);
 }
 
-.al-table-head {
-  background-color: var(--color-al-brand-secondary);
-  border-bottom: 2px solid var(--color-al-brand-font-secondary);
+.almg-table-head {
+  background-color: var(--color-almg-brand-secondary);
+  border-bottom: 2px solid var(--color-almg-brand-font-secondary);
 }
 
-.al-table-header-row {}
+.almg-table-header-row {}
 
-.al-table-header-cell {
+.almg-table-header-cell {
   padding: 12px 16px;
   text-align: left;
-  font-weight: var(--font-weight-al-semibold);
-  color: var(--color-al-brand-font-primary);
+  font-weight: var(--font-weight-almg-semibold);
+  color: var(--color-almg-brand-font-primary);
   white-space: nowrap;
 }
 
-.al-table-header-cell--sortable {
+.almg-table-header-cell--sortable {
   cursor: pointer;
   user-select: none;
   transition: background-color 0.1s;
 }
 
-.al-table-header-cell--sortable:hover {
-  background-color: color-mix(in srgb, var(--color-al-brand-font-secondary) 15%, transparent);
+.almg-table-header-cell--sortable:hover {
+  background-color: color-mix(in srgb, var(--color-almg-brand-font-secondary) 15%, transparent);
 }
 
-.al-table-header-cell--sorted {
-  color: var(--color-al-brand-primary);
+.almg-table-header-cell--sorted {
+  color: var(--color-almg-brand-primary);
 }
 
-.al-table-body {}
+.almg-table-body {}
 
-.al-table-row {
-  border-bottom: 1px solid var(--color-al-brand-secondary);
+.almg-table-row {
+  border-bottom: 1px solid var(--color-almg-brand-secondary);
   transition: background-color 0.1s;
 }
 
-.al-table-row:hover {
-  background-color: color-mix(in srgb, var(--color-al-brand-secondary) 50%, white);
+.almg-table-row:hover {
+  background-color: color-mix(in srgb, var(--color-almg-brand-secondary) 50%, white);
 }
 
-.al-table-cell {
+.almg-table-cell {
   padding: 12px 16px;
-  color: var(--color-al-brand-font-primary);
+  color: var(--color-almg-brand-font-primary);
 }
 
-.al-table-cell--editing {
+.almg-table-cell--editing {
   padding: 4px 8px;
 }
 
-.al-table-sort-icon {
+.almg-table-sort-icon {
   display: inline-block;
   width: 12px;
   height: 12px;
@@ -76,55 +76,55 @@
   opacity: 0.5;
 }
 
-.al-table-sort-icon--asc,
-.al-table-sort-icon--desc {
+.almg-table-sort-icon--asc,
+.almg-table-sort-icon--desc {
   opacity: 1;
-  color: var(--color-al-brand-primary);
+  color: var(--color-almg-brand-primary);
 }
 
 /* Paginação — sempre no canto superior direito */
-.al-table-pagination {
+.almg-table-pagination {
   display: flex;
   align-items: center;
   gap: 4px;
 }
 
-.al-table-pagination-button {
+.almg-table-pagination-button {
   padding: 4px 10px;
-  font-family: var(--font-al-sans);
-  font-size: var(--font-size-al-xs);
-  border: var(--border-width-al-default) solid var(--color-al-brand-secondary);
-  border-radius: var(--border-radius-al-sm);
+  font-family: var(--font-almg-sans);
+  font-size: var(--font-size-almg-xs);
+  border: var(--border-width-almg-default) solid var(--color-almg-brand-secondary);
+  border-radius: var(--border-radius-almg-sm);
   background-color: white;
-  color: var(--color-al-brand-font-primary);
+  color: var(--color-almg-brand-font-primary);
   cursor: pointer;
   transition: background-color 0.1s;
 }
 
-.al-table-pagination-button:hover:not(:disabled) {
-  background-color: var(--color-al-brand-secondary);
+.almg-table-pagination-button:hover:not(:disabled) {
+  background-color: var(--color-almg-brand-secondary);
 }
 
-.al-table-pagination-button:disabled {
+.almg-table-pagination-button:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.al-table-pagination-button--active {
-  background-color: var(--color-al-brand-primary);
+.almg-table-pagination-button--active {
+  background-color: var(--color-almg-brand-primary);
   color: white;
-  border-color: var(--color-al-brand-primary);
+  border-color: var(--color-almg-brand-primary);
 }
 
-.al-table-pagination-info {
-  font-size: var(--font-size-al-xs);
-  color: var(--color-al-brand-font-secondary);
+.almg-table-pagination-info {
+  font-size: var(--font-size-almg-xs);
+  color: var(--color-almg-brand-font-secondary);
   padding: 0 8px;
 }
 
-.al-table-empty-state {
+.almg-table-empty-state {
   padding: 32px;
   text-align: center;
-  color: var(--color-al-brand-font-secondary);
-  font-size: var(--font-size-al-sm);
+  color: var(--color-almg-brand-font-secondary);
+  font-size: var(--font-size-almg-sm);
 }

@@ -3,62 +3,62 @@
 
 @theme {
   /* ── Cores da Marca ── */
-  --color-al-brand-primary: #CF4D56;
-  --color-al-brand-secondary: #DEDEDE;
-  --color-al-brand-font-primary: #181F26;
-  --color-al-brand-font-secondary: #4A4A4A;
+  --color-almg-brand-primary: #CF4D56;
+  --color-almg-brand-secondary: #DEDEDE;
+  --color-almg-brand-font-primary: #181F26;
+  --color-almg-brand-font-secondary: #4A4A4A;
 
   /* Cor de foco — usada em todos os estados de foco dos componentes */
-  --color-al-focus: var(--color-al-brand-primary);
+  --color-almg-focus: var(--color-almg-brand-primary);
 
   /* ── Cores de Intenção (inalteradas) ── */
 
   /* Cinza (usado apenas pela intenção Secondary) */
-  --color-al-gray-100: #f3f4f6;
-  --color-al-gray-500: #6b7280;
-  --color-al-gray-800: #1f2937;
+  --color-almg-gray-100: #f3f4f6;
+  --color-almg-gray-500: #6b7280;
+  --color-almg-gray-800: #1f2937;
 
   /* Vermelho — Danger */
-  --color-al-red-100: #fee2e2;
-  --color-al-red-500: #ef4444;
-  --color-al-red-800: #991b1b;
+  --color-almg-red-100: #fee2e2;
+  --color-almg-red-500: #ef4444;
+  --color-almg-red-800: #991b1b;
 
   /* Laranja — Warning */
-  --color-al-orange-100: #ffedd5;
-  --color-al-orange-500: #f97316;
-  --color-al-orange-800: #9a3412;
+  --color-almg-orange-100: #ffedd5;
+  --color-almg-orange-500: #f97316;
+  --color-almg-orange-800: #9a3412;
 
   /* Verde — Intenção primária */
-  --color-al-green-100: #dcfce7;
-  --color-al-green-400: #63cf8b;
-  --color-al-green-500: #22c55e;
-  --color-al-green-800: #166534;
+  --color-almg-green-100: #dcfce7;
+  --color-almg-green-400: #63cf8b;
+  --color-almg-green-500: #22c55e;
+  --color-almg-green-800: #166534;
 
   /* Azul — Informacional */
-  --color-al-blue-100: #dbeafe;
-  --color-al-blue-500: #3b82f6;
-  --color-al-blue-800: #1e40af;
+  --color-almg-blue-100: #dbeafe;
+  --color-almg-blue-500: #3b82f6;
+  --color-almg-blue-800: #1e40af;
 
   /* ── Aliases semânticos de intenção ── */
-  --color-al-primary: var(--color-al-green-500);
-  --color-al-primary-light: var(--color-al-green-100);
-  --color-al-primary-dark: var(--color-al-green-800);
+  --color-almg-primary: var(--color-almg-green-500);
+  --color-almg-primary-light: var(--color-almg-green-100);
+  --color-almg-primary-dark: var(--color-almg-green-800);
 
-  --color-al-secondary: var(--color-al-gray-500);
-  --color-al-secondary-light: var(--color-al-gray-100);
-  --color-al-secondary-dark: var(--color-al-gray-800);
+  --color-almg-secondary: var(--color-almg-gray-500);
+  --color-almg-secondary-light: var(--color-almg-gray-100);
+  --color-almg-secondary-dark: var(--color-almg-gray-800);
 
-  --color-al-danger: var(--color-al-red-500);
-  --color-al-danger-light: var(--color-al-red-100);
-  --color-al-danger-dark: var(--color-al-red-800);
+  --color-almg-danger: var(--color-almg-red-500);
+  --color-almg-danger-light: var(--color-almg-red-100);
+  --color-almg-danger-dark: var(--color-almg-red-800);
 
-  --color-al-warning: var(--color-al-orange-500);
-  --color-al-warning-light: var(--color-al-orange-100);
-  --color-al-warning-dark: var(--color-al-orange-800);
+  --color-almg-warning: var(--color-almg-orange-500);
+  --color-almg-warning-light: var(--color-almg-orange-100);
+  --color-almg-warning-dark: var(--color-almg-orange-800);
 
-  --color-al-info: var(--color-al-blue-500);
-  --color-al-info-light: var(--color-al-blue-100);
-  --color-al-info-dark: var(--color-al-blue-800);
+  --color-almg-info: var(--color-almg-blue-500);
+  --color-almg-info-light: var(--color-almg-blue-100);
+  --color-almg-info-dark: var(--color-almg-blue-800);
 
-  --color-al-focus: #84aee6
+  --color-almg-focus: #84aee6
 }

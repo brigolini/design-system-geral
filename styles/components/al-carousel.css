@@ -1,29 +1,29 @@
 /* Al Carousel — Estilos de intenção MANTIDOS COMO ESTÃO */
 
-.al-carousel {
+.almg-carousel {
   position: relative;
   overflow: hidden;
-  border-radius: var(--border-radius-al-md);
+  border-radius: var(--border-radius-almg-md);
 }
 
 /* Bordas de intenção (MANTIDAS COMO ESTÃO) */
-.al-carousel--primary { border: 2px solid var(--color-al-green-500); }
-.al-carousel--secondary { border: 2px solid var(--color-al-brand-secondary); }
-.al-carousel--danger { border: 2px solid var(--color-al-red-500); }
-.al-carousel--warning { border: 2px solid var(--color-al-orange-500); }
+.almg-carousel--primary { border: 2px solid var(--color-almg-green-500); }
+.almg-carousel--secondary { border: 2px solid var(--color-almg-brand-secondary); }
+.almg-carousel--danger { border: 2px solid var(--color-almg-red-500); }
+.almg-carousel--warning { border: 2px solid var(--color-almg-orange-500); }
 
-.al-carousel-track {
+.almg-carousel-track {
   display: flex;
   transition: transform 0.3s ease-in-out;
 }
 
-.al-carousel-slide {
+.almg-carousel-slide {
   flex: 0 0 100%;
   min-width: 0;
 }
 
-.al-carousel-prev,
-.al-carousel-next {
+.almg-carousel-prev,
+.almg-carousel-next {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
@@ -33,52 +33,52 @@
   align-items: center;
   justify-content: center;
   background-color: white;
-  border: var(--border-width-al-default) solid var(--color-al-brand-secondary);
+  border: var(--border-width-almg-default) solid var(--color-almg-brand-secondary);
   border-radius: 50%;
   cursor: pointer;
-  box-shadow: var(--shadow-al-sm);
+  box-shadow: var(--shadow-almg-sm);
   transition: background-color 0.1s;
   z-index: 10;
 }
 
-.al-carousel-prev { left: 8px; }
-.al-carousel-next { right: 8px; }
+.almg-carousel-prev { left: 8px; }
+.almg-carousel-next { right: 8px; }
 
-.al-carousel-prev:hover,
-.al-carousel-next:hover {
-  background-color: var(--color-al-brand-secondary);
+.almg-carousel-prev:hover,
+.almg-carousel-next:hover {
+  background-color: var(--color-almg-brand-secondary);
 }
 
-.al-carousel-prev:focus-visible,
-.al-carousel-next:focus-visible {
-  outline: 2px solid var(--color-al-focus);
+.almg-carousel-prev:focus-visible,
+.almg-carousel-next:focus-visible {
+  outline: 2px solid var(--color-almg-focus);
   outline-offset: 2px;
 }
 
-.al-carousel-dots {
+.almg-carousel-dots {
   display: flex;
   justify-content: center;
   gap: 8px;
   padding: 12px 0;
 }
 
-.al-carousel-dot {
+.almg-carousel-dot {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background-color: var(--color-al-brand-secondary);
+  background-color: var(--color-almg-brand-secondary);
   border: none;
   cursor: pointer;
   transition: background-color 0.15s;
   padding: 0;
 }
 
-.al-carousel-dot--active {
-  background-color: var(--color-al-brand-primary);
+.almg-carousel-dot--active {
+  background-color: var(--color-almg-brand-primary);
 }
 
 /* Cores dos pontos de intenção (MANTIDAS COMO ESTÃO) */
-.al-carousel--primary .al-carousel-dot--active { background-color: var(--color-al-green-500); }
-.al-carousel--secondary .al-carousel-dot--active { background-color: var(--color-al-brand-font-primary); }
-.al-carousel--danger .al-carousel-dot--active { background-color: var(--color-al-red-500); }
-.al-carousel--warning .al-carousel-dot--active { background-color: var(--color-al-orange-500); }
+.almg-carousel--primary .almg-carousel-dot--active { background-color: var(--color-almg-green-500); }
+.almg-carousel--secondary .almg-carousel-dot--active { background-color: var(--color-almg-brand-font-primary); }
+.almg-carousel--danger .almg-carousel-dot--active { background-color: var(--color-almg-red-500); }
+.almg-carousel--warning .almg-carousel-dot--active { background-color: var(--color-almg-orange-500); }
