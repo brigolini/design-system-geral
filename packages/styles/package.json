@@ -1,0 +1,29 @@
+{
+  "name": "@almg/styles",
+  "version": "0.0.1",
+  "type": "module",
+  "main": "./dist/al-ui.css",
+  "exports": {
+    ".": "./dist/al-ui.css",
+    "./al-ui.css": "./dist/al-ui.css",
+    "./al-ui.min.css": "./dist/al-ui.min.css",
+    "./base": "./dist/base.css",
+    "./tokens/colors": "./dist/tokens/colors.css",
+    "./tokens/spacing": "./dist/tokens/spacing.css",
+    "./tokens/typography": "./dist/tokens/typography.css",
+    "./tokens/borders": "./dist/tokens/borders.css",
+    "./tokens/shadows": "./dist/tokens/shadows.css",
+    "./utilities/positioning": "./dist/utilities/positioning.css",
+    "./utilities/typography": "./dist/utilities/typography.css",
+    "./utilities/layout": "./dist/utilities/layout.css",
+    "./intents": "./dist/intents/intents.css",
+    "./components/*": "./dist/components/*.css"
+  },
+  "scripts": {
+    "build": "node scripts/build-css.mjs"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.2",
+    "tailwindcss": "^4.2.2"
+  }
+}
