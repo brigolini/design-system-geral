@@ -1,0 +1,3907 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Components Manifest</title>
+  <style>
+      :root {
+          --bg: #0b0c10;
+          --panel: #121318;
+          --muted: #9aa0a6;
+          --fg: #e8eaed;
+          --ok: #22c55e;
+          --info: #1e88e5;
+          --err: #c62828;
+          --ok-bg: #0c1a13;
+          --info-bg: #0c1624;
+          --err-bg: #1a0e0e;
+          --chip: #1f2330;
+          --border: #2b2f3a;
+          --link: #8ab4f8;
+          --active-ring: 1px; /* 1px active ring for pills and toggles */
+      }
+
+      * {
+          box-sizing: border-box;
+      }
+
+      html,
+      body {
+          margin: 0;
+          background: var(--bg);
+          color: var(--fg);
+          font: 14px/1.5 system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          Ubuntu,
+          Cantarell,
+          'Helvetica Neue',
+          Arial,
+          'Noto Sans';
+      }
+
+      .wrap {
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 16px 20px;
+      }
+
+      header {
+          position: sticky;
+          top: 0;
+          backdrop-filter: blur(6px);
+          background: color-mix(in srgb, var(--bg) 84%, transparent);
+          border-bottom: 1px solid var(--border);
+          z-index: 10;
+      }
+
+      h1 {
+          font-size: 20px;
+          margin: 0 0 6px;
+      }
+
+      .summary {
+          display: flex;
+          gap: 12px;
+          flex-wrap: wrap;
+          align-items: center;
+      }
+
+      /* Top filter pills */
+      .filter-pill {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          padding: 6px 12px;
+          border: 1px solid var(--border);
+          border-radius: 999px;
+          background: var(--panel);
+          text-decoration: none;
+          cursor: pointer;
+          user-select: none;
+          color: var(--fg);
+      }
+
+      .filter-pill.ok {
+          color: #b9f6ca;
+          border-color: color-mix(in srgb, var(--ok) 55%, var(--border));
+          background: color-mix(in srgb, var(--ok) 18%, #000);
+      }
+
+      .filter-pill.info {
+          color: #b3d9ff;
+          border-color: color-mix(in srgb, var(--info) 55%, var(--border));
+          background: var(--info-bg);
+      }
+
+      .filter-pill.err {
+          color: #ff9aa0;
+          border-color: color-mix(in srgb, var(--err) 55%, var(--border));
+          background: var(--err-bg);
+      }
+
+      .filter-pill.all {
+          color: #d7dbe0;
+          border-color: var(--border);
+          background: var(--panel);
+      }
+
+      .filter-pill[aria-disabled='true'] {
+          cursor: default;
+          text-decoration: none;
+      }
+
+      .filter-pill:focus,
+      .filter-pill:active {
+          outline: none;
+          box-shadow: none;
+      }
+
+      /* Selected top pill ring via :target */
+      #filter-all:target ~ header .filter-pill[data-k='all'],
+      #filter-errors:target ~ header .filter-pill[data-k='errors'],
+      #filter-infos:target ~ header .filter-pill[data-k='infos'],
+      #filter-story-errors:target ~ header .filter-pill[data-k='story-errors'],
+      #filter-doc-errors:target ~ header .filter-pill[data-k='docs'],
+      #filter-docs:target ~ header .filter-pill[data-k='docs'] {
+          box-shadow: 0 0 0 var(--active-ring) currentColor;
+          border-color: currentColor;
+      }
+
+      /* Hidden targets for filtering */
+      #filter-all,
+      #filter-errors,
+      #filter-infos,
+      #filter-story-errors,
+      #filter-doc-errors,
+      #filter-docs {
+          display: none;
+      }
+
+      main {
+          padding: 36px 0 40px;
+      }
+
+      .grid {
+          display: grid;
+          grid-template-columns: 1fr;
+          gap: 18px;
+      }
+
+      /* one card per row */
+
+      .card {
+          border: 1px solid var(--border);
+          background: var(--panel);
+          border-radius: 14px;
+          padding: 14px;
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+      }
+
+      .head {
+          display: flex;
+          flex-direction: column;
+          gap: 8px;
+      }
+
+      .title {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          gap: 10px;
+      }
+
+      .title h2 {
+          font-size: 16px;
+          margin: 0;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+      }
+
+      .meta {
+          font-size: 12px;
+          color: var(--muted);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+      }
+
+      .kv {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 6px;
+      }
+
+      .chip {
+          font-size: 12px;
+          padding: 4px 8px;
+          border-radius: 999px;
+          background: var(--chip);
+          border: 1px solid var(--border);
+      }
+
+      .hint {
+          color: var(--muted);
+          font-size: 12px;
+      }
+
+      .badges {
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+      }
+
+      /* Per-card badges: labels become toggles when clickable */
+      .badge {
+          font-size: 12px;
+          padding: 3px 8px;
+          border-radius: 999px;
+          border: 1px solid var(--border);
+          background: var(--chip);
+          color: #d7dbe0;
+      }
+
+      .badge.ok {
+          color: #b9f6ca;
+          border-color: color-mix(in srgb, var(--ok) 55%, var(--border));
+      }
+
+      .badge.info {
+          color: #b3d9ff;
+          border-color: color-mix(in srgb, var(--info) 55%, var(--border));
+      }
+
+      .badge.err {
+          color: #ff9aa0;
+          border-color: color-mix(in srgb, var(--err) 55%, var(--border));
+      }
+
+      .as-toggle {
+          cursor: pointer;
+      }
+
+      /* 1px ring on active toggle */
+      .tg-err:checked + label.as-toggle,
+      .tg-info:checked + label.as-toggle,
+      .tg-stories:checked + label.as-toggle,
+      .tg-docs:checked + label.as-toggle,
+      .tg-content:checked + label.as-toggle,
+      .tg-props:checked + label.as-toggle {
+          box-shadow: 0 0 0 var(--active-ring) currentColor;
+          border-color: currentColor;
+      }
+
+      /* Panels: hidden by default, shown when respective toggle checked */
+      .panels {
+          display: grid;
+          gap: 10px;
+      }
+
+      .panel {
+          display: none;
+      }
+
+      .tg-err:checked ~ .panels .panel-err {
+          display: grid;
+      }
+
+      .tg-info:checked ~ .panels .panel-info {
+          display: grid;
+          gap: 8px;
+      }
+
+      .tg-stories:checked ~ .panels .panel-stories {
+          display: grid;
+          gap: 8px;
+      }
+
+      .tg-docs:checked ~ .panels .panel-docs {
+          display: grid;
+          gap: 8px;
+      }
+
+      .tg-content:checked ~ .panels .panel-content {
+          display: grid;
+          gap: 8px;
+      }
+
+      .tg-props:checked ~ .panels .panel-props {
+          display: grid;
+      }
+
+      /* Colored notes for prop type error + info */
+      .note {
+          padding: 12px;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+      }
+
+      .note.err {
+          border-color: color-mix(in srgb, var(--err) 55%, var(--border));
+          background: var(--err-bg);
+          color: #ffd1d4;
+      }
+
+      .note.info {
+          border-color: color-mix(in srgb, var(--info) 55%, var(--border));
+          background: var(--info-bg);
+          color: #d6e8ff;
+      }
+
+      .note.ok {
+          border-color: color-mix(in srgb, var(--ok) 55%, var(--border));
+          background: var(--ok-bg);
+          color: var(--fg);
+      }
+
+      .note-title {
+          font-weight: 600;
+          margin-bottom: 6px;
+      }
+
+      .note-body {
+          white-space: normal;
+      }
+
+      /* Story error cards */
+      .ex {
+          padding: 10px;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          background: #0f131b;
+      }
+
+      .ex.err {
+          border-color: color-mix(in srgb, var(--err) 55%, var(--border));
+      }
+
+      .row {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          flex-wrap: wrap;
+      }
+
+      .status-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          display: inline-block;
+      }
+
+      .dot-ok {
+          background: var(--ok);
+      }
+
+      .dot-err {
+          background: var(--err);
+      }
+
+      .ex-name {
+          font-weight: 600;
+      }
+
+      /* Error groups (visible in errors filter) */
+      .error-groups {
+          display: none;
+          margin-bottom: 16px;
+      }
+
+      .group {
+          border: 1px solid var(--border);
+          background: var(--panel);
+          border-radius: 14px;
+          overflow: hidden;
+      }
+
+      .group + .group {
+          margin-top: 12px;
+      }
+
+      .group-header {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 12px 14px;
+          cursor: pointer;
+          border-bottom: 1px solid var(--border);
+      }
+
+      .group-header:hover {
+          background: #141722;
+      }
+
+      .group-title {
+          font-weight: 600;
+          flex: 1;
+      }
+
+      .group-count {
+          font-size: 12px;
+          color: var(--muted);
+      }
+
+      .group-cards {
+          display: none;
+          padding: 12px;
+      }
+
+      .group .card {
+          margin: 12px 0;
+      }
+
+      .group .card:first-child {
+          margin-top: 0;
+      }
+
+      .group .card:last-child {
+          margin-bottom: 0;
+      }
+
+      /* caret rotation */
+      .group-tg:checked + label .caret {
+          transform: rotate(90deg);
+      }
+
+      .caret {
+          transition: transform 0.15s ease;
+      }
+
+      /* toggle body */
+      .group-tg:checked ~ .group-cards {
+          display: block;
+      }
+
+      /* CSS-only filtering of cards via top pills */
+      #filter-errors:target ~ main .card:not(.has-error):not(.has-story-error) {
+          display: none;
+      }
+
+      #filter-infos:target ~ main .card:not(.has-info) {
+          display: none;
+      }
+
+      #filter-story-errors:target ~ main .card:not(.has-story-error) {
+          display: none;
+      }
+
+      #filter-doc-errors:target ~ main .card:not(.has-doc-error) {
+          display: none;
+      }
+
+      #filter-docs:target ~ main .card:has(> .tg-docs),
+      #filter-docs:target ~ main .card.is-doc {
+          display: block;
+      }
+
+      #filter-docs:target ~ main .card:not(:has(> .tg-docs)):not(.is-doc) {
+          display: none;
+      }
+
+      #filter-all:target ~ main .card {
+          display: block;
+      }
+
+      /* In errors view, hide standalone component-error cards in the regular grid (they will appear in groups) */
+      #filter-errors:target ~ main .grid .card.has-error {
+          display: none;
+      }
+
+      /* Show grouped section only in errors view */
+      #filter-errors:target ~ main .error-groups {
+          display: block;
+      }
+
+      /* Section titles */
+      .section-title {
+          font-size: 16px;
+          font-weight: 600;
+          color: var(--muted);
+          margin: 24px 0 12px;
+          padding-bottom: 8px;
+          border-bottom: 1px solid var(--border);
+      }
+      .section-title:first-child {
+          margin-top: 0;
+      }
+
+      /* When a toggle is checked, show the corresponding panel */
+      .card > .tg-err:checked ~ .panels .panel-err {
+          display: grid;
+      }
+      
+      .card > .tg-info:checked ~ .panels .panel-info {
+          display: grid;
+      }
+      
+      .card > .tg-stories:checked ~ .panels .panel-stories {
+          display: grid;
+      }
+
+      .card > .tg-docs:checked ~ .panels .panel-docs {
+          display: grid;
+      }
+
+      .card > .tg-content:checked ~ .panels .panel-content {
+          display: grid;
+      }
+
+      /* Add vertical spacing around panels only when any panel is visible */
+      .card > .tg-err:checked ~ .panels,
+      .card > .tg-info:checked ~ .panels,
+      .card > .tg-stories:checked ~ .panels,
+      .card > .tg-docs:checked ~ .panels,
+      .card > .tg-content:checked ~ .panels,
+      .card > .tg-props:checked ~ .panels {
+          margin: 10px 0;
+      }
+
+      /* Optional: a subtle 1px ring on the active badge, using :has() if available */
+      @supports selector(.card:has(.tg-err:checked)) {
+          .card:has(.tg-err:checked) label[for$='-err'],
+          .card:has(.tg-info:checked) label[for$='-info'],
+          .card:has(.tg-stories:checked) label[for$='-stories'],
+          .card:has(.tg-docs:checked) label[for$='-docs'],
+          .card:has(.tg-content:checked) label[for$='-content'],
+          .card:has(.tg-props:checked) label[for$='-props'] {
+              box-shadow: 0 0 0 1px currentColor;
+              border-color: currentColor;
+          }
+      }
+
+      /* Wrap long lines in code blocks at ~120 characters */
+      pre, code {
+          font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      }
+      pre {
+          white-space: pre-wrap;
+          overflow-wrap: anywhere;
+          word-break: break-word;
+          overflow-x: auto; /* fallback for extremely long tokens */
+          margin: 8px 0 0;
+      }
+      pre > code {
+          display: block;
+          white-space: inherit;
+          overflow-wrap: inherit;
+          word-break: inherit;
+          inline-size: min(100%, 120ch);
+      }
+
+      /* MDX content container for docs */
+      .mdx-content {
+          background: #0f131b;
+          border: 1px solid var(--border);
+          border-radius: 10px;
+          padding: 12px;
+          max-height: 400px;
+          overflow-y: auto;
+          margin-top: 8px;
+      }
+  </style>
+</head>
+<body>
+<!-- Hidden targets for the top-level filters -->
+<span id="filter-all"></span>
+<span id="filter-errors"></span>
+<span id="filter-infos"></span>
+<span id="filter-story-errors"></span>
+<span id="filter-doc-errors"></span>
+<span id="filter-docs"></span>
+<header>
+  <div class="wrap">
+    <h1>Manifest Debugger</h1>
+    <div class="summary"><a class="filter-pill all" data-k="all" href="#filter-all">All</a><span class="filter-pill ok" aria-disabled="true">21 components ok</span><a class="filter-pill info" data-k="infos" href="#filter-infos">21/21 infos</a><span class="filter-pill ok" aria-disabled="true">77 stories ok</span></div>
+  </div>
+</header>
+<main>
+  <div class="wrap">
+    <div class="note info" style="margin-bottom: 16px;">
+            <strong>Tip:</strong> You are using <code>react-docgen</code> (the default). Generation took <strong>0.9s</strong>. For higher quality prop types, consider switching to <code>react-docgen-typescript</code> in your <code>main.ts</code>:
+            <pre><code>typescript: {
+  reactDocgen: 'react-docgen-typescript',
+}</code></pre>
+            Note: <code>react-docgen-typescript</code> can be slower. If performance is acceptable for your project, it generally produces better results.
+            <a href="https://storybook.js.org/docs/api/main-config/main-config-typescript#reactdocgen" target="_blank">Learn more</a>
+          </div>
+    <h2 class="section-title">Components</h2>
+    <div class="grid" role="list">
+      
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlAccordion">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlAccordion</h2>
+      <div class="badges">
+        <label for="c-0-organisms-alaccordion-props" class="badge ok as-toggle">6 prop types</label>
+        <label for="c-0-organisms-alaccordion-info" class="badge info as-toggle">1 info</label>
+        <label for="c-0-organisms-alaccordion-stories" class="badge ok as-toggle">4 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/organisms/AlAccordion/AlAccordion.stories.tsx">organisms-alaccordion · ./lib/organisms/AlAccordion/AlAccordion.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-0-organisms-alaccordion-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-0-organisms-alaccordion-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-0-organisms-alaccordion-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">6 prop types</span>
+            </div>
+            <pre><code>Component: lib/organisms/AlAccordion/AlAccordion.tsx::AlAccordion</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Permitir múltiplos itens abertos simultaneamente
+ */
+allowMultiple?: boolean = false
+
+/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * IDs dos itens inicialmente abertos
+ */
+defaultOpen?: string[] = []
+
+/**
+ * Direção do layout
+ */
+direction?: &#39;vertical&#39; | &#39;horizontal&#39; = &#39;vertical&#39;
+
+items: AlAccordionItem[]</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlAccordion } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Vertical</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Vertical = () =&gt; &lt;AlAccordion items={items} direction=&quot;vertical&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Horizontal</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Horizontal = () =&gt; &lt;AlAccordion items={items} direction=&quot;horizontal&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Allow Multiple</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const AllowMultiple = () =&gt; &lt;AlAccordion items={items} allowMultiple /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default Open</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const DefaultOpen = () =&gt; &lt;AlAccordion items={items} defaultOpen={[&#39;1&#39;]} /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlAsyncAutocomplete">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlAsyncAutocomplete</h2>
+      <div class="badges">
+        <label for="c-1-molecules-alasyncautocomplete-props" class="badge ok as-toggle">18 prop types</label>
+        <label for="c-1-molecules-alasyncautocomplete-info" class="badge info as-toggle">1 info</label>
+        <label for="c-1-molecules-alasyncautocomplete-stories" class="badge ok as-toggle">2 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/molecules/AlAsyncAutocomplete/AlAsyncAutocomplete.stories.tsx">molecules-alasyncautocomplete · ./lib/molecules/AlAsyncAutocomplete/AlAsyncAutocomplete.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-1-molecules-alasyncautocomplete-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-1-molecules-alasyncautocomplete-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-1-molecules-alasyncautocomplete-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">18 prop types</span>
+            </div>
+            <pre><code>Component: lib/molecules/AlAsyncAutocomplete/AlAsyncAutocomplete.tsx::AlAsyncAutocomplete</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Atraso de debounce em milissegundos (default: 300)
+ */
+debounceMs?: number = 300
+
+/**
+ * Desabilita o componente
+ */
+disabled?: boolean
+
+/**
+ * Mensagem de erro a ser exibida (tipicamente do Zod via RHF)
+ */
+errorMessage?: string
+
+/**
+ * Posição da mensagem de erro: &#39;bottom&#39; (padrão) ou &#39;right&#39;
+ */
+errorPosition?: &#39;bottom&#39; | &#39;right&#39; = &#39;bottom&#39;
+
+/**
+ * Função assíncrona para buscar opções com base na consulta
+ */
+fetchOptions: (query: string) =&gt; Promise&lt;AlComboboxOption[]&gt;
+
+/**
+ * Instância do formulário RHF vinda do useForm()
+ */
+form: UseFormReturn&lt;TFieldValues&gt;
+
+/**
+ * Texto de ajuda exibido abaixo do campo
+ */
+helpText?: string
+
+/**
+ * Texto do label do campo. Quando omitido, nenhum label é renderizado.
+ */
+label?: string
+
+/**
+ * Posição do label em relação ao input
+ */
+labelPosition?: &#39;left&#39; | &#39;top&#39; | &#39;right&#39; = &#39;top&#39;
+
+/**
+ * Exibe indicador de carregamento e desabilita interação
+ */
+loading?: boolean
+
+/**
+ * Mínimo de caracteres antes de buscar (default: 1)
+ */
+minChars?: number = 1
+
+/**
+ * Nome do campo, type-safe em relação ao schema do formulário
+ */
+name: Path&lt;TFieldValues&gt;
+
+/**
+ * Texto exibido quando nenhuma opção corresponde à busca
+ */
+noResultsText?: string = &#39;No results found&#39;
+
+/**
+ * Texto de placeholder
+ */
+placeholder?: string = &#39;Search...&#39;
+
+/**
+ * Se o campo é obrigatório (adiciona indicador visual ao label)
+ */
+required?: boolean
+
+/**
+ * Opções adicionais de registro do RHF
+ */
+rules?: RegisterOptions&lt;TFieldValues&gt;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlAsyncAutocomplete, AlButton } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;AsyncStory label=&quot;Cidade&quot; placeholder=&quot;Digite para buscar cidades...&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Min Two Chars</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const MinTwoChars = () =&gt; &lt;AsyncStory
+    label=&quot;Cidade&quot;
+    placeholder=&quot;Digite pelo menos 2 caracteres...&quot;
+    minChars={2} /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlBreadcrumbs">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlBreadcrumbs</h2>
+      <div class="badges">
+        <label for="c-2-molecules-albreadcrumbs-props" class="badge ok as-toggle">4 prop types</label>
+        <label for="c-2-molecules-albreadcrumbs-info" class="badge info as-toggle">1 info</label>
+        <label for="c-2-molecules-albreadcrumbs-stories" class="badge ok as-toggle">3 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/molecules/AlBreadcrumbs/AlBreadcrumbs.stories.tsx">molecules-albreadcrumbs · ./lib/molecules/AlBreadcrumbs/AlBreadcrumbs.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-2-molecules-albreadcrumbs-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-2-molecules-albreadcrumbs-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-2-molecules-albreadcrumbs-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">4 prop types</span>
+            </div>
+            <pre><code>Component: lib/molecules/AlBreadcrumbs/AlBreadcrumbs.tsx::AlBreadcrumbs</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Array de itens de breadcrumb
+ */
+items: AlBreadcrumbItem[]
+
+/**
+ * Caractere separador (default: &#39;/&#39;)
+ */
+separator?: string = &#39;/&#39;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlBreadcrumbs } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;AlBreadcrumbs
+    items={[{
+      &quot;text&quot;: &quot;Início&quot;,
+      &quot;link&quot;: &quot;/&quot;
+    }, {
+      &quot;text&quot;: &quot;Servidores&quot;,
+      &quot;link&quot;: &quot;/servidores&quot;
+    }, {
+      &quot;text&quot;: &quot;Carreira&quot;,
+      &quot;link&quot;: &quot;/servidores/carreira&quot;
+    }, {
+      &quot;text&quot;: &quot;Pontuação na Carreira&quot;
+    }]} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Two Levels</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const TwoLevels = () =&gt; &lt;AlBreadcrumbs
+    items={[
+      { text: &#39;Painel&#39;, link: &#39;/dashboard&#39; },
+      { text: &#39;Configurações&#39; },
+    ]} /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Custom Separator</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CustomSeparator = () =&gt; &lt;AlBreadcrumbs
+    items={[
+      { text: &#39;Início&#39;, link: &#39;/&#39; },
+      { text: &#39;Usuários&#39;, link: &#39;/users&#39; },
+      { text: &#39;John Doe&#39; },
+    ]}
+    separator=&quot;›&quot; /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlButton">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlButton</h2>
+      <div class="badges">
+        <label for="c-3-atoms-albutton-props" class="badge ok as-toggle">7 prop types</label>
+        <label for="c-3-atoms-albutton-info" class="badge info as-toggle">1 info</label>
+        <label for="c-3-atoms-albutton-stories" class="badge ok as-toggle">7 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/atoms/AlButton/AlButton.stories.tsx">atoms-albutton · ./lib/atoms/AlButton/AlButton.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-3-atoms-albutton-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-3-atoms-albutton-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-3-atoms-albutton-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">7 prop types</span>
+            </div>
+            <pre><code>Component: lib/atoms/AlButton/AlButton.tsx::AlButton</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Conteúdo do botão
+ */
+children: ReactNode
+
+/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Desabilita o componente
+ */
+disabled?: boolean
+
+/**
+ * Intenção/variante visual do componente
+ */
+intent?: &#39;primary&#39; | &#39;secondary&#39; | &#39;danger&#39; | &#39;warning&#39; = &#39;primary&#39;
+
+/**
+ * Exibe indicador de carregamento e desabilita interação
+ */
+loading?: boolean
+
+type?: any = &#39;button&#39;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlButton } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Primary</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Primary = () =&gt; &lt;AlButton intent=&quot;primary&quot;&gt;Enviar&lt;/AlButton&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Secondary</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Secondary = () =&gt; &lt;AlButton intent=&quot;secondary&quot;&gt;Cancelar&lt;/AlButton&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Danger</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Danger = () =&gt; &lt;AlButton intent=&quot;danger&quot;&gt;Excluir&lt;/AlButton&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Warning</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Warning = () =&gt; &lt;AlButton intent=&quot;warning&quot;&gt;Prossiga com cautela&lt;/AlButton&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Loading</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Loading = () =&gt; &lt;AlButton intent=&quot;primary&quot; loading&gt;Salvando...&lt;/AlButton&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; &lt;AlButton intent=&quot;primary&quot; disabled&gt;Desabilitado&lt;/AlButton&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">All Intents</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const AllIntents = () =&gt; (
+  &lt;div style={{ display: &#39;flex&#39;, gap: &#39;12px&#39;, flexWrap: &#39;wrap&#39; }}&gt;
+    &lt;AlButton intent=&quot;primary&quot;&gt;Primary&lt;/AlButton&gt;
+    &lt;AlButton intent=&quot;secondary&quot;&gt;Secondary&lt;/AlButton&gt;
+    &lt;AlButton intent=&quot;danger&quot;&gt;Danger&lt;/AlButton&gt;
+    &lt;AlButton intent=&quot;warning&quot;&gt;Warning&lt;/AlButton&gt;
+  &lt;/div&gt;
+);</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlCarousel">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlCarousel</h2>
+      <div class="badges">
+        <label for="c-4-organisms-alcarousel-props" class="badge ok as-toggle">9 prop types</label>
+        <label for="c-4-organisms-alcarousel-info" class="badge info as-toggle">1 info</label>
+        <label for="c-4-organisms-alcarousel-stories" class="badge ok as-toggle">3 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/organisms/AlCarousel/AlCarousel.stories.tsx">organisms-alcarousel · ./lib/organisms/AlCarousel/AlCarousel.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-4-organisms-alcarousel-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-4-organisms-alcarousel-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-4-organisms-alcarousel-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">9 prop types</span>
+            </div>
+            <pre><code>Component: lib/organisms/AlCarousel/AlCarousel.tsx::AlCarousel</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Intervalo de reprodução automática em ms (0 para desabilitar)
+ */
+autoPlay?: number = 0
+
+children: ReactNode[]
+
+/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Desabilita o componente
+ */
+disabled?: boolean
+
+/**
+ * Intenção/variante visual do componente
+ */
+intent?: &#39;primary&#39; | &#39;secondary&#39; | &#39;danger&#39; | &#39;warning&#39;
+
+/**
+ * Exibe indicador de carregamento e desabilita interação
+ */
+loading?: boolean
+
+/**
+ * Exibir setas anterior/próximo
+ */
+showArrows?: boolean = true
+
+/**
+ * Exibir indicadores de pontos
+ */
+showDots?: boolean = true</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlCarousel } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;AlCarousel&gt;{[
+      &lt;div key=&quot;1&quot; style={slideStyle(&#39;#22c55e&#39;)}&gt;Slide 1&lt;/div&gt;,
+      &lt;div key=&quot;2&quot; style={slideStyle(&#39;#3b82f6&#39;)}&gt;Slide 2&lt;/div&gt;,
+      &lt;div key=&quot;3&quot; style={slideStyle(&#39;#f97316&#39;)}&gt;Slide 3&lt;/div&gt;,
+    ]}&lt;/AlCarousel&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Intent</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithIntent = () =&gt; &lt;AlCarousel intent=&quot;primary&quot;&gt;{[
+      &lt;div key=&quot;1&quot; style={slideStyle(&#39;#22c55e&#39;)}&gt;Slide 1&lt;/div&gt;,
+      &lt;div key=&quot;2&quot; style={slideStyle(&#39;#3b82f6&#39;)}&gt;Slide 2&lt;/div&gt;,
+    ]}&lt;/AlCarousel&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Auto Play</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const AutoPlay = () =&gt; &lt;AlCarousel autoPlay={3000}&gt;{[
+      &lt;div key=&quot;1&quot; style={slideStyle(&#39;#22c55e&#39;)}&gt;Auto 1&lt;/div&gt;,
+      &lt;div key=&quot;2&quot; style={slideStyle(&#39;#3b82f6&#39;)}&gt;Auto 2&lt;/div&gt;,
+      &lt;div key=&quot;3&quot; style={slideStyle(&#39;#ef4444&#39;)}&gt;Auto 3&lt;/div&gt;,
+    ]}&lt;/AlCarousel&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlCheckbox">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlCheckbox</h2>
+      <div class="badges">
+        <label for="c-5-atoms-alcheckbox-props" class="badge ok as-toggle">14 prop types</label>
+        <label for="c-5-atoms-alcheckbox-info" class="badge info as-toggle">1 info</label>
+        <label for="c-5-atoms-alcheckbox-stories" class="badge ok as-toggle">5 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/atoms/AlCheckbox/AlCheckbox.stories.tsx">atoms-alcheckbox · ./lib/atoms/AlCheckbox/AlCheckbox.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-5-atoms-alcheckbox-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-5-atoms-alcheckbox-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-5-atoms-alcheckbox-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">14 prop types</span>
+            </div>
+            <pre><code>Component: lib/atoms/AlCheckbox/AlCheckbox.tsx::AlCheckbox</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Desabilita o componente
+ */
+disabled?: boolean
+
+/**
+ * Mensagem de erro a ser exibida (tipicamente do Zod via RHF)
+ */
+errorMessage?: string
+
+/**
+ * Posição da mensagem de erro: &#39;bottom&#39; (padrão) ou &#39;right&#39;
+ */
+errorPosition?: &#39;bottom&#39; | &#39;right&#39; = &#39;bottom&#39;
+
+/**
+ * Instância do formulário RHF vinda do useForm()
+ */
+form: UseFormReturn&lt;TFieldValues&gt;
+
+/**
+ * Texto de ajuda exibido abaixo do campo
+ */
+helpText?: string
+
+/**
+ * Texto do label do campo. Quando omitido, nenhum label é renderizado.
+ */
+label?: string
+
+/**
+ * Posição do label em relação ao input
+ */
+labelPosition?: &#39;left&#39; | &#39;top&#39; | &#39;right&#39; = &#39;right&#39;
+
+/**
+ * Exibe indicador de carregamento e desabilita interação
+ */
+loading?: boolean
+
+/**
+ * Nome do campo, type-safe em relação ao schema do formulário
+ */
+name: Path&lt;TFieldValues&gt;
+
+/**
+ * Se o campo é obrigatório (adiciona indicador visual ao label)
+ */
+required?: boolean
+
+/**
+ * Opções adicionais de registro do RHF
+ */
+rules?: RegisterOptions&lt;TFieldValues&gt;
+
+/**
+ * Atributo value do checkbox
+ */
+value?: string</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlButton, AlCheckbox } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;CheckboxStory label=&quot;Aceito os termos e condições&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Label Left</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const LabelLeft = () =&gt; &lt;CheckboxStory label=&quot;Aceitar termos&quot; labelPosition=&quot;left&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Required</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Required = () =&gt; &lt;CheckboxStory label=&quot;Aceitar termos&quot; required /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; &lt;CheckboxStory label=&quot;Aceitar termos&quot; disabled /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Loading</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Loading = () =&gt; &lt;CheckboxStory label=&quot;Aceitar termos&quot; loading /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlCombobox">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlCombobox</h2>
+      <div class="badges">
+        <label for="c-6-molecules-alcombobox-props" class="badge ok as-toggle">16 prop types</label>
+        <label for="c-6-molecules-alcombobox-info" class="badge info as-toggle">1 info</label>
+        <label for="c-6-molecules-alcombobox-stories" class="badge ok as-toggle">3 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/molecules/AlCombobox/AlCombobox.stories.tsx">molecules-alcombobox · ./lib/molecules/AlCombobox/AlCombobox.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-6-molecules-alcombobox-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-6-molecules-alcombobox-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-6-molecules-alcombobox-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">16 prop types</span>
+            </div>
+            <pre><code>Component: lib/molecules/AlCombobox/AlCombobox.tsx::AlCombobox</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Desabilita o componente
+ */
+disabled?: boolean
+
+/**
+ * Mensagem de erro a ser exibida (tipicamente do Zod via RHF)
+ */
+errorMessage?: string
+
+/**
+ * Posição da mensagem de erro: &#39;bottom&#39; (padrão) ou &#39;right&#39;
+ */
+errorPosition?: &#39;bottom&#39; | &#39;right&#39; = &#39;bottom&#39;
+
+/**
+ * Instância do formulário RHF vinda do useForm()
+ */
+form: UseFormReturn&lt;TFieldValues&gt;
+
+/**
+ * Texto de ajuda exibido abaixo do campo
+ */
+helpText?: string
+
+/**
+ * Texto do label do campo. Quando omitido, nenhum label é renderizado.
+ */
+label?: string
+
+/**
+ * Posição do label em relação ao input
+ */
+labelPosition?: &#39;left&#39; | &#39;top&#39; | &#39;right&#39; = &#39;top&#39;
+
+/**
+ * Exibe indicador de carregamento e desabilita interação
+ */
+loading?: boolean
+
+/**
+ * Nome do campo, type-safe em relação ao schema do formulário
+ */
+name: Path&lt;TFieldValues&gt;
+
+/**
+ * Texto exibido quando nenhuma opção corresponde à busca
+ */
+noResultsText?: string = &#39;No results found&#39;
+
+/**
+ * Opções disponíveis
+ */
+options: AlComboboxOption[]
+
+/**
+ * Texto de placeholder
+ */
+placeholder?: string = &#39;Search...&#39;
+
+/**
+ * Se o campo é obrigatório (adiciona indicador visual ao label)
+ */
+required?: boolean
+
+/**
+ * Opções adicionais de registro do RHF
+ */
+rules?: RegisterOptions&lt;TFieldValues&gt;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlButton, AlCombobox } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;ComboboxStory label=&quot;Fruta&quot; placeholder=&quot;Buscar frutas...&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Loading</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Loading = () =&gt; &lt;ComboboxStory label=&quot;Fruta&quot; loading /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; &lt;ComboboxStory label=&quot;Fruta&quot; disabled /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlCurrencyInput">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlCurrencyInput</h2>
+      <div class="badges">
+        <label for="c-7-molecules-alcurrencyinput-props" class="badge ok as-toggle">18 prop types</label>
+        <label for="c-7-molecules-alcurrencyinput-info" class="badge info as-toggle">1 info</label>
+        <label for="c-7-molecules-alcurrencyinput-stories" class="badge ok as-toggle">3 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/molecules/AlCurrencyInput/AlCurrencyInput.stories.tsx">molecules-alcurrencyinput · ./lib/molecules/AlCurrencyInput/AlCurrencyInput.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-7-molecules-alcurrencyinput-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-7-molecules-alcurrencyinput-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-7-molecules-alcurrencyinput-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">18 prop types</span>
+            </div>
+            <pre><code>Component: lib/molecules/AlCurrencyInput/AlCurrencyInput.tsx::AlCurrencyInput</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * Símbolo de moeda a exibir (default: &#39;$&#39;)
+ */
+currencySymbol?: string = &#39;$&#39;
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Número de casas decimais (default: 2)
+ */
+decimalPlaces?: number = 2
+
+/**
+ * Separador decimal (default: &#39;.&#39;)
+ */
+decimalSeparator?: string = &#39;.&#39;
+
+/**
+ * Desabilita o componente
+ */
+disabled?: boolean
+
+/**
+ * Mensagem de erro a ser exibida (tipicamente do Zod via RHF)
+ */
+errorMessage?: string
+
+/**
+ * Posição da mensagem de erro: &#39;bottom&#39; (padrão) ou &#39;right&#39;
+ */
+errorPosition?: &#39;bottom&#39; | &#39;right&#39; = &#39;bottom&#39;
+
+/**
+ * Instância do formulário RHF vinda do useForm()
+ */
+form: UseFormReturn&lt;TFieldValues&gt;
+
+/**
+ * Texto de ajuda exibido abaixo do campo
+ */
+helpText?: string
+
+/**
+ * Texto do label do campo. Quando omitido, nenhum label é renderizado.
+ */
+label?: string
+
+/**
+ * Posição do label em relação ao input
+ */
+labelPosition?: &#39;left&#39; | &#39;top&#39; | &#39;right&#39; = &#39;top&#39;
+
+/**
+ * Exibe indicador de carregamento e desabilita interação
+ */
+loading?: boolean
+
+/**
+ * Nome do campo, type-safe em relação ao schema do formulário
+ */
+name: Path&lt;TFieldValues&gt;
+
+/**
+ * Texto de placeholder
+ */
+placeholder?: string = &#39;0.00&#39;
+
+/**
+ * Se o campo é obrigatório (adiciona indicador visual ao label)
+ */
+required?: boolean
+
+/**
+ * Opções adicionais de registro do RHF
+ */
+rules?: RegisterOptions&lt;TFieldValues&gt;
+
+/**
+ * Separador de milhares (default: &#39;,&#39;)
+ */
+thousandsSeparator?: string = &#39;,&#39;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlButton, AlCurrencyInput } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">USD</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const USD = () =&gt; &lt;CurrencyStory label=&quot;Preço (USD)&quot; currencySymbol=&quot;$&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">EUR</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const EUR = () =&gt; &lt;CurrencyStory label=&quot;Preço (EUR)&quot; currencySymbol=&quot;€&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; &lt;CurrencyStory label=&quot;Valor&quot; disabled /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlDatePicker">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlDatePicker</h2>
+      <div class="badges">
+        <label for="c-8-molecules-aldatepicker-props" class="badge ok as-toggle">15 prop types</label>
+        <label for="c-8-molecules-aldatepicker-info" class="badge info as-toggle">1 info</label>
+        <label for="c-8-molecules-aldatepicker-stories" class="badge ok as-toggle">3 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/molecules/AlDatePicker/AlDatePicker.stories.tsx">molecules-aldatepicker · ./lib/molecules/AlDatePicker/AlDatePicker.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-8-molecules-aldatepicker-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-8-molecules-aldatepicker-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-8-molecules-aldatepicker-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">15 prop types</span>
+            </div>
+            <pre><code>Component: lib/molecules/AlDatePicker/AlDatePicker.tsx::AlDatePicker</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Desabilita o componente
+ */
+disabled?: boolean
+
+/**
+ * Mensagem de erro a ser exibida (tipicamente do Zod via RHF)
+ */
+errorMessage?: string
+
+/**
+ * Posição da mensagem de erro: &#39;bottom&#39; (padrão) ou &#39;right&#39;
+ */
+errorPosition?: &#39;bottom&#39; | &#39;right&#39; = &#39;bottom&#39;
+
+/**
+ * Instância do formulário RHF vinda do useForm()
+ */
+form: UseFormReturn&lt;TFieldValues&gt;
+
+/**
+ * Texto de ajuda exibido abaixo do campo
+ */
+helpText?: string
+
+/**
+ * Texto do label do campo. Quando omitido, nenhum label é renderizado.
+ */
+label?: string
+
+/**
+ * Posição do label em relação ao input
+ */
+labelPosition?: &#39;left&#39; | &#39;top&#39; | &#39;right&#39; = &#39;top&#39;
+
+/**
+ * Exibe indicador de carregamento e desabilita interação
+ */
+loading?: boolean
+
+/**
+ * Data máxima selecionável (ISO string)
+ */
+max?: string
+
+/**
+ * Data mínima selecionável (ISO string)
+ */
+min?: string
+
+/**
+ * Nome do campo, type-safe em relação ao schema do formulário
+ */
+name: Path&lt;TFieldValues&gt;
+
+/**
+ * Se o campo é obrigatório (adiciona indicador visual ao label)
+ */
+required?: boolean
+
+/**
+ * Opções adicionais de registro do RHF
+ */
+rules?: RegisterOptions&lt;TFieldValues&gt;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlButton, AlDatePicker } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;DateStory label=&quot;Data de Nascimento&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Min Max</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithMinMax = () =&gt; &lt;DateStory label=&quot;Data do Evento&quot; min=&quot;2024-01-01&quot; max=&quot;2025-12-31&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Required</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Required = () =&gt; &lt;DateStory label=&quot;Data de Nascimento&quot; required /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlDateRangePicker">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlDateRangePicker</h2>
+      <div class="badges">
+        <label for="c-9-molecules-aldaterangepicker-props" class="badge ok as-toggle">11 prop types</label>
+        <label for="c-9-molecules-aldaterangepicker-info" class="badge info as-toggle">1 info</label>
+        <label for="c-9-molecules-aldaterangepicker-stories" class="badge ok as-toggle">2 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/molecules/AlDateRangePicker/AlDateRangePicker.stories.tsx">molecules-aldaterangepicker · ./lib/molecules/AlDateRangePicker/AlDateRangePicker.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-9-molecules-aldaterangepicker-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-9-molecules-aldaterangepicker-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-9-molecules-aldaterangepicker-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">11 prop types</span>
+            </div>
+            <pre><code>Component: lib/molecules/AlDateRangePicker/AlDateRangePicker.tsx::AlDateRangePicker</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Desabilita o componente
+ */
+disabled?: boolean
+
+/**
+ * Label da data final
+ */
+endLabel?: string = &#39;End&#39;
+
+/**
+ * Nome do campo para data final
+ */
+endName: Path&lt;TFieldValues&gt;
+
+/**
+ * Instância de formulário RHF
+ */
+form: UseFormReturn&lt;TFieldValues&gt;
+
+/**
+ * Exibe indicador de carregamento e desabilita interação
+ */
+loading?: boolean
+
+/**
+ * Data máxima selecionável
+ */
+max?: string
+
+/**
+ * Data mínima selecionável
+ */
+min?: string
+
+/**
+ * Label da data inicial
+ */
+startLabel?: string = &#39;Start&#39;
+
+/**
+ * Nome do campo para data inicial
+ */
+startName: Path&lt;TFieldValues&gt;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlButton, AlDateRangePicker } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;DateRangeStory label=&quot;Datas da Viagem&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; &lt;DateRangeStory label=&quot;Datas da Viagem&quot; disabled /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlErrorMessage">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlErrorMessage</h2>
+      <div class="badges">
+        <label for="c-10-atoms-alerrormessage-props" class="badge ok as-toggle">4 prop types</label>
+        <label for="c-10-atoms-alerrormessage-info" class="badge info as-toggle">1 info</label>
+        <label for="c-10-atoms-alerrormessage-stories" class="badge ok as-toggle">2 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/atoms/AlErrorMessage/AlErrorMessage.stories.tsx">atoms-alerrormessage · ./lib/atoms/AlErrorMessage/AlErrorMessage.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-10-atoms-alerrormessage-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-10-atoms-alerrormessage-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-10-atoms-alerrormessage-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">4 prop types</span>
+            </div>
+            <pre><code>Component: lib/atoms/AlErrorMessage/AlErrorMessage.tsx::AlErrorMessage</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Texto da mensagem de erro
+ */
+children: string
+
+/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * ID para vinculação aria-describedby
+ */
+id?: string</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlErrorMessage } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;AlErrorMessage&gt;Digite algo correto dessa vez, seu nerde&lt;/AlErrorMessage&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Email Error</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const EmailError = () =&gt; &lt;AlErrorMessage&gt;Por favor, insira um endereço de e-mail válido&lt;/AlErrorMessage&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlInput">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlInput</h2>
+      <div class="badges">
+        <label for="c-11-atoms-alinput-props" class="badge ok as-toggle">14 prop types</label>
+        <label for="c-11-atoms-alinput-info" class="badge info as-toggle">1 info</label>
+        <label for="c-11-atoms-alinput-stories" class="badge ok as-toggle">8 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/atoms/AlInput/AlInput.stories.tsx">atoms-alinput · ./lib/atoms/AlInput/AlInput.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-11-atoms-alinput-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-11-atoms-alinput-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-11-atoms-alinput-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">14 prop types</span>
+            </div>
+            <pre><code>Component: lib/atoms/AlInput/AlInput.tsx::AlInput</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Desabilita o componente
+ */
+disabled?: boolean
+
+/**
+ * Mensagem de erro a ser exibida (tipicamente do Zod via RHF)
+ */
+errorMessage?: string
+
+/**
+ * Posição da mensagem de erro: &#39;bottom&#39; (padrão) ou &#39;right&#39;
+ */
+errorPosition?: &#39;bottom&#39; | &#39;right&#39; = &#39;bottom&#39;
+
+/**
+ * Instância do formulário RHF vinda do useForm()
+ */
+form: UseFormReturn&lt;TFieldValues&gt;
+
+/**
+ * Texto de ajuda exibido abaixo do campo
+ */
+helpText?: string
+
+/**
+ * Texto do label do campo. Quando omitido, nenhum label é renderizado.
+ */
+label?: string
+
+/**
+ * Posição do label em relação ao input
+ */
+labelPosition?: &#39;left&#39; | &#39;top&#39; | &#39;right&#39; = &#39;top&#39;
+
+/**
+ * Exibe indicador de carregamento e desabilita interação
+ */
+loading?: boolean
+
+/**
+ * Nome do campo, type-safe em relação ao schema do formulário
+ */
+name: Path&lt;TFieldValues&gt;
+
+/**
+ * Se o campo é obrigatório (adiciona indicador visual ao label)
+ */
+required?: boolean
+
+/**
+ * Opções adicionais de registro do RHF
+ */
+rules?: RegisterOptions&lt;TFieldValues&gt;
+
+/**
+ * Tipos de input suportados
+ */
+type?: &#39;text&#39; | &#39;email&#39; | &#39;password&#39; | &#39;number&#39; | &#39;tel&#39; | &#39;url&#39; = &#39;text&#39;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlButton, AlInput } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;InputStory
+    label=&quot;E-mail&quot;
+    labelPosition=&quot;top&quot;
+    placeholder=&quot;you@example.com&quot;
+    type=&quot;email&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Label Left</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const LabelLeft = () =&gt; &lt;InputStory label=&quot;E-mail&quot; labelPosition=&quot;left&quot; placeholder=&quot;you@example.com&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Label Right</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const LabelRight = () =&gt; &lt;InputStory label=&quot;E-mail&quot; labelPosition=&quot;right&quot; placeholder=&quot;you@example.com&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Help Text</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithHelpText = () =&gt; &lt;InputStory
+    label=&quot;E-mail&quot;
+    helpText=&quot;Nunca compartilharemos seu e-mail.&quot;
+    placeholder=&quot;you@example.com&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Required</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Required = () =&gt; &lt;InputStory label=&quot;E-mail&quot; required placeholder=&quot;you@example.com&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Loading</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Loading = () =&gt; &lt;InputStory label=&quot;E-mail&quot; loading placeholder=&quot;you@example.com&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; &lt;InputStory label=&quot;E-mail&quot; disabled placeholder=&quot;you@example.com&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">No Label</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const NoLabel = () =&gt; {
+  const form = useForm&lt;FormData&gt;({
+    resolver: zodResolver(schema),
+    mode: &#39;onBlur&#39;,
+  });
+  return (
+    &lt;AlInput&lt;FormData&gt;
+      name=&quot;email&quot;
+      form={form}
+      placeholder=&quot;Input sem label&quot;
+      type=&quot;email&quot;
+    /&gt;
+  );
+};</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlLabel">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlLabel</h2>
+      <div class="badges">
+        <label for="c-12-atoms-allabel-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-12-atoms-allabel-info" class="badge info as-toggle">1 info</label>
+        <label for="c-12-atoms-allabel-stories" class="badge ok as-toggle">3 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/atoms/AlLabel/AlLabel.stories.tsx">atoms-allabel · ./lib/atoms/AlLabel/AlLabel.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-12-atoms-allabel-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-12-atoms-allabel-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-12-atoms-allabel-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">5 prop types</span>
+            </div>
+            <pre><code>Component: lib/atoms/AlLabel/AlLabel.tsx::AlLabel</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Conteúdo de texto ou children
+ */
+children: ReactNode
+
+/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Atributo HTML for vinculado a um input
+ */
+htmlFor?: string
+
+/**
+ * Exibir indicador de obrigatório
+ */
+required?: boolean</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlLabel } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;AlLabel&gt;Endereço de E-mail&lt;/AlLabel&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Required</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Required = () =&gt; &lt;AlLabel required&gt;Endereço de E-mail&lt;/AlLabel&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Html For</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithHtmlFor = () =&gt; &lt;AlLabel htmlFor=&quot;username-input&quot;&gt;Nome de Usuário&lt;/AlLabel&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlMaskInput">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlMaskInput</h2>
+      <div class="badges">
+        <label for="c-13-molecules-almaskinput-props" class="badge ok as-toggle">16 prop types</label>
+        <label for="c-13-molecules-almaskinput-info" class="badge info as-toggle">1 info</label>
+        <label for="c-13-molecules-almaskinput-stories" class="badge ok as-toggle">5 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/molecules/AlMaskInput/AlMaskInput.stories.tsx">molecules-almaskinput · ./lib/molecules/AlMaskInput/AlMaskInput.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-13-molecules-almaskinput-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-13-molecules-almaskinput-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-13-molecules-almaskinput-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">16 prop types</span>
+            </div>
+            <pre><code>Component: lib/molecules/AlMaskInput/AlMaskInput.tsx::AlMaskInput</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Desabilita o componente
+ */
+disabled?: boolean
+
+/**
+ * Mensagem de erro a ser exibida (tipicamente do Zod via RHF)
+ */
+errorMessage?: string
+
+/**
+ * Posição da mensagem de erro: &#39;bottom&#39; (padrão) ou &#39;right&#39;
+ */
+errorPosition?: &#39;bottom&#39; | &#39;right&#39; = &#39;bottom&#39;
+
+/**
+ * Instância do formulário RHF vinda do useForm()
+ */
+form: UseFormReturn&lt;TFieldValues&gt;
+
+/**
+ * Texto de ajuda exibido abaixo do campo
+ */
+helpText?: string
+
+/**
+ * Texto do label do campo. Quando omitido, nenhum label é renderizado.
+ */
+label?: string
+
+/**
+ * Posição do label em relação ao input
+ */
+labelPosition?: &#39;left&#39; | &#39;top&#39; | &#39;right&#39; = &#39;top&#39;
+
+/**
+ * Exibe indicador de carregamento e desabilita interação
+ */
+loading?: boolean
+
+/**
+ * Padrão de máscara. Use:
+ * - &#39;9&#39; para dígito
+ * - &#39;a&#39; para letra
+ * - &#39;*&#39; para alfanumérico
+ * Outros caracteres são separadores literais.
+ * Exemplo: &#39;(999) 999-9999&#39; para telefone US
+ */
+mask: string
+
+/**
+ * Caractere a exibir para posições não preenchidas (default: &#39;_&#39;)
+ */
+maskChar?: string
+
+/**
+ * Nome do campo, type-safe em relação ao schema do formulário
+ */
+name: Path&lt;TFieldValues&gt;
+
+/**
+ * Texto de placeholder
+ */
+placeholder?: string
+
+/**
+ * Se o campo é obrigatório (adiciona indicador visual ao label)
+ */
+required?: boolean
+
+/**
+ * Opções adicionais de registro do RHF
+ */
+rules?: RegisterOptions&lt;TFieldValues&gt;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlButton, AlMaskInput } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Telefone Brasil</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const TelefoneBrasil = () =&gt; &lt;BrazilPhoneStory /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">CPF</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CPF = () =&gt; &lt;MaskStory label=&quot;CPF&quot; mask=&quot;999.999.999-99&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">CEP</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CEP = () =&gt; &lt;MaskStory label=&quot;CEP&quot; mask=&quot;99999-999&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Cartao Credito</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CartaoCredito = () =&gt; &lt;MaskStory label=&quot;Número do Cartão&quot; mask=&quot;9999 9999 9999 9999&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">CNPJ</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const CNPJ = () =&gt; &lt;MaskStory label=&quot;CNPJ&quot; mask=&quot;99.999.999/9999-99&quot; /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlMultiSelect">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlMultiSelect</h2>
+      <div class="badges">
+        <label for="c-14-molecules-almultiselect-props" class="badge ok as-toggle">16 prop types</label>
+        <label for="c-14-molecules-almultiselect-info" class="badge info as-toggle">1 info</label>
+        <label for="c-14-molecules-almultiselect-stories" class="badge ok as-toggle">3 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/molecules/AlMultiSelect/AlMultiSelect.stories.tsx">molecules-almultiselect · ./lib/molecules/AlMultiSelect/AlMultiSelect.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-14-molecules-almultiselect-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-14-molecules-almultiselect-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-14-molecules-almultiselect-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">16 prop types</span>
+            </div>
+            <pre><code>Component: lib/molecules/AlMultiSelect/AlMultiSelect.tsx::AlMultiSelect</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Desabilita o componente
+ */
+disabled?: boolean
+
+/**
+ * Mensagem de erro a ser exibida (tipicamente do Zod via RHF)
+ */
+errorMessage?: string
+
+/**
+ * Posição da mensagem de erro: &#39;bottom&#39; (padrão) ou &#39;right&#39;
+ */
+errorPosition?: &#39;bottom&#39; | &#39;right&#39; = &#39;bottom&#39;
+
+/**
+ * Instância do formulário RHF vinda do useForm()
+ */
+form: UseFormReturn&lt;TFieldValues&gt;
+
+/**
+ * Texto de ajuda exibido abaixo do campo
+ */
+helpText?: string
+
+/**
+ * Texto do label do campo. Quando omitido, nenhum label é renderizado.
+ */
+label?: string
+
+/**
+ * Posição do label em relação ao input
+ */
+labelPosition?: &#39;left&#39; | &#39;top&#39; | &#39;right&#39; = &#39;top&#39;
+
+/**
+ * Exibe indicador de carregamento e desabilita interação
+ */
+loading?: boolean
+
+/**
+ * Nome do campo, type-safe em relação ao schema do formulário
+ */
+name: Path&lt;TFieldValues&gt;
+
+/**
+ * Texto exibido quando nenhuma opção corresponde à busca
+ */
+noResultsText?: string = &#39;No results found&#39;
+
+/**
+ * Opções disponíveis
+ */
+options: AlMultiSelectOption[]
+
+/**
+ * Texto de placeholder
+ */
+placeholder?: string = &#39;Search...&#39;
+
+/**
+ * Se o campo é obrigatório (adiciona indicador visual ao label)
+ */
+required?: boolean
+
+/**
+ * Opções adicionais de registro do RHF
+ */
+rules?: RegisterOptions&lt;TFieldValues&gt;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlButton, AlMultiSelect } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;MultiSelectStory label=&quot;Tags&quot; placeholder=&quot;Buscar tags...&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Large Dataset</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const LargeDataset = () =&gt; &lt;MultiSelectStory
+    label=&quot;Funcionários (5.000 itens)&quot;
+    placeholder=&quot;Buscar funcionários...&quot;
+    optionSet=&quot;large&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; &lt;MultiSelectStory label=&quot;Tags&quot; disabled /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlRadioButton">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlRadioButton</h2>
+      <div class="badges">
+        <label for="c-15-atoms-alradiobutton-props" class="badge ok as-toggle">10 prop types</label>
+        <label for="c-15-atoms-alradiobutton-info" class="badge info as-toggle">1 info</label>
+        <label for="c-15-atoms-alradiobutton-stories" class="badge ok as-toggle">4 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/atoms/AlRadioButton/AlRadioButton.stories.tsx">atoms-alradiobutton · ./lib/atoms/AlRadioButton/AlRadioButton.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-15-atoms-alradiobutton-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-15-atoms-alradiobutton-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-15-atoms-alradiobutton-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">10 prop types</span>
+            </div>
+            <pre><code>Component: lib/atoms/AlRadioButton/AlRadioButton.tsx::AlRadioButton</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Direção do layout para o grupo de radio
+ */
+direction?: &#39;horizontal&#39; | &#39;vertical&#39; = &#39;vertical&#39;
+
+/**
+ * Desabilita o componente
+ */
+disabled?: boolean
+
+errorPosition?: any = &#39;bottom&#39;
+
+/**
+ * Instância do formulário RHF vinda do useForm()
+ */
+form: UseFormReturn&lt;TFieldValues&gt;
+
+/**
+ * Exibe indicador de carregamento e desabilita interação
+ */
+loading?: boolean
+
+/**
+ * Nome do campo, type-safe em relação ao schema do formulário
+ */
+name: Path&lt;TFieldValues&gt;
+
+/**
+ * Opções de radio disponíveis
+ */
+options: AlRadioOption[]
+
+/**
+ * Opções adicionais de registro do RHF
+ */
+rules?: RegisterOptions&lt;TFieldValues&gt;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlButton, AlRadioButton } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Vertical</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Vertical = () =&gt; &lt;RadioStory label=&quot;Cor Favorita&quot; direction=&quot;vertical&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Horizontal</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Horizontal = () =&gt; &lt;RadioStory label=&quot;Cor Favorita&quot; direction=&quot;horizontal&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Required</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Required = () =&gt; &lt;RadioStory label=&quot;Cor Favorita&quot; required /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; &lt;RadioStory label=&quot;Cor Favorita&quot; disabled /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlSelect">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlSelect</h2>
+      <div class="badges">
+        <label for="c-16-molecules-alselect-props" class="badge ok as-toggle">15 prop types</label>
+        <label for="c-16-molecules-alselect-info" class="badge info as-toggle">1 info</label>
+        <label for="c-16-molecules-alselect-stories" class="badge ok as-toggle">5 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/molecules/AlSelect/AlSelect.stories.tsx">molecules-alselect · ./lib/molecules/AlSelect/AlSelect.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-16-molecules-alselect-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-16-molecules-alselect-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-16-molecules-alselect-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">15 prop types</span>
+            </div>
+            <pre><code>Component: lib/molecules/AlSelect/AlSelect.tsx::AlSelect</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Desabilita o componente
+ */
+disabled?: boolean
+
+/**
+ * Mensagem de erro a ser exibida (tipicamente do Zod via RHF)
+ */
+errorMessage?: string
+
+/**
+ * Posição da mensagem de erro: &#39;bottom&#39; (padrão) ou &#39;right&#39;
+ */
+errorPosition?: &#39;bottom&#39; | &#39;right&#39; = &#39;bottom&#39;
+
+/**
+ * Instância do formulário RHF vinda do useForm()
+ */
+form: UseFormReturn&lt;TFieldValues&gt;
+
+/**
+ * Texto de ajuda exibido abaixo do campo
+ */
+helpText?: string
+
+/**
+ * Texto do label do campo. Quando omitido, nenhum label é renderizado.
+ */
+label?: string
+
+/**
+ * Posição do label em relação ao input
+ */
+labelPosition?: &#39;left&#39; | &#39;top&#39; | &#39;right&#39; = &#39;top&#39;
+
+/**
+ * Exibe indicador de carregamento e desabilita interação
+ */
+loading?: boolean
+
+/**
+ * Nome do campo, type-safe em relação ao schema do formulário
+ */
+name: Path&lt;TFieldValues&gt;
+
+/**
+ * Opções disponíveis
+ */
+options: AlSelectOption[]
+
+/**
+ * Texto de placeholder quando nenhum valor está selecionado
+ */
+placeholder?: string = &#39;Select...&#39;
+
+/**
+ * Se o campo é obrigatório (adiciona indicador visual ao label)
+ */
+required?: boolean
+
+/**
+ * Opções adicionais de registro do RHF
+ */
+rules?: RegisterOptions&lt;TFieldValues&gt;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlButton, AlSelect } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;SelectStory label=&quot;País&quot; placeholder=&quot;Selecione um país...&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Required</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Required = () =&gt; &lt;SelectStory label=&quot;País&quot; required /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Disabled</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Disabled = () =&gt; &lt;SelectStory label=&quot;País&quot; disabled /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Loading</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Loading = () =&gt; &lt;SelectStory label=&quot;País&quot; loading /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Label Left</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const LabelLeft = () =&gt; &lt;SelectStory label=&quot;País&quot; labelPosition=&quot;left&quot; /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlSpinner">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlSpinner</h2>
+      <div class="badges">
+        <label for="c-17-atoms-alspinner-props" class="badge ok as-toggle">4 prop types</label>
+        <label for="c-17-atoms-alspinner-info" class="badge info as-toggle">1 info</label>
+        <label for="c-17-atoms-alspinner-stories" class="badge ok as-toggle">3 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/atoms/AlSpinner/AlSpinner.stories.tsx">atoms-alspinner · ./lib/atoms/AlSpinner/AlSpinner.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-17-atoms-alspinner-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-17-atoms-alspinner-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-17-atoms-alspinner-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">4 prop types</span>
+            </div>
+            <pre><code>Component: lib/atoms/AlSpinner/AlSpinner.tsx::AlSpinner</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Label acessível para leitores de tela
+ */
+aria-label?: string = &#39;Loading&#39;
+
+/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Tamanho do spinner
+ */
+size?: &#39;sm&#39; | &#39;md&#39; | &#39;lg&#39; = &#39;md&#39;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlSpinner } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Small</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Small = () =&gt; &lt;AlSpinner size=&quot;sm&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Medium</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Medium = () =&gt; &lt;AlSpinner size=&quot;md&quot; /&gt;;</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Large</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Large = () =&gt; &lt;AlSpinner size=&quot;lg&quot; /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlStepper">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlStepper</h2>
+      <div class="badges">
+        <label for="c-18-organisms-alstepper-props" class="badge ok as-toggle">5 prop types</label>
+        <label for="c-18-organisms-alstepper-info" class="badge info as-toggle">1 info</label>
+        <label for="c-18-organisms-alstepper-stories" class="badge ok as-toggle">1 story</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/organisms/AlStepper/AlStepper.stories.tsx">organisms-alstepper · ./lib/organisms/AlStepper/AlStepper.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-18-organisms-alstepper-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-18-organisms-alstepper-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-18-organisms-alstepper-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">5 prop types</span>
+            </div>
+            <pre><code>Component: lib/organisms/AlStepper/AlStepper.tsx::AlStepper</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Índice do passo ativo atualmente (base 0)
+ */
+activeStep: number
+
+/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Callback quando o passo muda
+ */
+onStepChange: (step: number) =&gt; void
+
+steps: AlStepperStep[]</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlButton, AlStepper } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; {
+  const [active, setActive] = useState(0);
+  const steps = [
+    { label: &#39;Informações Pessoais&#39;, content: &lt;div&gt;&lt;h3&gt;Passo 1: Informações Pessoais&lt;/h3&gt;&lt;p&gt;Preencha seu nome e dados de contato.&lt;/p&gt;&lt;/div&gt; },
+    { label: &#39;Endereço&#39;, content: &lt;div&gt;&lt;h3&gt;Passo 2: Endereço&lt;/h3&gt;&lt;p&gt;Informe seu endereço de entrega.&lt;/p&gt;&lt;/div&gt; },
+    { label: &#39;Pagamento&#39;, content: &lt;div&gt;&lt;h3&gt;Passo 3: Pagamento&lt;/h3&gt;&lt;p&gt;Insira os dados de pagamento.&lt;/p&gt;&lt;/div&gt; },
+    { label: &#39;Revisão&#39;, content: &lt;div&gt;&lt;h3&gt;Passo 4: Revisão&lt;/h3&gt;&lt;p&gt;Revise e confirme seu pedido.&lt;/p&gt;&lt;/div&gt; },
+  ];
+
+  return (
+    &lt;div&gt;
+      &lt;AlStepper steps={steps} activeStep={active} onStepChange={setActive} /&gt;
+      &lt;div style={{ display: &#39;flex&#39;, gap: &#39;12px&#39;, marginTop: &#39;16px&#39; }}&gt;
+        &lt;AlButton intent=&quot;secondary&quot; onClick={() =&gt; setActive(Math.max(0, active - 1))} disabled={active === 0}&gt;
+          Voltar
+        &lt;/AlButton&gt;
+        &lt;AlButton onClick={() =&gt; setActive(Math.min(steps.length - 1, active + 1))} disabled={active === steps.length - 1}&gt;
+          Próximo
+        &lt;/AlButton&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  );
+};</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlTable">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlTable</h2>
+      <div class="badges">
+        <label for="c-19-organisms-altable-props" class="badge ok as-toggle">4 prop types</label>
+        <label for="c-19-organisms-altable-info" class="badge info as-toggle">1 info</label>
+        <label for="c-19-organisms-altable-stories" class="badge ok as-toggle">7 stories</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/organisms/AlTable/AlTable.stories.tsx">organisms-altable · ./lib/organisms/AlTable/AlTable.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-19-organisms-altable-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-19-organisms-altable-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  <input id="c-19-organisms-altable-props" class="tg tg-props" type="checkbox" hidden />
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+        <div class="panel panel-props">
+          <div class="note ok">
+            <div class="row">
+              <span class="ex-name">Prop types <small>(react-docgen)</small></span>
+              <span class="badge ok">4 prop types</span>
+            </div>
+            <pre><code>Component: lib/organisms/AlTable/AlTable.tsx::AlTable</code></pre>
+            <pre><code>Props:</code></pre>
+            <pre><code>/**
+ * Classes CSS adicionais
+ */
+className?: string
+
+/**
+ * ID de teste para testes automatizados
+ */
+data-testid?: string
+
+/**
+ * Exibir mensagem de estado vazio quando não houver linhas
+ */
+emptyMessage?: string = &#39;No data available&#39;
+
+table: Table&lt;TData&gt;</code></pre>
+          </div>
+        </div>
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlTable } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Simple Table</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const SimpleTable = () =&gt; {
+  const table = useAlTable({ data: data.slice(0, 5), columns });
+  return &lt;AlTable table={table} /&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Sorting</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithSorting = () =&gt; {
+  const table = useAlTable({ data, columns, enableSorting: true });
+  return &lt;AlTable table={table} /&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">With Pagination</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const WithPagination = () =&gt; {
+  const table = useAlTable({ data, columns, enablePagination: true, pageSize: 10 });
+  return &lt;AlTable table={table} /&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Sorting And Pagination</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const SortingAndPagination = () =&gt; {
+  const table = useAlTable({
+    data,
+    columns,
+    enableSorting: true,
+    enablePagination: true,
+    pageSize: 10,
+  });
+  return &lt;AlTable table={table} /&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Grouped Columns</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const GroupedColumns = () =&gt; {
+  const groupedColumns = [
+    columnHelper.group({
+      header: &#39;Name&#39;,
+      columns: [
+        columnHelper.accessor(&#39;firstName&#39;, { header: &#39;Nome&#39; }),
+        columnHelper.accessor(&#39;lastName&#39;, { header: &#39;Sobrenome&#39; }),
+      ],
+    }),
+    columnHelper.group({
+      header: &#39;Info&#39;,
+      columns: [
+        columnHelper.accessor(&#39;age&#39;, { header: &#39;Idade&#39; }),
+        columnHelper.accessor(&#39;email&#39;, { header: &#39;Email&#39; }),
+        columnHelper.accessor(&#39;department&#39;, { header: &#39;Depto&#39; }),
+      ],
+    }),
+  ];
+  const table = useAlTable({ data: data.slice(0, 10), columns: groupedColumns, enableSorting: true });
+  return &lt;AlTable table={table} /&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Empty State</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const EmptyState = () =&gt; {
+  const table = useAlTable({ data: [], columns });
+  return &lt;AlTable table={table} emptyMessage=&quot;Nenhum funcionário encontrado&quot; /&gt;;
+};</code></pre>
+            </div>
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Inline Editing</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const InlineEditing = () =&gt; {
+  const editableColumns = [
+    columnHelper.accessor(&#39;firstName&#39;, {
+      header: &#39;Nome&#39;,
+      cell: ({ getValue }) =&gt; {
+        const initialValue = getValue();
+        return (
+          &lt;input
+            className=&quot;al-input&quot;
+            defaultValue={initialValue}
+            onBlur={() =&gt; {}}
+            style={{ width: &#39;100%&#39;, padding: &#39;4px 8px&#39;, fontSize: &#39;inherit&#39; }}
+          /&gt;
+        );
+      },
+    }),
+    columnHelper.accessor(&#39;lastName&#39;, { header: &#39;Sobrenome&#39; }),
+    columnHelper.accessor(&#39;age&#39;, { header: &#39;Idade&#39; }),
+    columnHelper.accessor(&#39;email&#39;, { header: &#39;Email&#39; }),
+  ];
+  const table = useAlTable({ data: data.slice(0, 5), columns: editableColumns });
+  return &lt;AlTable table={table} /&gt;;
+};</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+<article
+  class="card 
+  no-error 
+  has-info 
+  no-story-error
+  no-doc-error"
+  role="listitem"
+  aria-label="AlToastContainer">
+  <div class="head">
+    <div class="title">
+      <h2><span class="status-dot dot-ok"></span> AlToastContainer</h2>
+      <div class="badges">
+        
+        <label for="c-20-molecules-altoast-info" class="badge info as-toggle">1 info</label>
+        <label for="c-20-molecules-altoast-stories" class="badge ok as-toggle">1 story</label>
+        
+      </div>
+    </div>
+    <div class="meta" title="./lib/molecules/AlToast/AlToast.stories.tsx">molecules-altoast · ./lib/molecules/AlToast/AlToast.stories.tsx</div>
+    
+    
+    
+  </div>
+
+  <!-- ⬇️ Hidden toggles must be siblings BEFORE .panels -->
+  
+  <input id="c-20-molecules-altoast-info" class="tg tg-info" type="checkbox" hidden />
+  <input id="c-20-molecules-altoast-stories" class="tg tg-stories" type="checkbox" hidden />
+  
+  
+
+  <div class="panels">
+    
+    
+        <div class="panel panel-info">
+          
+    <div class="note info">
+      <div class="note-title">Info</div>
+      <div class="note-body">No description found. Write a jsdoc comment such as /** Component description */.</div>
+    </div>
+        </div>
+    
+    
+        <div class="panel panel-stories">
+          
+          
+          
+          <div class="note ok">
+                <div class="row">
+                  <span class="ex-name">Imports</span>
+                </div>
+                <pre><code>import { AlButton, AlToastContainer, AlToastProvider } from "@almg/al-ui";</code></pre>
+              </div>
+          
+          
+            <div class="note ok">
+              <div class="row">
+                <span class="ex-name">Default</span>
+                <span class="badge ok">story ok</span>
+              </div>
+              
+              
+              <pre><code>const Default = () =&gt; &lt;ToastDemo /&gt;;</code></pre>
+            </div>
+        </div>
+    
+  </div>
+</article>
+    </div>
+    
+    
+    
+  </div>
+</main>
+</body>
+</html>  

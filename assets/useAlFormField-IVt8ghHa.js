@@ -1,0 +1,1 @@
+function a(i,e){const{register:n,formState:{errors:c}}=i,t=e.split(".").reduce((r,o)=>{if(r&&typeof r=="object"&&o in r)return r[o]},c),s=t==null?void 0:t.message;return{registration:n(e),errorMessage:s,hasError:!!s}}export{a as u};
