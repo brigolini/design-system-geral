@@ -56,4 +56,6 @@
   --color-al-info: var(--color-al-blue-500);
   --color-al-info-light: var(--color-al-blue-100);
   --color-al-info-dark: var(--color-al-blue-800);
+
+  --color-al-focus: #84aee6
 }
