@@ -1,0 +1,17 @@
+/* Al Design System — Escala de Espaçamento (12 valores padrão)
+   Valores: 0, 1, 2, 3, 4, 5, 6, 8, 10, 12, 16, 20 */
+
+@theme {
+  --spacing-al-0: 0px;
+  --spacing-al-1: 4px;
+  --spacing-al-2: 8px;
+  --spacing-al-3: 12px;
+  --spacing-al-4: 16px;
+  --spacing-al-5: 20px;
+  --spacing-al-6: 24px;
+  --spacing-al-8: 32px;
+  --spacing-al-10: 40px;
+  --spacing-al-12: 48px;
+  --spacing-al-16: 64px;
+  --spacing-al-20: 80px;
+}

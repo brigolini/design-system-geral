@@ -1,0 +1,48 @@
+/* Al Radio Button */
+
+.al-radio-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.al-radio-wrapper--label-left {
+  flex-direction: row-reverse;
+}
+
+.al-radio-wrapper--label-top {
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.al-radio-wrapper--label-right {
+  flex-direction: row;
+}
+
+.al-radio {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--color-al-brand-primary);
+}
+
+.al-radio:focus-visible {
+  outline: 2px solid var(--color-al-brand-primary);
+  outline-offset: 2px;
+}
+
+.al-radio--error {
+  outline: 2px solid var(--color-al-danger);
+  outline-offset: 1px;
+}
+
+.al-radio--disabled,
+.al-radio:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.al-radio--loading {
+  pointer-events: none;
+  opacity: 0.6;
+}

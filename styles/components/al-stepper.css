@@ -1,0 +1,80 @@
+/* Al Stepper */
+
+.al-stepper {
+  display: flex;
+  align-items: flex-start;
+  gap: 0;
+}
+
+.al-stepper-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+}
+
+.al-stepper-step-number {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: var(--font-size-al-sm);
+  font-weight: var(--font-weight-al-semibold);
+  background-color: var(--color-al-brand-secondary);
+  color: var(--color-al-brand-font-secondary);
+  border: 2px solid var(--color-al-brand-font-secondary);
+  transition: background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.al-stepper-step--active .al-stepper-step-number {
+  background-color: var(--color-al-brand-primary);
+  border-color: var(--color-al-brand-primary);
+  color: white;
+}
+
+.al-stepper-step--completed .al-stepper-step-number {
+  background-color: var(--color-al-brand-font-primary);
+  border-color: var(--color-al-brand-font-primary);
+  color: white;
+}
+
+.al-stepper-step--clickable {
+  cursor: pointer;
+}
+
+.al-stepper-step--disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.al-stepper-step-label {
+  margin-top: 8px;
+  font-size: var(--font-size-al-xs);
+  color: var(--color-al-brand-font-secondary);
+  text-align: center;
+}
+
+.al-stepper-step--active .al-stepper-step-label {
+  color: var(--color-al-brand-font-primary);
+  font-weight: var(--font-weight-al-medium);
+}
+
+.al-stepper-step-connector {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-al-brand-secondary);
+}
+
+.al-stepper-step--completed .al-stepper-step-connector {
+  background-color: var(--color-al-brand-primary);
+}
+
+.al-stepper-content {
+  margin-top: 24px;
+}

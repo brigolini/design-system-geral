@@ -1,0 +1,44 @@
+/* Al Currency Input */
+
+.al-currency-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.al-currency-input-wrapper--label-left { flex-direction: row; align-items: center; gap: 8px; }
+.al-currency-input-wrapper--label-top { flex-direction: column; gap: 4px; }
+.al-currency-input-wrapper--label-right { flex-direction: row-reverse; align-items: center; gap: 8px; }
+
+.al-currency-input-prefix {
+  display: flex;
+  align-items: center;
+  padding: 0 8px;
+  font-size: var(--font-size-al-sm);
+  color: var(--color-al-brand-font-secondary);
+  background-color: var(--color-al-brand-secondary);
+  border: var(--border-width-al-default) solid var(--color-al-brand-secondary);
+  border-right: none;
+  border-radius: var(--border-radius-al-md) 0 0 var(--border-radius-al-md);
+}
+
+.al-currency-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-family: var(--font-al-sans);
+  font-size: var(--font-size-al-sm);
+  color: var(--color-al-brand-font-primary);
+  background-color: white;
+  border: var(--border-width-al-default) solid var(--color-al-brand-secondary);
+  border-radius: 0 var(--border-radius-al-md) var(--border-radius-al-md) 0;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.al-currency-input:focus {
+  border-color: var(--color-al-brand-primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-al-brand-primary) 20%, transparent);
+}
+
+.al-currency-input--error { border-color: var(--color-al-danger); }
+.al-currency-input--disabled { cursor: not-allowed; background-color: var(--color-al-brand-secondary); opacity: 0.6; }

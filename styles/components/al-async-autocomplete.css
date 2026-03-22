@@ -1,0 +1,9 @@
+/* Al Async Autocomplete — estende estilos do combobox */
+/* Usa classes al-combobox-* mais estado de carregamento */
+
+.al-async-autocomplete-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px;
+}

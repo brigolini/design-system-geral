@@ -1,0 +1,83 @@
+/* Al Design System — Utilitários de Posicionamento (Flexbox + Grid)
+   Classes CSS independentes para uso em páginas HTML puras */
+
+/* === Flexbox === */
+.al-flex { display: flex; }
+.al-inline-flex { display: inline-flex; }
+.al-flex-row { flex-direction: row; }
+.al-flex-col { flex-direction: column; }
+.al-flex-row-reverse { flex-direction: row-reverse; }
+.al-flex-col-reverse { flex-direction: column-reverse; }
+.al-flex-wrap { flex-wrap: wrap; }
+.al-flex-nowrap { flex-wrap: nowrap; }
+.al-flex-1 { flex: 1 1 0%; }
+.al-flex-auto { flex: 1 1 auto; }
+.al-flex-none { flex: none; }
+.al-grow { flex-grow: 1; }
+.al-grow-0 { flex-grow: 0; }
+.al-shrink { flex-shrink: 1; }
+.al-shrink-0 { flex-shrink: 0; }
+
+/* Justificar Conteúdo */
+.al-justify-start { justify-content: flex-start; }
+.al-justify-end { justify-content: flex-end; }
+.al-justify-center { justify-content: center; }
+.al-justify-between { justify-content: space-between; }
+.al-justify-around { justify-content: space-around; }
+.al-justify-evenly { justify-content: space-evenly; }
+
+/* Alinhar Itens */
+.al-items-start { align-items: flex-start; }
+.al-items-end { align-items: flex-end; }
+.al-items-center { align-items: center; }
+.al-items-baseline { align-items: baseline; }
+.al-items-stretch { align-items: stretch; }
+
+/* Alinhar Individual */
+.al-self-auto { align-self: auto; }
+.al-self-start { align-self: flex-start; }
+.al-self-end { align-self: flex-end; }
+.al-self-center { align-self: center; }
+.al-self-stretch { align-self: stretch; }
+
+/* Espaçamento */
+.al-gap-0 { gap: 0px; }
+.al-gap-1 { gap: 4px; }
+.al-gap-2 { gap: 8px; }
+.al-gap-3 { gap: 12px; }
+.al-gap-4 { gap: 16px; }
+.al-gap-5 { gap: 20px; }
+.al-gap-6 { gap: 24px; }
+.al-gap-8 { gap: 32px; }
+
+/* === Grid === */
+.al-grid { display: grid; }
+.al-inline-grid { display: inline-grid; }
+
+/* Colunas do Template Grid */
+.al-grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.al-grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.al-grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.al-grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.al-grid-cols-6 { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.al-grid-cols-12 { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+
+/* Linhas do Template Grid */
+.al-grid-rows-1 { grid-template-rows: repeat(1, minmax(0, 1fr)); }
+.al-grid-rows-2 { grid-template-rows: repeat(2, minmax(0, 1fr)); }
+.al-grid-rows-3 { grid-template-rows: repeat(3, minmax(0, 1fr)); }
+
+/* Extensão de Coluna Grid */
+.al-col-span-1 { grid-column: span 1 / span 1; }
+.al-col-span-2 { grid-column: span 2 / span 2; }
+.al-col-span-3 { grid-column: span 3 / span 3; }
+.al-col-span-4 { grid-column: span 4 / span 4; }
+.al-col-span-6 { grid-column: span 6 / span 6; }
+.al-col-span-12 { grid-column: span 12 / span 12; }
+.al-col-span-full { grid-column: 1 / -1; }
+
+/* Extensão de Linha Grid */
+.al-row-span-1 { grid-row: span 1 / span 1; }
+.al-row-span-2 { grid-row: span 2 / span 2; }
+.al-row-span-3 { grid-row: span 3 / span 3; }
+.al-row-span-full { grid-row: 1 / -1; }

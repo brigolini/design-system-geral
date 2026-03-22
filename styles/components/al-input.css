@@ -1,0 +1,68 @@
+/* Al Input */
+
+.al-input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.al-input-wrapper--label-left {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.al-input-wrapper--label-top {
+  flex-direction: column;
+  gap: 4px;
+}
+
+.al-input-wrapper--label-right {
+  flex-direction: row-reverse;
+  align-items: center;
+  gap: 8px;
+}
+
+.al-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-family: var(--font-al-sans);
+  font-size: var(--font-size-al-sm);
+  line-height: var(--line-height-al-normal);
+  color: var(--color-al-brand-font-primary);
+  background-color: white;
+  border: var(--border-width-al-default) solid var(--color-al-brand-secondary);
+  border-radius: var(--border-radius-al-md);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.al-input::placeholder {
+  color: var(--color-al-brand-font-secondary);
+}
+
+.al-input:focus {
+  border-color: var(--color-al-brand-primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-al-brand-primary) 20%, transparent);
+}
+
+.al-input--error {
+  border-color: var(--color-al-danger);
+}
+
+.al-input--error:focus {
+  border-color: var(--color-al-danger);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-al-danger) 20%, transparent);
+}
+
+.al-input--disabled,
+.al-input:disabled {
+  cursor: not-allowed;
+  background-color: var(--color-al-brand-secondary);
+  opacity: 0.6;
+}
+
+.al-input--loading {
+  pointer-events: none;
+  opacity: 0.6;
+}

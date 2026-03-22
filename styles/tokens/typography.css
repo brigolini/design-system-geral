@@ -1,0 +1,30 @@
+/* Al Design System — Tokens de Tipografia
+   Fonte da marca: Inter com fallback para Roboto */
+
+@theme {
+  /* Famílias de fontes */
+  --font-al-sans: "Inter", "Roboto", ui-sans-serif, system-ui, sans-serif;
+  --font-al-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Tamanhos de fonte: xs, sm, base, lg, xl, 2xl */
+  --font-size-al-xs: 0.75rem;
+  --font-size-al-sm: 0.875rem;
+  --font-size-al-base: 1rem;
+  --font-size-al-lg: 1.125rem;
+  --font-size-al-xl: 1.25rem;
+  --font-size-al-2xl: 1.5rem;
+
+  /* Alturas de linha */
+  --line-height-al-tight: 1.25;
+  --line-height-al-normal: 1.5;
+  --line-height-al-relaxed: 1.75;
+
+  /* Pesos de fonte: light, normal, medium, semibold, bold, extrabold, black */
+  --font-weight-al-light: 300;
+  --font-weight-al-normal: 400;
+  --font-weight-al-medium: 500;
+  --font-weight-al-semibold: 600;
+  --font-weight-al-bold: 700;
+  --font-weight-al-extrabold: 800;
+  --font-weight-al-black: 900;
+}

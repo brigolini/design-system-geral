@@ -1,0 +1,26 @@
+/* Al Design System — Classes de Intenção
+   Primary = Verde, Secondary = Cinza, Danger = Vermelho, Warning = Laranja */
+
+.al-intent-primary {
+  --al-intent-color: var(--color-al-green-400);
+  --al-intent-color-light: var(--color-al-green-100);
+  --al-intent-color-dark: var(--color-al-green-800);
+}
+
+.al-intent-secondary {
+  --al-intent-color: var(--color-al-gray-500);
+  --al-intent-color-light: var(--color-al-gray-100);
+  --al-intent-color-dark: var(--color-al-gray-800);
+}
+
+.al-intent-danger {
+  --al-intent-color: var(--color-al-red-500);
+  --al-intent-color-light: var(--color-al-red-100);
+  --al-intent-color-dark: var(--color-al-red-800);
+}
+
+.al-intent-warning {
+  --al-intent-color: var(--color-al-orange-500);
+  --al-intent-color-light: var(--color-al-orange-100);
+  --al-intent-color-dark: var(--color-al-orange-800);
+}

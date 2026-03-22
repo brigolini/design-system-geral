@@ -1,0 +1,64 @@
+/* Al Combobox */
+
+.al-combobox-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+}
+
+.al-combobox-wrapper--label-left { flex-direction: row; align-items: center; gap: 8px; }
+.al-combobox-wrapper--label-top { flex-direction: column; gap: 4px; }
+.al-combobox-wrapper--label-right { flex-direction: row-reverse; align-items: center; gap: 8px; }
+
+.al-combobox-input {
+  width: 100%;
+  padding: 8px 12px;
+  font-family: var(--font-al-sans);
+  font-size: var(--font-size-al-sm);
+  color: var(--color-al-brand-font-primary);
+  background-color: white;
+  border: var(--border-width-al-default) solid var(--color-al-brand-secondary);
+  border-radius: var(--border-radius-al-md);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.al-combobox-input:focus {
+  border-color: var(--color-al-brand-primary);
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-al-brand-primary) 20%, transparent);
+}
+
+.al-combobox-input--error { border-color: var(--color-al-danger); }
+.al-combobox-input--disabled { cursor: not-allowed; background-color: var(--color-al-brand-secondary); opacity: 0.6; }
+.al-combobox-input--loading { pointer-events: none; opacity: 0.6; }
+
+.al-combobox-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  max-height: 240px;
+  overflow-y: auto;
+  margin-top: 4px;
+  background-color: white;
+  border: var(--border-width-al-default) solid var(--color-al-brand-secondary);
+  border-radius: var(--border-radius-al-md);
+  box-shadow: var(--shadow-al-md);
+}
+
+.al-combobox-menu--open { display: block; }
+
+.al-combobox-item {
+  padding: 8px 12px;
+  font-size: var(--font-size-al-sm);
+  color: var(--color-al-brand-font-primary);
+  cursor: pointer;
+  transition: background-color 0.1s;
+}
+
+.al-combobox-item--highlighted { background-color: var(--color-al-brand-secondary); }
+.al-combobox-item--selected { background-color: var(--color-al-primary-light); font-weight: var(--font-weight-al-medium); }
+.al-combobox-no-results { padding: 8px 12px; font-size: var(--font-size-al-sm); color: var(--color-al-brand-font-secondary); }

@@ -1,0 +1,35 @@
+/* Al Design System — Folha de Estilos Principal */
+
+/* Base + Tokens */
+@import "./base.css";
+
+/* Utilitários */
+@import "./utilities/positioning.css";
+@import "./utilities/typography.css";
+@import "./utilities/layout.css";
+
+/* Intenções */
+@import "./intents/intents.css";
+
+/* Componentes */
+@import "./components/al-label.css";
+@import "./components/al-error-message.css";
+@import "./components/al-spinner.css";
+@import "./components/al-button.css";
+@import "./components/al-input.css";
+@import "./components/al-checkbox.css";
+@import "./components/al-radio-button.css";
+@import "./components/al-select.css";
+@import "./components/al-combobox.css";
+@import "./components/al-multi-select.css";
+@import "./components/al-async-autocomplete.css";
+@import "./components/al-date-picker.css";
+@import "./components/al-date-range-picker.css";
+@import "./components/al-currency-input.css";
+@import "./components/al-mask-input.css";
+@import "./components/al-table.css";
+@import "./components/al-stepper.css";
+@import "./components/al-accordion.css";
+@import "./components/al-breadcrumbs.css";
+@import "./components/al-toast.css";
+@import "./components/al-carousel.css";

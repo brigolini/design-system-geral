@@ -1,0 +1,84 @@
+/* Al Carousel — Estilos de intenção MANTIDOS COMO ESTÃO */
+
+.al-carousel {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--border-radius-al-md);
+}
+
+/* Bordas de intenção (MANTIDAS COMO ESTÃO) */
+.al-carousel--primary { border: 2px solid var(--color-al-green-500); }
+.al-carousel--secondary { border: 2px solid var(--color-al-brand-secondary); }
+.al-carousel--danger { border: 2px solid var(--color-al-red-500); }
+.al-carousel--warning { border: 2px solid var(--color-al-orange-500); }
+
+.al-carousel-track {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+}
+
+.al-carousel-slide {
+  flex: 0 0 100%;
+  min-width: 0;
+}
+
+.al-carousel-prev,
+.al-carousel-next {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: white;
+  border: var(--border-width-al-default) solid var(--color-al-brand-secondary);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: var(--shadow-al-sm);
+  transition: background-color 0.1s;
+  z-index: 10;
+}
+
+.al-carousel-prev { left: 8px; }
+.al-carousel-next { right: 8px; }
+
+.al-carousel-prev:hover,
+.al-carousel-next:hover {
+  background-color: var(--color-al-brand-secondary);
+}
+
+.al-carousel-prev:focus-visible,
+.al-carousel-next:focus-visible {
+  outline: 2px solid var(--color-al-brand-primary);
+  outline-offset: 2px;
+}
+
+.al-carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 0;
+}
+
+.al-carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: var(--color-al-brand-secondary);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s;
+  padding: 0;
+}
+
+.al-carousel-dot--active {
+  background-color: var(--color-al-brand-primary);
+}
+
+/* Cores dos pontos de intenção (MANTIDAS COMO ESTÃO) */
+.al-carousel--primary .al-carousel-dot--active { background-color: var(--color-al-green-500); }
+.al-carousel--secondary .al-carousel-dot--active { background-color: var(--color-al-brand-font-primary); }
+.al-carousel--danger .al-carousel-dot--active { background-color: var(--color-al-red-500); }
+.al-carousel--warning .al-carousel-dot--active { background-color: var(--color-al-orange-500); }
