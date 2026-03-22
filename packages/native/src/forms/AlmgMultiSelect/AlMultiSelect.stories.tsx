@@ -4,31 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { AlmgMultiSelect } from './AlMultiSelect';
 import { AlmgButton } from '../../primitives/AlmgButton';
+import { tagOptions, largePeopleDataset } from '../../utils/data';
 
 const schema = z.object({
   tags: z.array(z.string({ error: 'Campo obrigatório' }), { error: 'Selecione pelo menos uma tag' }).min(1, 'Selecione pelo menos uma tag'),
 });
 
 type FormData = z.infer<typeof schema>;
-
-const tagOptions = [
-  { value: 'react', label: 'React' },
-  { value: 'typescript', label: 'TypeScript' },
-  { value: 'tailwind', label: 'Tailwind CSS' },
-  { value: 'vite', label: 'Vite' },
-  { value: 'storybook', label: 'Storybook' },
-  { value: 'vitest', label: 'Vitest' },
-  { value: 'eslint', label: 'ESLint' },
-  { value: 'prettier', label: 'Prettier' },
-  { value: 'docker', label: 'Docker' },
-  { value: 'kubernetes', label: 'Kubernetes' },
-];
-
-// Generate a large dataset for virtualization demo
-const largeOptions = Array.from({ length: 5000 }, (_, i) => ({
-  value: `item-${i}`,
-  label: `Employee #${String(i + 1).padStart(5, '0')} — ${['Alice', 'Bob', 'Charlie', 'Diana', 'Edward'][i % 5]} ${['Smith', 'Johnson', 'Williams', 'Brown', 'Jones'][i % 5]}`,
-}));
 
 const meta: Meta<typeof AlmgMultiSelect> = {
   title: 'Forms/AlmgMultiSelect',
@@ -51,7 +33,7 @@ function MultiSelectStory(args: Record<string, unknown> & { optionSet?: 'small' 
     defaultValues: { tags: [] },
   });
 
-  const opts = args.optionSet === 'large' ? largeOptions : tagOptions;
+  const opts = args.optionSet === 'large' ? largePeopleDataset : tagOptions;
 
   return (
     <form onSubmit={form.handleSubmit(() => {})} style={{ maxWidth: '400px' }}>
@@ -78,7 +60,7 @@ export const Default: Story = {
 
 export const LargeDataset: Story = {
   render: (args) => <MultiSelectStory {...args} optionSet="large" />,
-  args: { label: 'Funcionários (5.000 itens)', placeholder: 'Buscar funcionários...' },
+  args: { label: 'Jogadores (5.000 itens)', placeholder: 'Buscar jogadores...' },
 };
 
 export const Disabled: Story = {

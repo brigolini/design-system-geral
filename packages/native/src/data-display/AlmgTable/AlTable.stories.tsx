@@ -2,22 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { createColumnHelper } from '@tanstack/react-table';
 import { AlmgTable } from './AlTable';
 import { useAlmgTable } from './useAlTable';
-
-interface Person {
-  firstName: string;
-  lastName: string;
-  age: number;
-  email: string;
-  department: string;
-}
-
-const data: Person[] = Array.from({ length: 50 }, (_, i) => ({
-  firstName: ['Alice', 'Bob', 'Charlie', 'Diana', 'Edward'][i % 5],
-  lastName: ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones'][i % 5],
-  age: 25 + (i % 30),
-  email: `user${i}@example.com`,
-  department: ['Engineering', 'Marketing', 'Sales', 'HR', 'Finance'][i % 5],
-}));
+import { people, type Person } from '../../utils/data';
 
 const columnHelper = createColumnHelper<Person>();
 
@@ -40,21 +25,21 @@ type Story = StoryObj<typeof meta>;
 
 export const SimpleTable: Story = {
   render: () => {
-    const table = useAlmgTable({ data: data.slice(0, 5), columns });
+    const table = useAlmgTable({ data: people.slice(0, 5), columns });
     return <AlmgTable table={table} />;
   },
 };
 
 export const WithSorting: Story = {
   render: () => {
-    const table = useAlmgTable({ data, columns, enableSorting: true });
+    const table = useAlmgTable({ data: people, columns, enableSorting: true });
     return <AlmgTable table={table} />;
   },
 };
 
 export const WithPagination: Story = {
   render: () => {
-    const table = useAlmgTable({ data, columns, enablePagination: true, pageSize: 10 });
+    const table = useAlmgTable({ data: people, columns, enablePagination: true, pageSize: 10 });
     return <AlmgTable table={table} />;
   },
 };
@@ -62,7 +47,7 @@ export const WithPagination: Story = {
 export const SortingAndPagination: Story = {
   render: () => {
     const table = useAlmgTable({
-      data,
+      data: people,
       columns,
       enableSorting: true,
       enablePagination: true,
@@ -91,7 +76,7 @@ export const GroupedColumns: Story = {
         ],
       }),
     ];
-    const table = useAlmgTable({ data: data.slice(0, 10), columns: groupedColumns, enableSorting: true });
+    const table = useAlmgTable({ data: people.slice(0, 10), columns: groupedColumns, enableSorting: true });
     return <AlmgTable table={table} />;
   },
 };
@@ -124,7 +109,7 @@ export const InlineEditing: Story = {
       columnHelper.accessor('age', { header: 'Idade' }),
       columnHelper.accessor('email', { header: 'Email' }),
     ];
-    const table = useAlmgTable({ data: data.slice(0, 5), columns: editableColumns });
+    const table = useAlmgTable({ data: people.slice(0, 5), columns: editableColumns });
     return <AlmgTable table={table} />;
   },
 };

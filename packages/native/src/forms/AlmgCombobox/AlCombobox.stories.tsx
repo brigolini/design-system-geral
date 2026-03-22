@@ -4,25 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { AlmgCombobox } from './AlCombobox';
 import { AlmgButton } from '../../primitives/AlmgButton';
+import { teamOptions } from '../../utils/data';
 
 const schema = z.object({
-  fruit: z.string({ error: 'Selecione uma fruta' }).min(1, 'Selecione uma fruta'),
+  team: z.string({ error: 'Selecione um time' }).min(1, 'Selecione um time'),
 });
 
 type FormData = z.infer<typeof schema>;
-
-const fruitOptions = [
-  { value: 'apple', label: 'Maçã' },
-  { value: 'banana', label: 'Banana' },
-  { value: 'cherry', label: 'Cereja' },
-  { value: 'grape', label: 'Uva' },
-  { value: 'mango', label: 'Manga' },
-  { value: 'orange', label: 'Laranja' },
-  { value: 'peach', label: 'Pêssego' },
-  { value: 'pear', label: 'Pera' },
-  { value: 'strawberry', label: 'Morango' },
-  { value: 'watermelon', label: 'Melancia' },
-];
 
 const meta: Meta<typeof AlmgCombobox> = {
   title: 'Forms/AlmgCombobox',
@@ -47,11 +35,11 @@ function ComboboxStory(args: Record<string, unknown>) {
   return (
     <form onSubmit={form.handleSubmit(() => {})} style={{ maxWidth: '320px' }}>
       <AlmgCombobox<FormData>
-        name="fruit"
+        name="team"
         form={form}
-        options={fruitOptions}
-        label={args.label as string ?? 'Fruta'}
-        placeholder={args.placeholder as string ?? 'Buscar frutas...'}
+        options={teamOptions}
+        label={args.label as string ?? 'Time'}
+        placeholder={args.placeholder as string ?? 'Buscar times...'}
         loading={args.loading as boolean}
         disabled={args.disabled as boolean}
       />
@@ -64,15 +52,15 @@ function ComboboxStory(args: Record<string, unknown>) {
 
 export const Default: Story = {
   render: (args) => <ComboboxStory {...args} />,
-  args: { label: 'Fruta', placeholder: 'Buscar frutas...' },
+  args: { label: 'Time', placeholder: 'Buscar times...' },
 };
 
 export const Loading: Story = {
   render: (args) => <ComboboxStory {...args} />,
-  args: { label: 'Fruta', loading: true },
+  args: { label: 'Time', loading: true },
 };
 
 export const Disabled: Story = {
   render: (args) => <ComboboxStory {...args} />,
-  args: { label: 'Fruta', disabled: true },
+  args: { label: 'Time', disabled: true },
 };

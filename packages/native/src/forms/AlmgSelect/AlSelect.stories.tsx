@@ -4,22 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { AlmgSelect } from './AlSelect';
 import { AlmgButton } from '../../primitives/AlmgButton';
+import { stateOptions } from '../../utils/data';
 
 const schema = z.object({
-  country: z.string({ error: 'Selecione um país' }).min(1, 'Selecione um país'),
+  country: z.string({ error: 'Selecione um estado' }).min(1, 'Selecione um estado'),
 });
 
 type FormData = z.infer<typeof schema>;
-
-const countryOptions = [
-  { value: 'us', label: 'Estados Unidos' },
-  { value: 'ca', label: 'Canadá' },
-  { value: 'uk', label: 'Reino Unido' },
-  { value: 'de', label: 'Alemanha' },
-  { value: 'fr', label: 'França' },
-  { value: 'jp', label: 'Japão' },
-  { value: 'br', label: 'Brasil' },
-];
 
 const meta: Meta<typeof AlmgSelect> = {
   title: 'Forms/AlmgSelect',
@@ -47,10 +38,10 @@ function SelectStory(args: Record<string, unknown>) {
       <AlmgSelect<FormData>
         name="country"
         form={form}
-        options={countryOptions}
-        label={args.label as string ?? 'País'}
+        options={stateOptions}
+        label={args.label as string ?? 'Estado'}
         labelPosition={args.labelPosition as 'left' | 'top' | 'right' ?? 'top'}
-        placeholder={args.placeholder as string ?? 'Selecione um país...'}
+        placeholder={args.placeholder as string ?? 'Selecione um estado...'}
         loading={args.loading as boolean}
         disabled={args.disabled as boolean}
         required={args.required as boolean}
@@ -64,25 +55,25 @@ function SelectStory(args: Record<string, unknown>) {
 
 export const Default: Story = {
   render: (args) => <SelectStory {...args} />,
-  args: { label: 'País', placeholder: 'Selecione um país...' },
+  args: { label: 'Estado', placeholder: 'Selecione um estado...' },
 };
 
 export const Required: Story = {
   render: (args) => <SelectStory {...args} />,
-  args: { label: 'País', required: true },
+  args: { label: 'Estado', required: true },
 };
 
 export const Disabled: Story = {
   render: (args) => <SelectStory {...args} />,
-  args: { label: 'País', disabled: true },
+  args: { label: 'Estado', disabled: true },
 };
 
 export const Loading: Story = {
   render: (args) => <SelectStory {...args} />,
-  args: { label: 'País', loading: true },
+  args: { label: 'Estado', loading: true },
 };
 
 export const LabelLeft: Story = {
   render: (args) => <SelectStory {...args} />,
-  args: { label: 'País', labelPosition: 'left' },
+  args: { label: 'Estado', labelPosition: 'left' },
 };

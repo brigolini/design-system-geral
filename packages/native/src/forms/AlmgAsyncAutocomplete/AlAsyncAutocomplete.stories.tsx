@@ -4,30 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { AlmgAsyncAutocomplete } from './AlAsyncAutocomplete';
 import { AlmgButton } from '../../primitives/AlmgButton';
+import { fetchCities } from '../../utils/data';
 
 const schema = z.object({
   city: z.string({ error: 'Selecione uma cidade' }).min(1, 'Selecione uma cidade'),
 });
 
 type FormData = z.infer<typeof schema>;
-
-const allCities = [
-  'New York', 'Los Angeles', 'Chicago', 'Houston', 'Phoenix',
-  'Philadelphia', 'San Antonio', 'San Diego', 'Dallas', 'San Jose',
-  'Austin', 'Jacksonville', 'Fort Worth', 'Columbus', 'Charlotte',
-  'Indianapolis', 'San Francisco', 'Seattle', 'Denver', 'Nashville',
-  'London', 'Paris', 'Tokyo', 'Berlin', 'Madrid', 'Rome',
-  'Amsterdam', 'Vienna', 'Prague', 'Barcelona', 'Lisbon',
-  'São Paulo', 'Buenos Aires', 'Mexico City', 'Toronto', 'Vancouver',
-];
-
-// Simulated async fetch
-const fetchCities = async (query: string) => {
-  await new Promise((r) => setTimeout(r, 500)); // Simulate network delay
-  return allCities
-    .filter((c) => c.toLowerCase().includes(query.toLowerCase()))
-    .map((c) => ({ value: c.toLowerCase().replace(/\s/g, '-'), label: c }));
-};
 
 const meta: Meta<typeof AlmgAsyncAutocomplete> = {
   title: 'Forms/AlmgAsyncAutocomplete',

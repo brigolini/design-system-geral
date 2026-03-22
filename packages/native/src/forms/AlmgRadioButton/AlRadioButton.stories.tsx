@@ -4,18 +4,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { AlmgRadioButton } from './AlRadioButton';
 import { AlmgButton } from '../../primitives/AlmgButton';
+import { positionOptions } from '../../utils/data';
 
 const schema = z.object({
-  color: z.string({ error: 'Selecione uma cor' }).min(1, 'Selecione uma cor'),
+  position: z.string({ error: 'Selecione uma posição' }).min(1, 'Selecione uma posição'),
 });
 
 type FormData = z.infer<typeof schema>;
-
-const colorOptions = [
-  { value: 'red', label: 'Vermelho' },
-  { value: 'green', label: 'Verde' },
-  { value: 'blue', label: 'Azul' },
-];
 
 const meta: Meta<typeof AlmgRadioButton> = {
   title: 'Primitives/AlmgRadioButton',
@@ -41,10 +36,10 @@ function RadioStory(args: Record<string, unknown>) {
   return (
     <form onSubmit={form.handleSubmit(() => {})}>
       <AlmgRadioButton<FormData>
-        name="color"
+        name="position"
         form={form}
-        label={args.label as string ?? 'Cor Favorita'}
-        options={colorOptions}
+        label={args.label as string ?? 'Posição'}
+        options={positionOptions}
         direction={args.direction as 'horizontal' | 'vertical' ?? 'vertical'}
         loading={args.loading as boolean}
         disabled={args.disabled as boolean}
@@ -59,20 +54,20 @@ function RadioStory(args: Record<string, unknown>) {
 
 export const Vertical: Story = {
   render: (args) => <RadioStory {...args} />,
-  args: { label: 'Cor Favorita', direction: 'vertical' },
+  args: { label: 'Posição', direction: 'vertical' },
 };
 
 export const Horizontal: Story = {
   render: (args) => <RadioStory {...args} />,
-  args: { label: 'Cor Favorita', direction: 'horizontal' },
+  args: { label: 'Posição', direction: 'horizontal' },
 };
 
 export const Required: Story = {
   render: (args) => <RadioStory {...args} />,
-  args: { label: 'Cor Favorita', required: true },
+  args: { label: 'Posição', required: true },
 };
 
 export const Disabled: Story = {
   render: (args) => <RadioStory {...args} />,
-  args: { label: 'Cor Favorita', disabled: true },
+  args: { label: 'Posição', disabled: true },
 };

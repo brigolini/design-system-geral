@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { AlmgAccordion } from './AlAccordion';
+import { faqItems } from '../../utils/data';
 
 const meta: Meta<typeof AlmgAccordion> = {
   title: 'Data Display/AlmgAccordion',
@@ -14,24 +15,18 @@ export default meta;
 
 type Story = StoryObj<typeof meta>;
 
-const items = [
-  { id: '1', title: 'O que é Al UI?', content: <><p>Al UI é um design system para desenvolvedores web da ALMG.</p><p>Ele é criado para você pelo comitê de tecnologia da GTI</p></> },
-  { id: '2', title: 'Como instalar?', content: <p>Instale via npm: npm install @almg/al-ui</p> },
-  { id: '3', title: 'É acessível?', content: <p>Sim, todos os componentes atendem aos padrões WCAG AA.</p> },
-];
-
 export const Vertical: Story = {
-  args: { items, direction: 'vertical' },
+  args: { items: faqItems, direction: 'vertical' },
 };
 
 export const Horizontal: Story = {
-  args: { items, direction: 'horizontal' },
+  args: { items: faqItems, direction: 'horizontal' },
 };
 
 export const AllowMultiple: Story = {
-  args: { items, allowMultiple: true },
+  args: { items: faqItems, allowMultiple: true },
 };
 
 export const DefaultOpen: Story = {
-  args: { items, defaultOpen: ['1'] },
+  args: { items: faqItems, defaultOpen: ['1'] },
 };

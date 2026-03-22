@@ -10,6 +10,7 @@ export default defineConfig({
     tailwindcss(),
     dts({
       include: ['src/**/*.ts', 'src/**/*.tsx'],
+      exclude: ['src/utils/data/**', 'src/**/*.stories.tsx', 'src/**/*.test.tsx'],
       outDir: 'dist',
       tsconfigPath: './tsconfig.json',
     }),
