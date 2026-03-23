@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Design Responsivo — Boas Práticas @almg/native</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="doc-nav">
+    <span class="nav-title">Boas Práticas</span>
+    <a href="01-introducao.html">Introdução</a>
+    <a href="02-como-adicionar.html">Como Adicionar</a>
+    <a href="03-design-responsivo.html" class="active">Design Responsivo</a>
+    <a href="04-criando-formularios.html">Criando Formulários</a>
+    <a href="05-buscando-salvando-dados.html">Buscando e Salvando Dados</a>
+  </nav>
+
+  <div class="container">
+    <h1>Design Responsivo</h1>
+
+    <p>A biblioteca <code>@almg/native</code> fornece um <strong>sistema de grid flexível</strong> e <strong>design tokens CSS</strong> que facilitam a criação de layouts responsivos e adaptáveis.</p>
+
+    <hr />
+
+    <h2>Sistema de Grid</h2>
+
+    <p>O <code>AlmgGrid</code> cria layouts baseados em CSS Grid com colunas predefinidas. O <code>AlmgGridItem</code> controla quantas colunas cada item ocupa.</p>
+
+    <h3>Colunas disponíveis</h3>
+
+    <table>
+      <thead>
+        <tr><th>Valor</th><th>Uso típico</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>1</code></td><td>Layout de coluna única (mobile-first)</td></tr>
+        <tr><td><code>2</code></td><td>Duas colunas iguais (formulários simples, comparações)</td></tr>
+        <tr><td><code>3</code></td><td>Três colunas (cards de resumo, dashboards)</td></tr>
+        <tr><td><code>8</code></td><td>Grid de 8 colunas (layouts intermediários)</td></tr>
+        <tr><td><code>12</code></td><td>Grid completo (layouts complexos com spans variáveis)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Exemplo: Grid 12 colunas com spans variáveis</h3>
+
+    <p>Cada linha pode ter <strong>itens de tamanhos diferentes</strong>. Os spans devem somar o total de colunas:</p>
+
+<pre><code>import { AlmgGrid, AlmgGridItem, AlmgCard } from '@almg/native';
+
+// Linha 1: sidebar (4 colunas) + conteúdo (8 colunas)
+// Linha 2: duas metades (6 + 6)
+// Linha 3: três terços (4 + 4 + 4)
+&lt;AlmgGrid columns={12} gap="md"&gt;
+  &lt;AlmgGridItem span={4}&gt;
+    &lt;AlmgCard title="Sidebar"&gt;
+      &lt;p&gt;Navegação ou filtros&lt;/p&gt;
+    &lt;/AlmgCard&gt;
+  &lt;/AlmgGridItem&gt;
+  &lt;AlmgGridItem span={8}&gt;
+    &lt;AlmgCard title="Conteúdo Principal"&gt;
+      &lt;p&gt;Área de conteúdo&lt;/p&gt;
+    &lt;/AlmgCard&gt;
+  &lt;/AlmgGridItem&gt;
+
+  &lt;AlmgGridItem span={6}&gt;
+    &lt;AlmgCard title="Metade Esquerda"&gt;
+      &lt;p&gt;Conteúdo&lt;/p&gt;
+    &lt;/AlmgCard&gt;
+  &lt;/AlmgGridItem&gt;
+  &lt;AlmgGridItem span={6}&gt;
+    &lt;AlmgCard title="Metade Direita"&gt;
+      &lt;p&gt;Conteúdo&lt;/p&gt;
+    &lt;/AlmgCard&gt;
+  &lt;/AlmgGridItem&gt;
+
+  &lt;AlmgGridItem span={4}&gt;
+    &lt;AlmgCard title="Terço 1"&gt;&lt;p&gt;Info&lt;/p&gt;&lt;/AlmgCard&gt;
+  &lt;/AlmgGridItem&gt;
+  &lt;AlmgGridItem span={4}&gt;
+    &lt;AlmgCard title="Terço 2"&gt;&lt;p&gt;Info&lt;/p&gt;&lt;/AlmgCard&gt;
+  &lt;/AlmgGridItem&gt;
+  &lt;AlmgGridItem span={4}&gt;
+    &lt;AlmgCard title="Terço 3"&gt;&lt;p&gt;Info&lt;/p&gt;&lt;/AlmgCard&gt;
+  &lt;/AlmgGridItem&gt;
+&lt;/AlmgGrid&gt;</code></pre>
+
+    <h3>Tamanhos de gap</h3>
+
+    <table>
+      <thead>
+        <tr><th>Valor</th><th>Token CSS</th><th>Pixels</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>sm</code></td><td><code>--spacing-almg-2</code></td><td>8px</td></tr>
+        <tr><td><code>md</code></td><td><code>--spacing-almg-4</code></td><td>16px</td></tr>
+        <tr><td><code>lg</code></td><td><code>--spacing-almg-6</code></td><td>24px</td></tr>
+      </tbody>
+    </table>
+
+    <hr />
+
+    <h2>Layouts Responsivos com Media Queries</h2>
+
+    <p>O sistema de grid usa CSS puro. Para tornar o layout responsivo, combine com media queries no <code>className</code> ou em CSS separado:</p>
+
+    <h3>Abordagem 1: CSS com classes utilitárias</h3>
+
+    <p>Crie classes CSS no seu projeto que alterem o grid em breakpoints:</p>
+
+<pre><code>/* styles/responsive.css */
+@media (max-width: 768px) {
+  .grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+}</code></pre>
+
+<pre><code>&lt;AlmgGrid columns={12} gap="md" className="grid-responsive"&gt;
+  &lt;AlmgGridItem span={4}&gt;Sidebar&lt;/AlmgGridItem&gt;
+  &lt;AlmgGridItem span={8}&gt;Conteúdo&lt;/AlmgGridItem&gt;
+&lt;/AlmgGrid&gt;</code></pre>
+
+    <p>Em telas menores que 768px, ambos os itens ocuparão a largura total.</p>
+
+    <h3>Abordagem 2: Grids diferentes por breakpoint</h3>
+
+    <p>Use dois grids com exibição condicional:</p>
+
+<pre><code>import { AlmgGrid, AlmgGridItem, AlmgCard } from '@almg/native';
+
+function Dashboard() {
+  return (
+    &lt;&gt;
+      {/* Desktop: 3 colunas */}
+      &lt;div className="hidden-mobile"&gt;
+        &lt;AlmgGrid columns={3} gap="md"&gt;
+          &lt;AlmgGridItem&gt;&lt;AlmgCard title="Card 1"&gt;...&lt;/AlmgCard&gt;&lt;/AlmgGridItem&gt;
+          &lt;AlmgGridItem&gt;&lt;AlmgCard title="Card 2"&gt;...&lt;/AlmgCard&gt;&lt;/AlmgGridItem&gt;
+          &lt;AlmgGridItem&gt;&lt;AlmgCard title="Card 3"&gt;...&lt;/AlmgCard&gt;&lt;/AlmgGridItem&gt;
+        &lt;/AlmgGrid&gt;
+      &lt;/div&gt;
+
+      {/* Mobile: 1 coluna */}
+      &lt;div className="hidden-desktop"&gt;
+        &lt;AlmgGrid columns={1} gap="sm"&gt;
+          &lt;AlmgGridItem&gt;&lt;AlmgCard title="Card 1"&gt;...&lt;/AlmgCard&gt;&lt;/AlmgGridItem&gt;
+          &lt;AlmgGridItem&gt;&lt;AlmgCard title="Card 2"&gt;...&lt;/AlmgCard&gt;&lt;/AlmgGridItem&gt;
+          &lt;AlmgGridItem&gt;&lt;AlmgCard title="Card 3"&gt;...&lt;/AlmgCard&gt;&lt;/AlmgGridItem&gt;
+        &lt;/AlmgGrid&gt;
+      &lt;/div&gt;
+    &lt;/&gt;
+  );
+}</code></pre>
+
+    <p>Com o CSS correspondente:</p>
+
+<pre><code>@media (max-width: 768px) {
+  .hidden-mobile { display: none; }
+}
+@media (min-width: 769px) {
+  .hidden-desktop { display: none; }
+}</code></pre>
+
+    <hr />
+
+    <h2>Design Tokens para Responsividade</h2>
+
+    <p>Os tokens CSS da biblioteca permitem manter consistência visual em qualquer tamanho de tela:</p>
+
+    <h3>Tipografia</h3>
+
+<pre><code>/* Títulos de página */
+font-size: var(--font-size-almg-2xl);   /* 1.5rem — 24px */
+font-size: var(--font-size-almg-xl);    /* 1.25rem — 20px */
+
+/* Corpo */
+font-size: var(--font-size-almg-base);  /* 1rem — 16px */
+font-size: var(--font-size-almg-sm);    /* 0.875rem — 14px */
+font-size: var(--font-size-almg-xs);    /* 0.75rem — 12px */
+
+/* Pesos */
+font-weight: var(--font-weight-almg-bold);      /* 700 */
+font-weight: var(--font-weight-almg-semibold);   /* 600 */
+font-weight: var(--font-weight-almg-medium);     /* 500 */
+font-weight: var(--font-weight-almg-normal);     /* 400 */</code></pre>
+
+    <h3>Espaçamento</h3>
+
+    <p>Escala de espaçamento baseada em múltiplos de 4px:</p>
+
+<pre><code>--spacing-almg-1:  4px      /* Separação mínima */
+--spacing-almg-2:  8px      /* Gap pequeno */
+--spacing-almg-3:  12px     /* Gap entre campos de formulário */
+--spacing-almg-4:  16px     /* Gap padrão, padding de containers */
+--spacing-almg-5:  20px
+--spacing-almg-6:  24px     /* Gap grande, margens de seção */
+--spacing-almg-8:  32px     /* Separação entre seções */
+--spacing-almg-10: 40px
+--spacing-almg-12: 48px
+--spacing-almg-16: 64px
+--spacing-almg-20: 80px</code></pre>
+
+    <h3>Cores</h3>
+
+<pre><code>/* Marca */
+--color-almg-brand-primary: #CF4D56;
+--color-almg-brand-secondary: #DEDEDE;
+--color-almg-brand-font-primary;      /* Texto principal */
+--color-almg-brand-font-secondary;    /* Texto secundário */
+
+/* Bordas e sombras */
+--border-radius-almg-sm: 0.25rem;     /* 4px */
+--border-radius-almg-md: 0.375rem;    /* 6px */
+--border-radius-almg-lg: 0.5rem;      /* 8px */
+--shadow-almg-sm;
+--shadow-almg-md;
+--shadow-almg-lg;</code></pre>
+
+    <hr />
+
+    <h2>Boas Práticas de Layout</h2>
+
+    <h3>Container principal</h3>
+
+    <p>Limite a largura máxima do conteúdo e centralize:</p>
+
+<pre><code>&lt;main style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}&gt;
+  &lt;Outlet /&gt;
+&lt;/main&gt;</code></pre>
+
+    <h3>Formulários</h3>
+
+    <p>Limite a largura de formulários simples para melhor legibilidade:</p>
+
+<pre><code>&lt;form style={{ maxWidth: '500px', display: 'flex', flexDirection: 'column', gap: '16px' }}&gt;
+  {/* campos do formulário */}
+&lt;/form&gt;</code></pre>
+
+    <h3>Grupos de botões</h3>
+
+    <p>Use flexbox com gap para agrupar ações:</p>
+
+<pre><code>&lt;div style={{ display: 'flex', gap: '12px' }}&gt;
+  &lt;AlmgButton intent="primary" type="submit"&gt;Salvar&lt;/AlmgButton&gt;
+  &lt;AlmgButton intent="secondary" type="button"&gt;Cancelar&lt;/AlmgButton&gt;
+&lt;/div&gt;</code></pre>
+
+    <h3>Cabeçalho de página com ação</h3>
+
+    <p>Para títulos com botões alinhados à direita:</p>
+
+<pre><code>&lt;div style={{
+  display: 'flex',
+  justifyContent: 'space-between',
+  alignItems: 'center',
+  margin: '24px 0 16px',
+}}&gt;
+  &lt;h1 style={{
+    fontSize: 'var(--font-size-almg-xl)',
+    fontWeight: 'var(--font-weight-almg-bold)',
+  }}&gt;
+    Título da Página
+  &lt;/h1&gt;
+  &lt;Link to="/entidades/novo"&gt;
+    &lt;AlmgButton intent="primary"&gt;Novo Registro&lt;/AlmgButton&gt;
+  &lt;/Link&gt;
+&lt;/div&gt;</code></pre>
+
+    <h3>Grid para campos de formulário lado a lado</h3>
+
+    <p>Use o grid para colocar campos em colunas dentro de formulários:</p>
+
+<pre><code>&lt;AlmgGrid columns={12} gap="md"&gt;
+  &lt;AlmgGridItem span={9}&gt;
+    &lt;AlmgInput name="rua" form={form} label="Rua" required /&gt;
+  &lt;/AlmgGridItem&gt;
+  &lt;AlmgGridItem span={3}&gt;
+    &lt;AlmgInput name="numero" form={form} label="Número" required /&gt;
+  &lt;/AlmgGridItem&gt;
+&lt;/AlmgGrid&gt;</code></pre>
+
+    <h3>Cards para agrupar conteúdo</h3>
+
+    <p>Use <code>AlmgCard</code> para separar visualmente seções:</p>
+
+<pre><code>&lt;AlmgCard title="Dados Pessoais"&gt;
+  &lt;AlmgInput name="nome" form={form} label="Nome" required /&gt;
+  &lt;AlmgInput name="email" form={form} label="E-mail" type="email" required /&gt;
+&lt;/AlmgCard&gt;</code></pre>
+  </div>
+</body>
+</html>

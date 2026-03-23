@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Criando Formulários — Boas Práticas @almg/native</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="doc-nav">
+    <span class="nav-title">Boas Práticas</span>
+    <a href="01-introducao.html">Introdução</a>
+    <a href="02-como-adicionar.html">Como Adicionar</a>
+    <a href="03-design-responsivo.html">Design Responsivo</a>
+    <a href="04-criando-formularios.html" class="active">Criando Formulários</a>
+    <a href="05-buscando-salvando-dados.html">Buscando e Salvando Dados</a>
+  </nav>
+
+  <div class="container">
+    <h1>Criando Formulários</h1>
+
+    <p>Os componentes de formulário do <code>@almg/native</code> são integrados com <strong>React Hook Form</strong> e <strong>Zod</strong>. Cada componente recebe a instância do formulário (<code>form</code>) e o nome do campo (<code>name</code>), garantindo validação type-safe e exibição automática de erros.</p>
+
+    <hr />
+
+    <h2>Fluxo Básico</h2>
+
+    <h3>1. Definir o schema Zod</h3>
+
+    <p>Crie um arquivo <code>{entidade}.schema.ts</code> com o schema e o tipo inferido:</p>
+
+<pre><code>// services/produto.schema.ts
+import { z } from 'zod';
+
+export const produtoSchema = z.object({
+  nome: z.string({ error: 'Nome é obrigatório' })
+    .min(2, 'Nome deve ter pelo menos 2 caracteres'),
+  codigo: z.string({ error: 'Código é obrigatório' })
+    .length(6, 'Código deve ter 6 caracteres')
+    .toUpperCase(),
+  preco: z.string({ error: 'Preço é obrigatório' })
+    .min(1, 'Preço é obrigatório'),
+  categoria: z.string({ error: 'Categoria é obrigatória' })
+    .min(1, 'Selecione uma categoria'),
+  ativo: z.boolean().optional(),
+});
+
+export type ProdutoInput = z.infer&lt;typeof produtoSchema&gt;;</code></pre>
+
+    <h3>2. Criar o formulário com useForm</h3>
+
+<pre><code>import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { produtoSchema, type ProdutoInput } from '../services/produto.schema';
+
+const form = useForm&lt;ProdutoInput&gt;({
+  resolver: zodResolver(produtoSchema),
+  mode: 'onBlur', // valida ao sair do campo
+});</code></pre>
+
+    <h3>3. Conectar os componentes</h3>
+
+    <p>Cada componente recebe <code>form</code> e <code>name</code> com tipagem genérica:</p>
+
+<pre><code>import {
+  AlmgInput, AlmgSelect, AlmgCheckbox,
+  AlmgCurrencyInput, AlmgButton,
+} from '@almg/native';
+
+&lt;form onSubmit={handleSubmit} style={{
+  maxWidth: '500px',
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '16px',
+}}&gt;
+  &lt;AlmgInput&lt;ProdutoInput&gt;
+    name="nome"
+    form={form}
+    label="Nome do Produto"
+    placeholder="Ex: Caneta Azul"
+    required
+  /&gt;
+
+  &lt;AlmgInput&lt;ProdutoInput&gt;
+    name="codigo"
+    form={form}
+    label="Código"
+    placeholder="Ex: CAN001"
+    maxLength={6}
+    required
+  /&gt;
+
+  &lt;AlmgCurrencyInput&lt;ProdutoInput&gt;
+    name="preco"
+    form={form}
+    label="Preço"
+    required
+  /&gt;
+
+  &lt;AlmgSelect&lt;ProdutoInput&gt;
+    name="categoria"
+    form={form}
+    label="Categoria"
+    options={[
+      { value: 'escritorio', label: 'Material de Escritório' },
+      { value: 'informatica', label: 'Informática' },
+      { value: 'limpeza', label: 'Limpeza' },
+    ]}
+    placeholder="Selecione..."
+    required
+  /&gt;
+
+  &lt;AlmgCheckbox&lt;ProdutoInput&gt;
+    name="ativo"
+    form={form}
+    label="Produto ativo"
+  /&gt;
+
+  &lt;div style={{ display: 'flex', gap: '12px' }}&gt;
+    &lt;AlmgButton intent="primary" type="submit"&gt;Salvar&lt;/AlmgButton&gt;
+    &lt;AlmgButton intent="secondary" type="button" onClick={() =&gt; navigate(-1)}&gt;
+      Cancelar
+    &lt;/AlmgButton&gt;
+  &lt;/div&gt;
+&lt;/form&gt;</code></pre>
+
+    <hr />
+
+    <h2>Componentes de Formulário Disponíveis</h2>
+
+    <h3>Campos de texto</h3>
+
+    <table>
+      <thead>
+        <tr><th>Componente</th><th>Quando usar</th><th>Props principais</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>AlmgInput</code></td><td>Texto livre (nome, e-mail, etc.)</td><td><code>type</code>, <code>placeholder</code>, <code>maxLength</code></td></tr>
+        <tr><td><code>AlmgMaskInput</code></td><td>Texto com formato fixo (CPF, telefone, CEP)</td><td><code>mask</code> (ex: <code>"999.999.999-99"</code>)</td></tr>
+        <tr><td><code>AlmgCurrencyInput</code></td><td>Valores monetários</td><td><code>prefix</code>, <code>decimalSeparator</code>, <code>thousandSeparator</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Campos de seleção</h3>
+
+    <table>
+      <thead>
+        <tr><th>Componente</th><th>Quando usar</th><th>Props principais</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>AlmgSelect</code></td><td>Lista fixa de opções (dropdown)</td><td><code>options: {value, label}[]</code></td></tr>
+        <tr><td><code>AlmgCombobox</code></td><td>Lista fixa com busca</td><td><code>options: {value, label}[]</code></td></tr>
+        <tr><td><code>AlmgMultiSelect</code></td><td>Seleção múltipla com chips</td><td><code>options: {value, label}[]</code></td></tr>
+        <tr><td><code>AlmgAsyncAutocomplete</code></td><td>Busca no servidor (autocomplete)</td><td><code>fetchOptions: (query) =&gt; Promise&lt;{value, label}[]&gt;</code></td></tr>
+        <tr><td><code>AlmgRadioButton</code></td><td>Escolha única visível (poucas opções)</td><td><code>options: {value, label}[]</code></td></tr>
+        <tr><td><code>AlmgCheckbox</code></td><td>Sim/Não (boolean)</td><td><code>value?</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Campos de data</h3>
+
+    <table>
+      <thead>
+        <tr><th>Componente</th><th>Quando usar</th><th>Props principais</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>AlmgDatePicker</code></td><td>Uma data</td><td><em>(nenhuma extra)</em></td></tr>
+        <tr><td><code>AlmgDateRangePicker</code></td><td>Intervalo de datas</td><td><code>startName</code>, <code>endName</code> (ao invés de <code>name</code>)</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Props compartilhadas (todos os campos de formulário)</h3>
+
+<pre><code>// Obrigatórias
+name: Path&lt;TFieldValues&gt;           // Nome do campo (type-safe com schema Zod)
+form: UseFormReturn&lt;TFieldValues&gt;  // Instância do useForm()
+
+// Opcionais
+label?: string                     // Texto do label
+labelPosition?: 'left' | 'top' | 'right'  // Posição do label (padrão: 'top')
+errorPosition?: 'bottom' | 'right'        // Posição do erro (padrão: 'bottom')
+required?: boolean                 // Indicador visual de obrigatório
+helpText?: string                  // Texto de ajuda abaixo do campo
+loading?: boolean                  // Exibe spinner e desabilita
+disabled?: boolean                 // Desabilita o campo
+className?: string                 // Classes CSS adicionais</code></pre>
+
+    <hr />
+
+    <h2>Formulários de Edição</h2>
+
+    <p>A diferença para o formulário de criação é o <code>defaultValues</code>:</p>
+
+<pre><code>export async function loader({ params }: LoaderFunctionArgs) {
+  const service = await import('../../../services/produto.service');
+  return Response.json({ produto: service.getById(params.id!) });
+}
+
+export default function ProdutoEdit() {
+  const { produto } = useLoaderData() as { produto: ProdutoRecord };
+
+  const form = useForm&lt;ProdutoInput&gt;({
+    resolver: zodResolver(produtoSchema),
+    mode: 'onBlur',
+    defaultValues: {
+      nome: produto.nome,
+      codigo: produto.codigo,
+      preco: produto.preco,
+      categoria: produto.categoria,
+      ativo: produto.ativo,
+    },
+  });
+
+  // ... campos idênticos ao formulário de criação
+}</code></pre>
+
+    <p>Para o <code>AlmgAsyncAutocomplete</code> em formulários de edição, use <code>initialDisplayValue</code> para exibir o texto da opção já selecionada:</p>
+
+<pre><code>&lt;AlmgAsyncAutocomplete&lt;ProdutoInput&gt;
+  name="categoriaId"
+  form={form}
+  label="Categoria"
+  fetchOptions={fetchCategorias}
+  initialDisplayValue={produto.categoriaNome}  // texto a exibir
+  required
+/&gt;</code></pre>
+
+    <hr />
+
+    <h2>Campos Dinâmicos (Field Arrays)</h2>
+
+    <p>Para listas de itens repetíveis (ex: endereços, itens de pedido), use <code>useFieldArray</code>:</p>
+
+<pre><code>import { useForm, useFieldArray } from 'react-hook-form';
+
+const form = useForm&lt;PedidoInput&gt;({
+  resolver: zodResolver(pedidoSchema),
+  mode: 'onBlur',
+  defaultValues: {
+    cliente: '',
+    itens: [{ produtoId: '', quantidade: '', precoUnitario: '' }],
+  },
+});
+
+const { fields, append, remove } = useFieldArray({
+  control: form.control,
+  name: 'itens',
+});</code></pre>
+
+    <p>Renderize os campos com índice:</p>
+
+<pre><code>{fields.map((field, index) =&gt; (
+  &lt;AlmgCard key={field.id} title={`Item ${index + 1}`}&gt;
+    &lt;AlmgGrid columns={12} gap="md"&gt;
+      &lt;AlmgGridItem span={5}&gt;
+        &lt;AlmgAsyncAutocomplete
+          name={`itens.${index}.produtoId`}
+          form={form}
+          label="Produto"
+          fetchOptions={fetchProdutos}
+          required
+        /&gt;
+      &lt;/AlmgGridItem&gt;
+      &lt;AlmgGridItem span={3}&gt;
+        &lt;AlmgInput
+          name={`itens.${index}.quantidade`}
+          form={form}
+          label="Quantidade"
+          type="number"
+          required
+        /&gt;
+      &lt;/AlmgGridItem&gt;
+      &lt;AlmgGridItem span={4}&gt;
+        &lt;AlmgCurrencyInput
+          name={`itens.${index}.precoUnitario`}
+          form={form}
+          label="Preço Unitário"
+          required
+        /&gt;
+      &lt;/AlmgGridItem&gt;
+    &lt;/AlmgGrid&gt;
+
+    {fields.length &gt; 1 &amp;&amp; (
+      &lt;AlmgButton intent="danger" type="button" onClick={() =&gt; remove(index)}&gt;
+        Remover Item
+      &lt;/AlmgButton&gt;
+    )}
+  &lt;/AlmgCard&gt;
+))}
+
+&lt;AlmgButton
+  intent="secondary"
+  type="button"
+  onClick={() =&gt; append({ produtoId: '', quantidade: '', precoUnitario: '' })}
+&gt;
+  + Adicionar Item
+&lt;/AlmgButton&gt;</code></pre>
+
+    <blockquote>
+      <p><strong>Importante:</strong> Use <code>field.id</code> como <code>key</code> (gerado pelo RHF), não o <code>index</code>. O nome do campo segue o padrão <code>itens.${index}.nomeDoCampo</code>.</p>
+    </blockquote>
+
+    <hr />
+
+    <h2>Formulários Multi-Etapa (Stepper)</h2>
+
+    <p>Para formulários longos, divida em etapas com o <code>AlmgStepper</code>:</p>
+
+<pre><code>import { useState } from 'react';
+import { AlmgStepper, AlmgButton } from '@almg/native';
+
+const [activeStep, setActiveStep] = useState(0);
+
+const steps = [
+  {
+    label: 'Dados Básicos',
+    content: (
+      &lt;div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '500px' }}&gt;
+        &lt;AlmgInput&lt;FormData&gt; name="nome" form={form} label="Nome" required /&gt;
+        &lt;AlmgInput&lt;FormData&gt; name="email" form={form} label="E-mail" type="email" required /&gt;
+      &lt;/div&gt;
+    ),
+  },
+  {
+    label: 'Endereço',
+    content: (
+      &lt;div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '500px' }}&gt;
+        &lt;AlmgInput&lt;FormData&gt; name="rua" form={form} label="Rua" required /&gt;
+        &lt;AlmgMaskInput&lt;FormData&gt; name="cep" form={form} mask="99999-999" label="CEP" required /&gt;
+      &lt;/div&gt;
+    ),
+  },
+];
+
+return (
+  &lt;&gt;
+    &lt;AlmgStepper steps={steps} activeStep={activeStep} onStepChange={setActiveStep} /&gt;
+
+    &lt;div style={{ display: 'flex', gap: '12px', marginTop: '24px' }}&gt;
+      {activeStep &gt; 0 &amp;&amp; (
+        &lt;AlmgButton intent="secondary" onClick={() =&gt; setActiveStep(s =&gt; s - 1)}&gt;
+          Voltar
+        &lt;/AlmgButton&gt;
+      )}
+      {activeStep &lt; steps.length - 1 ? (
+        &lt;AlmgButton intent="primary" onClick={() =&gt; setActiveStep(s =&gt; s + 1)}&gt;
+          Próximo
+        &lt;/AlmgButton&gt;
+      ) : (
+        &lt;AlmgButton intent="primary" onClick={handleSubmit}&gt;
+          Salvar
+        &lt;/AlmgButton&gt;
+      )}
+      &lt;AlmgButton intent="secondary" onClick={() =&gt; navigate(-1)}&gt;
+        Cancelar
+      &lt;/AlmgButton&gt;
+    &lt;/div&gt;
+  &lt;/&gt;
+);</code></pre>
+
+    <hr />
+
+    <h2>Padrão de Submissão com React Router</h2>
+
+    <p>Para integrar a validação do RHF com as <strong>actions</strong> do React Router, use este padrão:</p>
+
+<pre><code>const handleSubmit = form.handleSubmit((data) =&gt; {
+  // Cria um form nativo para submeter ao React Router action
+  const formEl = document.createElement('form');
+  formEl.method = 'post';
+  formEl.style.display = 'none';
+  const input = document.createElement('input');
+  input.type = 'hidden';
+  input.name = 'data';
+  input.value = JSON.stringify(data);
+  formEl.appendChild(input);
+  document.body.appendChild(formEl);
+  formEl.submit();
+});</code></pre>
+
+    <p><strong>Por que este padrão?</strong></p>
+    <ul>
+      <li>O Zod valida os dados no cliente antes de submeter</li>
+      <li>O React Router <code>action</code> recebe os dados já validados via <code>formData.get('data')</code></li>
+      <li>Erros de validação são exibidos inline pelo RHF (sem reload da página)</li>
+      <li>O action do servidor pode fazer validação adicional e redirecionar</li>
+    </ul>
+  </div>
+</body>
+</html>

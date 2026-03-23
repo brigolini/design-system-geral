@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Buscando e Salvando Dados — Boas Práticas @almg/native</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="doc-nav">
+    <span class="nav-title">Boas Práticas</span>
+    <a href="01-introducao.html">Introdução</a>
+    <a href="02-como-adicionar.html">Como Adicionar</a>
+    <a href="03-design-responsivo.html">Design Responsivo</a>
+    <a href="04-criando-formularios.html">Criando Formulários</a>
+    <a href="05-buscando-salvando-dados.html" class="active">Buscando e Salvando Dados</a>
+  </nav>
+
+  <div class="container">
+    <h1>Buscando e Salvando Dados</h1>
+
+    <p>A arquitetura recomendada para buscar e persistir dados segue um padrão de <strong>três camadas</strong>: <strong>Schema → Service → Repository</strong>. As rotas do React Router conectam essas camadas ao frontend usando <strong>loaders</strong> (leitura) e <strong>actions</strong> (escrita).</p>
+
+    <hr />
+
+    <h2>Visão Geral da Arquitetura</h2>
+
+<div class="diagram">┌──────────────┐     ┌──────────────┐     ┌──────────────┐     ┌──────────────┐
+│  Componente  │────▶│    Route     │────▶│   Service    │────▶│  Repository  │
+│   (React)    │     │ loader/action│     │   (lógica)   │     │   (dados)    │
+└──────────────┘     └──────────────┘     └──────────────┘     └──────────────┘
+                           │                     │                     │
+                      React Router          Validação Zod        Leitura/Escrita
+                      (SSR / client)        Regras de negócio    (JSON, API, BD)</div>
+
+    <table>
+      <thead>
+        <tr><th>Camada</th><th>Arquivo</th><th>Responsabilidade</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Schema</strong></td><td><code>services/{entidade}.schema.ts</code></td><td>Validação Zod + tipo TypeScript inferido</td></tr>
+        <tr><td><strong>Service</strong></td><td><code>services/{entidade}.service.ts</code></td><td>Lógica de negócio, validação, orquestração</td></tr>
+        <tr><td><strong>Repository</strong></td><td><code>database/{entidade}.repository.ts</code></td><td>Acesso a dados (CRUD puro)</td></tr>
+        <tr><td><strong>Route</strong></td><td><code>routes/pages/{entidade}/*.tsx</code></td><td>Loaders, actions e componentes React</td></tr>
+        <tr><td><strong>API</strong></td><td><code>routes/api/{entidade}.search.tsx</code></td><td>Endpoints para autocomplete</td></tr>
+      </tbody>
+    </table>
+
+    <hr />
+
+    <h2>Camada 1: Schema (Validação)</h2>
+
+    <p>O schema Zod define a <strong>forma dos dados</strong> e as <strong>regras de validação</strong>. O tipo TypeScript é inferido automaticamente.</p>
+
+<pre><code>// services/produto.schema.ts
+import { z } from 'zod';
+
+export const produtoSchema = z.object({
+  nome: z.string({ error: 'Nome é obrigatório' })
+    .min(2, 'Nome deve ter pelo menos 2 caracteres'),
+  preco: z.string({ error: 'Preço é obrigatório' })
+    .min(1, 'Preço é obrigatório'),
+  categoriaId: z.string({ error: 'Categoria é obrigatória' })
+    .min(1, 'Selecione uma categoria'),
+});
+
+export type ProdutoInput = z.infer&lt;typeof produtoSchema&gt;;</code></pre>
+
+    <blockquote>
+      <p><strong>Dica:</strong> Use <code>z.string({ error: 'mensagem' })</code> para personalizar a mensagem de erro do tipo base. Use <code>.min()</code>, <code>.email()</code>, <code>.length()</code>, etc. para validações adicionais.</p>
+    </blockquote>
+
+    <hr />
+
+    <h2>Camada 2: Repository (Acesso a Dados)</h2>
+
+    <p>O repository é responsável por <strong>ler e escrever dados</strong>. Ele não conhece regras de negócio.</p>
+
+    <h3>Utilitário de banco de dados</h3>
+
+<pre><code>// database/db.ts
+import { readFileSync, writeFileSync } from 'fs';
+import { join, dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const DATA_DIR = join(__dirname, 'data');
+
+export function readJson&lt;T&gt;(filename: string): T[] {
+  const content = readFileSync(join(DATA_DIR, filename), 'utf-8');
+  return JSON.parse(content);
+}
+
+export function writeJson&lt;T&gt;(filename: string, data: T[]): void {
+  writeFileSync(join(DATA_DIR, filename), JSON.stringify(data, null, 2), 'utf-8');
+}
+
+export function nextId(items: { id: string }[]): string {
+  const maxId = items.reduce((max, item) =&gt; Math.max(max, parseInt(item.id, 10)), 0);
+  return String(maxId + 1);
+}</code></pre>
+
+    <h3>Repository da entidade</h3>
+
+<pre><code>// database/produto.repository.ts
+import { readJson, writeJson, nextId } from './db';
+
+export interface ProdutoRecord {
+  id: string;
+  nome: string;
+  preco: string;
+  categoriaId: string;
+}
+
+const FILE = 'produtos.json';
+
+export function findAll(): ProdutoRecord[] {
+  return readJson&lt;ProdutoRecord&gt;(FILE);
+}
+
+export function findById(id: string): ProdutoRecord | undefined {
+  return findAll().find(p =&gt; p.id === id);
+}
+
+export function search(query: string): ProdutoRecord[] {
+  const q = query.toLowerCase();
+  return findAll().filter(p =&gt; p.nome.toLowerCase().includes(q));
+}
+
+export function create(data: Omit&lt;ProdutoRecord, 'id'&gt;): ProdutoRecord {
+  const items = findAll();
+  const item: ProdutoRecord = { id: nextId(items), ...data };
+  items.push(item);
+  writeJson(FILE, items);
+  return item;
+}
+
+export function update(id: string, data: Omit&lt;ProdutoRecord, 'id'&gt;): ProdutoRecord {
+  const items = findAll();
+  const index = items.findIndex(p =&gt; p.id === id);
+  if (index === -1) throw new Error(`Produto ${id} não encontrado`);
+  items[index] = { id, ...data };
+  writeJson(FILE, items);
+  return items[index];
+}
+
+export function remove(id: string): void {
+  writeJson(FILE, findAll().filter(p =&gt; p.id !== id));
+}</code></pre>
+
+    <blockquote>
+      <p><strong>Nota:</strong> Este exemplo usa arquivos JSON para simplicidade. Em produção, substitua por chamadas a um banco de dados real ou API REST. A interface do repository permanece a mesma.</p>
+    </blockquote>
+
+    <hr />
+
+    <h2>Camada 3: Service (Lógica de Negócio)</h2>
+
+    <p>O service <strong>valida os dados</strong> com o schema Zod antes de passá-los ao repository.</p>
+
+<pre><code>// services/produto.service.ts
+import * as produtoRepo from '../database/produto.repository';
+import { produtoSchema, type ProdutoInput } from './produto.schema';
+
+export { produtoSchema, type ProdutoInput };
+
+export function list() {
+  return produtoRepo.findAll();
+}
+
+export function getById(id: string) {
+  const produto = produtoRepo.findById(id);
+  if (!produto) throw new Error(`Produto ${id} não encontrado`);
+  return produto;
+}
+
+export function search(query: string) {
+  return produtoRepo.search(query);
+}
+
+export function create(input: ProdutoInput) {
+  const parsed = produtoSchema.parse(input);
+  return produtoRepo.create(parsed);
+}
+
+export function update(id: string, input: ProdutoInput) {
+  const parsed = produtoSchema.parse(input);
+  return produtoRepo.update(id, parsed);
+}
+
+export function remove(id: string) {
+  return produtoRepo.remove(id);
+}</code></pre>
+
+    <hr />
+
+    <h2>Conectando às Rotas</h2>
+
+    <h3>Loader (Buscar Dados)</h3>
+
+    <p>Os <strong>loaders</strong> do React Router executam no servidor e fornecem dados ao componente:</p>
+
+<pre><code>// routes/pages/produtos/list.tsx
+export async function loader() {
+  const service = await import('../../../services/produto.service');
+  return Response.json({ produtos: service.list() });
+}
+
+export default function ProdutoList() {
+  const { produtos } = useLoaderData() as { produtos: ProdutoRecord[] };
+  // ... renderizar tabela
+}</code></pre>
+
+    <p>Para formulários de edição:</p>
+
+<pre><code>// routes/pages/produtos/edit.tsx
+export async function loader({ params }: LoaderFunctionArgs) {
+  const service = await import('../../../services/produto.service');
+  return Response.json({ produto: service.getById(params.id!) });
+}</code></pre>
+
+    <blockquote>
+      <p><strong>Por que <code>await import()</code>?</strong> O import dinâmico evita que o código do servidor (leitura de arquivos) seja incluído no bundle do cliente.</p>
+    </blockquote>
+
+    <h3>Action (Salvar Dados)</h3>
+
+    <p>As <strong>actions</strong> processam submissões de formulário:</p>
+
+<pre><code>// routes/pages/produtos/new.tsx
+export async function action({ request }: ActionFunctionArgs) {
+  const service = await import('../../../services/produto.service');
+  const formData = await request.formData();
+  const input = JSON.parse(formData.get('data') as string);
+  try {
+    service.create(input);
+    return redirect('/produtos');
+  } catch {
+    return Response.json({ error: 'Erro ao criar produto' }, { status: 400 });
+  }
+}</code></pre>
+
+    <p>Para exclusão em páginas de listagem:</p>
+
+<pre><code>// routes/pages/produtos/list.tsx
+export async function action({ request }: ActionFunctionArgs) {
+  const service = await import('../../../services/produto.service');
+  const formData = await request.formData();
+  if (formData.get('_action') === 'delete') {
+    service.remove(formData.get('id') as string);
+    return Response.json({ success: true });
+  }
+  return Response.json({ success: false });
+}</code></pre>
+
+    <p>A exclusão é feita com <code>useFetcher</code> para evitar reload da página:</p>
+
+<pre><code>const fetcher = useFetcher();
+
+&lt;fetcher.Form method="post"&gt;
+  &lt;input type="hidden" name="_action" value="delete" /&gt;
+  &lt;input type="hidden" name="id" value={row.original.id} /&gt;
+  &lt;AlmgButton intent="danger" type="submit"&gt;Excluir&lt;/AlmgButton&gt;
+&lt;/fetcher.Form&gt;</code></pre>
+
+    <hr />
+
+    <h2>API de Busca (para Autocomplete)</h2>
+
+    <p>Para o <code>AlmgAsyncAutocomplete</code>, crie uma rota API que retorna <code>{value, label}[]</code>:</p>
+
+<pre><code>// routes/api/produtos.search.tsx
+import type { LoaderFunctionArgs } from 'react-router';
+
+export async function loader({ request }: LoaderFunctionArgs) {
+  const service = await import('../../services/produto.service');
+  const q = new URL(request.url).searchParams.get('q') || '';
+  const results = service.search(q);
+  return Response.json(
+    results.map(p =&gt; ({ value: p.id, label: p.nome }))
+  );
+}</code></pre>
+
+    <p>Use no componente:</p>
+
+<pre><code>const fetchProdutos = async (query: string) =&gt; {
+  const res = await fetch(`/api/produtos/search?q=${encodeURIComponent(query)}`);
+  return res.json();
+};
+
+&lt;AlmgAsyncAutocomplete&lt;FormData&gt;
+  name="produtoId"
+  form={form}
+  label="Produto"
+  fetchOptions={fetchProdutos}
+  placeholder="Buscar produto..."
+  required
+/&gt;</code></pre>
+
+    <blockquote>
+      <p><strong>Nota sobre o formato de retorno:</strong> O endpoint <strong>deve</strong> retornar um array de <code>{ value: string, label: string }</code>. O <code>value</code> é salvo no formulário, o <code>label</code> é exibido ao usuário.</p>
+    </blockquote>
+
+    <hr />
+
+    <h2>Página de Listagem Completa</h2>
+
+    <p>Exemplo completo de uma página de listagem com tabela, ordenação, paginação e exclusão:</p>
+
+<pre><code>// routes/pages/produtos/list.tsx
+import { useLoaderData, Link, useFetcher } from 'react-router';
+import type { ActionFunctionArgs } from 'react-router';
+import { createColumnHelper } from '@tanstack/react-table';
+import { AlmgTable, useAlmgTable, AlmgButton, AlmgBreadcrumbs } from '@almg/native';
+
+export async function loader() {
+  const service = await import('../../../services/produto.service');
+  return Response.json({ produtos: service.list() });
+}
+
+export async function action({ request }: ActionFunctionArgs) {
+  const service = await import('../../../services/produto.service');
+  const formData = await request.formData();
+  if (formData.get('_action') === 'delete') {
+    service.remove(formData.get('id') as string);
+    return Response.json({ success: true });
+  }
+  return Response.json({ success: false });
+}
+
+export default function ProdutoList() {
+  const { produtos } = useLoaderData() as {
+    produtos: Array&lt;{ id: string; nome: string; preco: string }&gt;
+  };
+  const fetcher = useFetcher();
+  const columnHelper = createColumnHelper&lt;typeof produtos[0]&gt;();
+
+  const columns = [
+    columnHelper.accessor('nome', { header: 'Nome' }),
+    columnHelper.accessor('preco', { header: 'Preço' }),
+    columnHelper.display({
+      id: 'actions',
+      header: 'Ações',
+      cell: ({ row }) =&gt; (
+        &lt;div style={{ display: 'flex', gap: '8px' }}&gt;
+          &lt;Link to={`/produtos/${row.original.id}`}&gt;
+            &lt;AlmgButton intent="secondary"&gt;Editar&lt;/AlmgButton&gt;
+          &lt;/Link&gt;
+          &lt;fetcher.Form method="post"&gt;
+            &lt;input type="hidden" name="_action" value="delete" /&gt;
+            &lt;input type="hidden" name="id" value={row.original.id} /&gt;
+            &lt;AlmgButton intent="danger" type="submit"&gt;Excluir&lt;/AlmgButton&gt;
+          &lt;/fetcher.Form&gt;
+        &lt;/div&gt;
+      ),
+    }),
+  ];
+
+  const table = useAlmgTable({
+    data: produtos,
+    columns,
+    enableSorting: true,
+    enablePagination: true,
+    pageSize: 5,
+  });
+
+  return (
+    &lt;div&gt;
+      &lt;AlmgBreadcrumbs items={[
+        { text: 'Início', link: '/' },
+        { text: 'Produtos' },
+      ]} /&gt;
+      &lt;div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        margin: '24px 0 16px',
+      }}&gt;
+        &lt;h1 style={{
+          fontSize: 'var(--font-size-almg-xl)',
+          fontWeight: 'var(--font-weight-almg-bold)',
+        }}&gt;
+          Produtos
+        &lt;/h1&gt;
+        &lt;Link to="/produtos/novo"&gt;
+          &lt;AlmgButton intent="primary"&gt;Novo Produto&lt;/AlmgButton&gt;
+        &lt;/Link&gt;
+      &lt;/div&gt;
+      &lt;AlmgTable table={table} emptyMessage="Nenhum produto encontrado" /&gt;
+    &lt;/div&gt;
+  );
+}</code></pre>
+
+    <hr />
+
+    <h2>Resumo do Fluxo de Dados</h2>
+
+    <h3>Leitura (Loader → Componente)</h3>
+
+<div class="diagram">1. Usuário navega para /produtos
+2. React Router chama o loader()
+3. loader importa o service e chama service.list()
+4. service chama repository.findAll()
+5. repository lê dados.json e retorna array
+6. loader retorna Response.json({ produtos })
+7. Componente acessa via useLoaderData()
+8. AlmgTable renderiza os dados</div>
+
+    <h3>Escrita (Formulário → Action → Redirect)</h3>
+
+<div class="diagram">1. Usuário preenche o formulário
+2. RHF valida com Zod no cliente
+3. handleSubmit serializa dados e submete via form nativo
+4. React Router chama o action()
+5. action importa o service e chama service.create(input)
+6. service valida com Zod novamente (dupla validação)
+7. service chama repository.create(parsed)
+8. repository salva no dados.json
+9. action retorna redirect('/produtos')
+10. Usuário é redirecionado para a lista atualizada</div>
+
+    <h3>Busca (Autocomplete → API → Componente)</h3>
+
+<div class="diagram">1. Usuário digita no AlmgAsyncAutocomplete
+2. fetchOptions faz GET para /api/produtos/search?q=...
+3. loader da API importa service e chama service.search(q)
+4. Retorna array de { value, label }
+5. Componente exibe as opções ao usuário
+6. Usuário seleciona → value é salvo no campo do formulário</div>
+  </div>
+</body>
+</html>

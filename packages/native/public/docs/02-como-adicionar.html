@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Como Adicionar a Biblioteca — Boas Práticas @almg/native</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="doc-nav">
+    <span class="nav-title">Boas Práticas</span>
+    <a href="01-introducao.html">Introdução</a>
+    <a href="02-como-adicionar.html" class="active">Como Adicionar</a>
+    <a href="03-design-responsivo.html">Design Responsivo</a>
+    <a href="04-criando-formularios.html">Criando Formulários</a>
+    <a href="05-buscando-salvando-dados.html">Buscando e Salvando Dados</a>
+  </nav>
+
+  <div class="container">
+    <h1>Como Adicionar a Biblioteca</h1>
+
+    <p>Este guia mostra como integrar <code>@almg/native</code> em um projeto novo ou existente com React Router 7.</p>
+
+    <hr />
+
+    <h2>1. Instalação das Dependências</h2>
+
+    <h3>Dependências principais</h3>
+<pre><code>npm install @almg/native @almg/interfaces @almg/styles</code></pre>
+
+    <h3>Dependências de peer (obrigatórias)</h3>
+<pre><code>npm install react react-dom react-hook-form @hookform/resolvers zod
+npm install @tanstack/react-table @tanstack/react-virtual downshift
+npm install clsx tailwind-merge</code></pre>
+
+    <h3>Dependências de desenvolvimento</h3>
+<pre><code>npm install -D typescript @types/react @types/react-dom
+npm install -D @tailwindcss/vite tailwindcss
+npm install -D vite @vitejs/plugin-react</code></pre>
+
+    <hr />
+
+    <h2>2. Configuração do Vite</h2>
+
+    <p>No <code>vite.config.ts</code>, configure os aliases para resolver corretamente os pacotes do monorepo:</p>
+
+<pre><code>// vite.config.ts
+import { reactRouter } from '@react-router/dev/vite';
+import tailwindcss from '@tailwindcss/vite';
+import { defineConfig } from 'vite';
+import path from 'path';
+
+const dep = (name: string) =&gt; path.resolve(__dirname, 'node_modules', name);
+
+export default defineConfig({
+  plugins: [
+    tailwindcss(),
+    reactRouter(),
+  ],
+  resolve: {
+    alias: {
+      // Importar direto do source — evita node_modules aninhados
+      '@almg/native': path.resolve(__dirname, '../native/src/index.ts'),
+      '@almg/interfaces': path.resolve(__dirname, '../interfaces/src/index.ts'),
+      // Forçar deps compartilhadas a resolver deste projeto
+      'downshift': dep('downshift'),
+      '@tanstack/react-table': dep('@tanstack/react-table'),
+      '@tanstack/react-virtual': dep('@tanstack/react-virtual'),
+      'react-hook-form': dep('react-hook-form'),
+      '@hookform/resolvers': dep('@hookform/resolvers'),
+      'clsx': dep('clsx'),
+      'tailwind-merge': dep('tailwind-merge'),
+    },
+    dedupe: ['react', 'react-dom'],
+  },
+  ssr: {
+    noExternal: [
+      /^@almg\//,
+      'clsx',
+      'tailwind-merge',
+    ],
+  },
+});</code></pre>
+
+    <blockquote>
+      <p><strong>Por que os aliases?</strong> No monorepo, cada pacote pode ter sua própria cópia das dependências no <code>node_modules</code>. Os aliases garantem que o TypeScript e o bundler usem uma única cópia, evitando erros de tipos duplicados (especialmente com <code>react-hook-form</code>).</p>
+    </blockquote>
+
+    <hr />
+
+    <h2>3. Configuração do TypeScript</h2>
+
+    <p>No <code>tsconfig.json</code>, adicione o path mapping para que o TypeScript resolva <code>react-hook-form</code> a partir de uma única cópia:</p>
+
+<pre><code>{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "jsx": "react-jsx",
+    "strict": true,
+    "skipLibCheck": true,
+    "paths": {
+      "react-hook-form": ["./node_modules/react-hook-form"]
+    }
+  },
+  "include": ["src", "app"]
+}</code></pre>
+
+    <hr />
+
+    <h2>4. Importar os Estilos</h2>
+
+    <p>No seu componente raiz (ex: <code>root.tsx</code>), importe a folha de estilos principal:</p>
+
+<pre><code>import '@almg/styles';
+// ou, se estiver no monorepo com acesso ao source:
+import '../../styles/src/al-ui.css';</code></pre>
+
+    <p>Isso carrega todos os <strong>design tokens</strong> (cores, tipografia, espaçamento) e os <strong>estilos de componentes</strong>.</p>
+
+    <hr />
+
+    <h2>5. Configurar os Providers</h2>
+
+    <p>O componente raiz deve envolver a aplicação com os providers necessários:</p>
+
+<pre><code>// app/root.tsx
+import { Outlet, Link, Scripts, ScrollRestoration } from 'react-router';
+import { AlmgToastProvider, AlmgToastContainer } from '@almg/native';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import '@almg/styles';
+
+const queryClient = new QueryClient();
+
+export default function Root() {
+  return (
+    &lt;html lang="pt-BR"&gt;
+      &lt;head&gt;
+        &lt;meta charSet="utf-8" /&gt;
+        &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
+        &lt;title&gt;Minha Aplicação&lt;/title&gt;
+      &lt;/head&gt;
+      &lt;body&gt;
+        &lt;QueryClientProvider client={queryClient}&gt;
+          &lt;AlmgToastProvider&gt;
+            &lt;nav style={{
+              display: 'flex',
+              gap: '16px',
+              padding: '16px',
+              borderBottom: '1px solid var(--color-almg-brand-secondary)',
+            }}&gt;
+              &lt;Link to="/" style={{ fontWeight: 'bold' }}&gt;Início&lt;/Link&gt;
+              {/* Adicione seus links de navegação aqui */}
+            &lt;/nav&gt;
+            &lt;main style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}&gt;
+              &lt;Outlet /&gt;
+            &lt;/main&gt;
+            &lt;AlmgToastContainer /&gt;
+          &lt;/AlmgToastProvider&gt;
+        &lt;/QueryClientProvider&gt;
+        &lt;ScrollRestoration /&gt;
+        &lt;Scripts /&gt;
+      &lt;/body&gt;
+    &lt;/html&gt;
+  );
+}</code></pre>
+
+    <h3>Providers obrigatórios</h3>
+
+    <table>
+      <thead>
+        <tr><th>Provider</th><th>Pacote</th><th>Propósito</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>AlmgToastProvider</code></td><td><code>@almg/native</code></td><td>Gerenciamento de notificações toast</td></tr>
+        <tr><td><code>QueryClientProvider</code></td><td><code>@tanstack/react-query</code></td><td>Cache e sincronização de dados do servidor</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Componentes de infraestrutura</h3>
+
+    <table>
+      <thead>
+        <tr><th>Componente</th><th>Onde colocar</th><th>Propósito</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><code>AlmgToastContainer</code></td><td>Dentro do <code>AlmgToastProvider</code>, após o conteúdo</td><td>Renderiza as notificações toast</td></tr>
+        <tr><td><code>ScrollRestoration</code></td><td>No <code>&lt;body&gt;</code>, após o conteúdo</td><td>Restaura posição de scroll entre navegações</td></tr>
+        <tr><td><code>Scripts</code></td><td>No <code>&lt;body&gt;</code>, por último</td><td>Scripts do React Router</td></tr>
+      </tbody>
+    </table>
+
+    <hr />
+
+    <h2>6. Definir as Rotas</h2>
+
+    <p>Configure as rotas no <code>app/routes.ts</code>:</p>
+
+<pre><code>import { type RouteConfig, route, index } from '@react-router/dev/routes';
+
+export default [
+  index('routes/pages/home.tsx'),
+
+  // CRUD de Entidades
+  route('entidades', 'routes/pages/entidades/list.tsx'),
+  route('entidades/novo', 'routes/pages/entidades/new.tsx'),
+  route('entidades/:id', 'routes/pages/entidades/edit.tsx'),
+
+  // API de busca (para autocomplete)
+  route('api/entidades/search', 'routes/api/entidades.search.tsx'),
+] satisfies RouteConfig;</code></pre>
+
+    <hr />
+
+    <h2>7. Verificação</h2>
+
+    <p>Após a configuração, verifique se tudo funciona:</p>
+
+<pre><code># Verificar tipos TypeScript
+npx tsc --noEmit
+
+# Iniciar o servidor de desenvolvimento
+npm run dev</code></pre>
+
+    <p>Se o TypeScript reportar erros de tipos duplicados do <code>react-hook-form</code>, verifique se o <code>paths</code> no <code>tsconfig.json</code> e os <code>alias</code> no <code>vite.config.ts</code> estão configurados corretamente.</p>
+  </div>
+</body>
+</html>

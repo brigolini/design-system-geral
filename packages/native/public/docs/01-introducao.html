@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Introdução — Boas Práticas @almg/native</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <nav class="doc-nav">
+    <span class="nav-title">Boas Práticas</span>
+    <a href="01-introducao.html" class="active">Introdução</a>
+    <a href="02-como-adicionar.html">Como Adicionar</a>
+    <a href="03-design-responsivo.html">Design Responsivo</a>
+    <a href="04-criando-formularios.html">Criando Formulários</a>
+    <a href="05-buscando-salvando-dados.html">Buscando e Salvando Dados</a>
+  </nav>
+
+  <div class="container">
+    <h1>Guia de Boas Práticas — @almg/native</h1>
+
+    <p>Bem-vindo ao guia de boas práticas para construir aplicações com a biblioteca de componentes <strong>@almg/native</strong>.</p>
+
+    <p>Este guia cobre os seguintes tópicos:</p>
+
+    <ol>
+      <li><a href="02-como-adicionar.html"><strong>Como Adicionar a Biblioteca</strong></a> — Instalação, configuração do Vite/TypeScript e setup inicial de providers</li>
+      <li><a href="03-design-responsivo.html"><strong>Design Responsivo</strong></a> — Como usar o sistema de grid e tokens CSS para criar layouts adaptáveis</li>
+      <li><a href="04-criando-formularios.html"><strong>Criando Formulários</strong></a> — Integração com React Hook Form e Zod, campos dinâmicos e formulários multi-etapa</li>
+      <li><a href="05-buscando-salvando-dados.html"><strong>Buscando e Salvando Dados</strong></a> — Arquitetura de camadas (schema → service → repository), loaders, actions e APIs de busca</li>
+    </ol>
+
+    <hr />
+
+    <h2>Stack Recomendada</h2>
+
+    <table>
+      <thead>
+        <tr><th>Camada</th><th>Tecnologia</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Componentes UI</td><td><code>@almg/native</code> + <code>@almg/styles</code></td></tr>
+        <tr><td>Framework</td><td>React 19 + React Router 7 (SSR)</td></tr>
+        <tr><td>Formulários</td><td>React Hook Form + <code>@hookform/resolvers</code></td></tr>
+        <tr><td>Validação</td><td>Zod</td></tr>
+        <tr><td>Tabelas</td><td>TanStack React Table</td></tr>
+        <tr><td>Estado do servidor</td><td>TanStack React Query</td></tr>
+        <tr><td>Estilização</td><td>Tailwind CSS v4 + CSS custom properties</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Estrutura de Projeto Recomendada</h2>
+
+<pre><code>app/
+├── root.tsx                    # Layout raiz: providers, navegação, &lt;Outlet /&gt;
+├── routes.ts                   # Definição de rotas (React Router 7)
+├── database/
+│   ├── db.ts                   # Utilitários de leitura/escrita de dados
+│   ├── *.repository.ts         # Acesso a dados (findAll, findById, create, update, remove)
+│   └── data/*.json             # Arquivos de dados
+├── services/
+│   ├── *.schema.ts             # Schemas Zod + tipos inferidos
+│   └── *.service.ts            # Lógica de negócio (list, getById, search, create, update, remove)
+└── routes/
+    ├── pages/
+    │   ├── home.tsx            # Página inicial
+    │   └── {entidade}/
+    │       ├── list.tsx        # Listagem em tabela com loader + action de exclusão
+    │       ├── new.tsx         # Formulário de criação com action
+    │       └── edit.tsx        # Formulário de edição com loader + action
+    └── api/
+        └── {entidade}.search.tsx  # Endpoint de busca para autocomplete</code></pre>
+  </div>
+</body>
+</html>
